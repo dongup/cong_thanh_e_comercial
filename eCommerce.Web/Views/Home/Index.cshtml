@@ -1,0 +1,653 @@
+﻿@using eCommerce.Utils;
+@using eCommerce.Web.Areas.Api.Models.Products.ProductCatergory;
+@using eCommerce.Web.Areas.Api.Models.Promotion;
+@using eCommerce.Web.Areas.Api.Models.General;
+@using eCommerce.Web.Areas.Api.Models.Products.Product;
+@using eCommerce.Web.Areas.Api.Models.Posts;
+@using eCommerce.Web.Areas.Api.Models;
+@using System.Linq;
+@{
+
+    ViewData["Title"] = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    InformationModel info = (InformationModel)Context.Items["info"];
+    BannerAdsResponse itemBannerAds = (BannerAdsResponse)Context.Items["bannerads"];
+
+    List<PromotionResponse> Promotions = (List<PromotionResponse>)ViewData["Promotions"];
+    List<ProductCategoryGroupResponse> ProductCategoryGroups = (List<ProductCategoryGroupResponse>)ViewData["ProductCategoryGroups"];
+    List<PopupResponse> Popups = (List<PopupResponse>)ViewData["Popups"];
+    TopProductResponse ProductToday = (TopProductResponse)ViewData["ProductToday"];
+    List<PostResponse> Posts = (List<PostResponse>)ViewData["Posts"];
+}
+@section Styles {
+    <style>
+        /* .dropdown-category {
+            display: none !important;
+        }*/
+
+        .img-product {
+            object-fit: contain !important;
+        }
+
+        .dropdown-category {
+            display: none;
+        }
+
+        @@media (max-width: 992px) {
+            .dropdown-category {
+                display: none;
+            }
+        }
+
+        .nk-popover-content:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 135px;
+            height: 5px;
+            background: #ee1e25;
+            clip-path: polygon(0 0,100% 0,96% 100%,4% 100%);
+        }
+
+        .nk-top-stickers .nk-sticker {
+            font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 10px;
+            line-height: 14px;
+            margin-right: 4px;
+            padding: 3px;
+            float: left;
+            position: relative;
+        }
+
+        nk-popover-content {
+            transition: all .3s cubic-bezier(.75,-.02,.2,.97);
+            border: 2px solid #ee1e25;
+        }
+
+        .nk-top-stickers .nk-sticker.nk-bestseller {
+            color: #fff;
+            background: #ee1e25;
+            position: relative;
+            z-index: 1;
+            padding-right: 14px;
+            border-radius: 2px 0 0 2px;
+        }
+
+            .nk-top-stickers .nk-sticker.nk-bestseller:after {
+                background: #fff;
+                content: "";
+                height: 2.5em;
+                margin-top: -1.25em;
+                position: absolute;
+                right: -2em;
+                top: 48%;
+                width: 2.5em;
+                z-index: 2;
+                transform: rotate( 45deg );
+                border-radius: 0 0 0 2px;
+            }
+
+        .product-item .card-title {
+            min-height: 44px !important;
+        }
+
+        .category_nohover {
+            border: none !important;
+            transform: translateY(0) !important;
+        }
+
+        .list-unset ul {
+            list-style: disc;
+        }
+
+        .list-unset {
+            padding-left: 30px;
+        }
+
+        div.list-unset > ul > li::marker {
+            color: #004cc6;
+        }
+
+        .main-title {
+            font-family: "SVN-Vesterbro",sans-serif;
+            font-size: 65px;
+            line-height: 120%;
+            letter-spacing: -.05em;
+            color: #2b3d69;
+            margin-bottom: 30px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: 400;
+            font-style: italic;
+            text-shadow: 2px 2px 0 #fff, 3px 3px 0 #d9d9d9;
+        }
+
+            .main-title .block .line {
+                display: block;
+                width: 100px;
+                height: 100%;
+                margin-left: 10px;
+                margin-right: 10px;
+                position: relative;
+            }
+
+            .main-title .block .line-100 {
+                width: 70px;
+            }
+
+            .main-title span {
+                font-size: 65px;
+                line-height: 120%;
+                letter-spacing: -.05em;
+                color: #2b3d69;
+            }
+
+            .main-title .block .line:before {
+                height: 4px;
+                width: 100%;
+                content: "";
+                top: 50%;
+                position: absolute;
+                transform: translate(0,50%);
+                left: 0;
+                background-color: #2b3d69;
+                box-shadow: 2px 1.5px 0 #fff, 3px 3px 0 #d9d9d9;
+            }
+
+        @@media only screen and (max-width:600px) {
+            .product-detail-discount-small {
+                top: 5px;
+                position: absolute;
+                width: 57px;
+                right: 5px;
+                display: flex;
+                align-items: center;
+                color: #fff;
+                height: 68px;
+                z-index: 1;
+                background-repeat: no-repeat;
+                background-image: url(../../images/khuyen-mai-bg.png);
+            }
+
+            #carousel-product-promo .owl-buttons > div {
+                display: none !important;
+            }
+        }
+
+        .slick-slide {
+            float: left;
+            height: 100%;
+            min-height: 1px;
+        }
+
+        .lazyloaded {
+            opacity: 1;
+            transition: opacity .3s;
+        }
+    </style>
+}
+@section meta {
+    <meta property="og:url" content="https://dienmaycongthanh.vn/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Trang chủ - Điện máy Công Thành | Chuyên kinh doanh các mặt hàng Điện tử, Điện lạnh, Điện gia dụng" />
+    <meta property="og:description" content="https://dienmaycongthanh.vn/" />
+    <meta property="og:image" content="@info.Logo" />
+}
+
+<div class="container d-none d-sm-block pl-0">
+    <div class="row d-none d-md-flex m-0">
+        <div class="col-md-3 list-category product-item category_nohover rounded-0 pb-0">
+            <div class="font-weight-bold mega-list height-menu">
+                @foreach (var groups in ProductCategoryGroups)
+                {
+                    <div class="dropdown-item border-bottom">
+                        <img loading="lazy" src="@groups.Icon" class="main-layout-icon-category" />
+                        @{ int i = 0; }
+                        @foreach (var item in groups.Categories)
+                        {
+                            i++;
+                            string a = groups.Categories.Count == i ? "" : ",&nbsp;";
+                            <a href="/san-pham?cat=@(item.Id)">@(item.CategoryName)@( Html.Raw(a))</a>
+                        }
+                        <i class="arrow-me right padding-3px float-right"></i>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-9 p-0">
+            <div class="row">
+                <div class="col-md-10 pr-0">
+                    <div id="carousel-banner-slider" class="owl-carousel owl-centered">
+                        @foreach (PopupResponse item in Popups)
+                        {
+                            <div class="item cursor-pointer">
+                                <a href="@item.Link">
+                                    <img loading="lazy" onerror="this.src='/images/default-image.png'" class="img-fluid" style="height:350px"
+                                         src="/@(item.Image.FilePath)">
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-2 pl-1 pr-0">
+                    @if (!string.IsNullOrEmpty(@itemBannerAds.PathBannerBottomSlide1) && itemBannerAds.IsShowBannerBottomSlide1)
+                    {
+                        <div class="item cursor-pointer">
+                            <a href="@itemBannerAds.UrlBannerBottomSlide1">
+                                <img loading="lazy" onerror="this.src='/images/default-image.png'" class="img-fluid" style="height:350px"
+                                     src="@itemBannerAds.PathBannerBottomSlide1">
+                            </a>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-12 mt-1">
+                    <div class="row">
+                        @{
+                            List<NameValueModel> Banners = new List<NameValueModel>();
+
+                            if (!string.IsNullOrEmpty(@itemBannerAds.PathBannerBottomSlide2) && itemBannerAds.IsShowBannerBottomSlide2)
+                            {
+                                Banners.Add(new NameValueModel(@itemBannerAds.PathBannerBottomSlide2, itemBannerAds.UrlBannerBottomSlide2));
+                                <div class="col-md-6 pr-0">
+                                    <a class="p-0 banner-bottom" href="@itemBannerAds.UrlBannerBottomSlide2">
+                                        <img loading="lazy" src="@itemBannerAds.PathBannerBottomSlide2" class="w-100 m-h-150" />
+                                    </a>
+                                </div>
+                            }
+                            if (!string.IsNullOrEmpty(@itemBannerAds.PathBannerBottomSlide3) && itemBannerAds.IsShowBannerBottomSlide3)
+                            {
+                                Banners.Add(new NameValueModel(@itemBannerAds.PathBannerBottomSlide3, itemBannerAds.UrlBannerBottomSlide3));
+                                <div class="col-md-6 pr-0 pl-1">
+                                    <a class="p-0 banner-bottom" href="@itemBannerAds.UrlBannerBottomSlide3">
+                                        <img loading="lazy" src="@itemBannerAds.PathBannerBottomSlide3" class="w-100 m-h-150" />
+                                    </a>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container d-block d-md-none">
+    <div id="banner-bottom" class="owl-carousel">
+        @foreach (PopupResponse item in Popups)
+        {
+            <div class="pl-0 pr-0 pl-sm-2 pr-sm-0 banner-bottom owl-item">
+                <a href="@item.Link">
+                    <img loading="lazy" onerror="this.src='/images/default-image.png'" class="img-fluid"
+                         src="/@(item.Image.FilePath)">
+                </a>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(@itemBannerAds.PathBannerBottomSlide2) && itemBannerAds.IsShowBannerBottomSlide2)
+        {
+            <div class="pl-0 pr-0 pl-sm-2 pr-sm-0 banner-bottom owl-item">
+                <a class="p-0 banner-bottom" href="@itemBannerAds.UrlBannerBottomSlide2">
+                    <img loading="lazy" src="@itemBannerAds.PathBannerBottomSlide2" class="w-100 m-h-150" />
+                </a>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(@itemBannerAds.PathBannerBottomSlide3) && itemBannerAds.IsShowBannerBottomSlide3)
+        {
+            <div class="pl-0 pr-0 pl-sm-2 pr-sm-0 banner-bottom owl-item">
+                <a class="p-0 banner-bottom" href="@itemBannerAds.UrlBannerBottomSlide3">
+                    <img loading="lazy" src="@itemBannerAds.PathBannerBottomSlide3" class="w-100 m-h-150" />
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+@if (itemBannerAds.IsShowBannerTopPromotionPath)
+{
+    <section>
+        <div class="container">
+            <a class="row" href="@itemBannerAds.BannerTopPromotionFriendlyUrl">
+                <img loading="lazy" src="@itemBannerAds.BannerTopPromotionPath" />
+            </a>
+        </div>
+    </section>
+}
+
+@if (Promotions != null) { 
+    int dem = 0;
+    @foreach (var promo in Promotions)
+    {
+        dem++;
+        <section class="categories-list">
+            <div class="container">
+                <div class="row pb-3" style="background-color: @(promo.BackgroundColor); border: 2px solid @(promo.BorderColor)">
+                    <div class="col-md-12 text-center p-0">
+                        <a href="@(promo.FriendlyUrl)">
+                            <img loading="lazy" style="object-fit: cover;min-height: 40px;width:100%" class="item-promo-image" src="@(promo.Banner)">
+                        </a>
+                    </div>
+                    <div class="col-md-12  p-0 m-3">
+                        @{
+                            List<CategoryResponse> categories = new List<CategoryResponse>();
+                            foreach (var item in promo.PromotionProducts)
+                            {
+                                if (categories.Where(n => n.Id == item.Product.Temp.Id).FirstOrDefault() == null)
+                                {
+                                    categories.Add(item.Product.Temp);
+                                }
+                            }
+                            categories = categories.OrderByDescending(n => n.NoteInt).ToList();
+                        }
+                        @if (categories.Count > 1)
+                        {
+                            <nav>
+                                <div class="nav nav-tabs border-bottom-0" id="nav-tab" role="tablist">
+                                    @for (int i = 0; i < categories.Count; i++)
+                                    {
+                                        <a class="nav-item promo-btn-tap btn mt-2 @(i == 0?"active":"")" data-toggle="tab" href="#tab-@dem-@categories[i].Id" role="tab" aria-controls="nav-home" aria-selected="true">@categories[i].CategoryName</a>
+                                    }
+                                </div>
+                            </nav>
+                        }
+                    </div>
+                    @{
+                        string active = "show active";
+                        int index = 0;
+                        int MAX_PERROW = 15;
+                    }
+                    <div class="tab-content w-100">
+                        @foreach (var category in categories)
+                        {
+                            <div class="tab-pane @active" id="tab-@dem-@category.Id">
+
+                                @for (int i = 0; i < promo.RowDisplay; i++)
+                                {
+                                    active = "";
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="single-categorie">
+                                                <div id="carousel-product-promo" class="owl-carousel">
+                                                    @{
+                                                        var ProductsInCategory = promo.PromotionProducts
+                                                            .Where(n => n.Product.Temp.Id == category.Id)
+                                                            .Select(n => n.Product)
+                                                            .Skip(i * MAX_PERROW)
+                                                            .Take(MAX_PERROW);
+                                                    }
+                                                    @foreach (var CurrentProduct in ProductsInCategory)
+                                                    {
+                                                        string statusString = (CurrentProduct.Status && (CurrentProduct.StockNumber > 0)) ? "Còn hàng" : "Đặt hàng";
+
+                                                        <div class="h-100">
+                                                            <div class="item">
+                                                                <div class="product-item">
+                                                                    @*<p class="bg-dfanger">@CurrentProduct.IsInstallment0Percent</p>*@
+                                                                    @*show instalment - Trả góp*@
+                                                                    @if (CurrentProduct.IsInstallment0Percent)
+                                                                    {
+                                                                        <div class='productdetail-tragop-0-small d-md-block'><p>Trả góp 0%</p></div>
+                                                                    }
+
+                                                                    @*Giá bán < Giá gôc thì hiển thị % giảm giá*@
+                                                                    @if ((Global.CaculatorSaleOff(CurrentProduct.OriginPrice, CurrentProduct.SaleOffPrice) * (-1)) > 0)
+                                                                    {
+                                                                        <div class="product-detail-discount-small"><p class="px-w-57">Giảm giá @(Global.CaculatorSaleOff(CurrentProduct.OriginPrice, CurrentProduct.SaleOffPrice)*(-1))%</p></div>
+                                                                    }
+
+                                                                    <div class="product-item-image">
+                                                                        <a href="@(CurrentProduct.FriendlyUrl)">
+                                                                            <img loading="lazy" onerror="this.src='/images/default-image.png'" class="card-img-top img-fluid" src="@(CurrentProduct.ThumbNail)">
+                                                                        </a>
+                                                                        @*Hiển thị sticker*@
+                                                                        @if (!string.IsNullOrEmpty(promo.StickerImage) && promo.IsShowSticker)
+                                                                        {
+                                                                            <div>
+                                                                                <img loading="lazy" src="@promo.StickerImage" class="img-fluid promo-sticker" />
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+
+                                                                    <div class="product-item-body m-2 m-md-4 text-left">
+                                                                        <div class="product-item-action">
+                                                                            <!--CurrentProduct.Id-->
+                                                                            <a class="btn btn-gradient-blue text-white btn-sm" href="javascript:AddToCart(@CurrentProduct.Id)"><i class="icofont icofont-shopping-cart mr-1"></i> Thêm vào giỏ hàng</a>
+                                                                        </div>
+
+                                                                        @*Hiển thị badge trả góp 0%*@
+                                                                        @if (CurrentProduct.IsInstallment0Percent)
+                                                                        {
+                                                                            <div class='productdetail-tragop-0-small d-block d-md-none'><p>Trả góp 0%</p></div>
+                                                                        }
+                                                                    <a href="/@(CurrentProduct.FriendlyUrl)">
+                                                                        <p class="card-title text-black">@(CurrentProduct.ProductName)</p>
+                                                                        @{
+                                                                            var rootPrice = CurrentProduct.OriginPrice > CurrentProduct.SaleOffPrice ? @Global.FormatMoney(CurrentProduct.OriginPrice) : "";
+                                                                        }
+
+                                                                        @if (CurrentProduct.OriginPrice > CurrentProduct.SaleOffPrice)
+                                                                        {
+                                                                            <p><b class="text-black">Giá chính hãng </b></p>
+                                                                            <p>
+                                                                                <span class="badge badge-orange badge-percent">@Global.CaculatorSaleOff(CurrentProduct.OriginPrice, CurrentProduct.SaleOffPrice)%</span>
+                                                                                <span class="product-desc-price text-left">
+                                                                                    @Global.FormatMoney(CurrentProduct.OriginPrice)
+                                                                                </span>
+
+                                                                            </p>
+                                                                            <p> <b class="text-black">Giá ưu đãi </b></p>
+                                                                            <span class="product-price text-left text-orange">@Global.FormatMoney(CurrentProduct.SaleOffPrice)</span>
+                                                                            <p><b class="text-black">Tình trạng: @statusString</b></p>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <p> <b class="text-black">Giá ưu đãi </b></p>
+                                                                            <span class="product-price text-left text-orange">@Global.FormatMoney(CurrentProduct.SaleOffPrice)</span>
+                                                                            <p><b class="text-black">Tình trạng: @statusString</b></p>
+                                                                            <p>&nbsp;</p>
+                                                                            <p>&nbsp;</p>
+                                                                        }
+                                                                    </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        index += 1;
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class=" d-flex justify-content-center w-100 mt-2">
+                        <a href="@(promo.FriendlyUrl)" class="btn btn-watch-all pull-right">Xem tất cả <i class="icofont-simple-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }                                                                            
+}
+<!-- Tin tức -->
+<section class="container mt-3 mb-3">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="section-header">
+                <h5 class="heading-design-h5">Tin tức</h5>
+            </div>
+            <div class="row ml-0">
+                @if (Posts != null)
+                {
+                    foreach (var item in Posts)
+                    {
+                        <div class="col-md-6 cursor-pointer p-1 px-h-140">
+                            <a href="@(item.FriendlyUrl)">
+                                <div class="news-item product-item-list news-item-list">
+                                    <div class="product-item-image news-item-image">
+                                        <img loading="lazy" onerror="this.src='/images/default-image.png'" style="object-fit: fill;"
+                                             class="card-img-top img-fluid" src="@(item.ThumbNail)">
+                                    </div>
+                                    <div class="product-item-body">
+                                        <h4 class="card-title">@(item.Title)</h4>
+                                        <p class="card-desc text-muted">@(item.PostCategory.Name)</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="section-header">
+                <h5 class="heading-design-h5">Liên hệ</h5>
+            </div>
+            <div class="row">
+                <div class="col-md-12 pt-1 mx-auto">
+                    <div class="widget mb-4">
+                        <form id="form-contact">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group mb-3">
+                                        <p class="text-center">Chúng tôi cam kết những thông tin mà bạn đã cung cấp cho chúng tôi sẽ được bảo mật</p>
+                                        <input type="text" class="form-control" id="ipt-name"
+                                               required placeholder="Nhập tên đầy đủ" autocomplete="off">
+                                        <p id="name-error" class="text-danger d-none">
+                                            * Vui lòng nhập tên
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group mb-3">
+                                        <input type="text" class="form-control" id="ipt-phone" required placeholder="Nhập số điện thoại" autocomplete="off">
+                                        <p id="phone-error" class="text-danger  d-none">
+                                            * Số điện thoại không hợp lệ
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <textarea style="height: 67px" id="ipt-content" class="form-control border-form-control" rows="3" autocomplete="off" placeholder="Nhập nội dung"></textarea>
+                                        <p id="content-error" class="text-danger d-none">
+                                            * Nhập nội dung
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 d-flex justify-content-center mb-3" style="overflow:hidden">
+                                    <div id="g-recaptcha"></div>
+                                </div>
+                                <div class="col-md-12 text-right">
+                                    <button onclick="sendContact()" class="btn btn-warning ml-1"><i class="icofont icofont-send-mail mr-1"></i>Gửi liên hệ</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@{
+    if (itemBannerAds.IsShowLeft)
+    {
+        if (Context.Request.Cookies["bannersleft"] != "false" || string.IsNullOrEmpty(Context.Request.Cookies["bannersleft"]))
+        {
+            <div class="container">
+                <div class="banner-advertise-left d-none d-xl-block">
+                    <span class="h3" style="top: 5px;position: absolute;right: 5px;z-index:100; color: #2c51a9;"><i onclick="closeAdv('left')" class="icofont icofont-close cursor-pointer"></i></span>
+                    <a href="@itemBannerAds.LeftFriendlyUrl" style="cursor:default;">
+                        <img loading="lazy" src="@itemBannerAds.LeftPath" style="width: 89px;object-fit:cover;" />
+                    </a>
+                </div>
+            </div>
+        }
+
+    }
+    if (itemBannerAds.IsShowRight)
+    {
+        if (Context.Request.Cookies["bannersright"] != "false" || string.IsNullOrEmpty(Context.Request.Cookies["bannersleft"]))
+        {
+            <div class="container">
+                <div class="banner-advertise-right d-none d-xl-block">
+                    <span class="h3" style="top: 5px;position: absolute;right: 5px;z-index:100; color: #2c51a9;"><i onclick="closeAdv('right')" class="icofont icofont-close cursor-pointer"></i></span>
+                    <a href="@itemBannerAds.RighFriendlyUrl" style="cursor:default;">
+                        <img loading="lazy" src="@itemBannerAds.RightPath" style="width: 89px;object-fit:cover;" />
+                    </a>
+                </div>
+            </div>
+        }
+    }
+}
+@section Scripts {
+    <script src="~/iotsoftvn/contact.js"></script>
+    <script>
+        $('#div-product-category').addClass('d-md-none')
+        //initCarousel('#carousel-banner-slider', 1, 5000);
+        initCarouselProduct('#carousel-product-today, #carousel-product-promo', 5, 500000);
+        //$("#carousel-product-promo .owl-prev").remove();
+        //$("#carousel-product-promo .owl-next").remove();
+
+        var $CarouselBanner = $('#carousel-banner-slider');
+        if ($CarouselBanner.length > 0) {
+            $CarouselBanner.owlCarousel({
+                items: 1,
+                lazyLoad: true,
+                pagination: false,
+                autoPlay: 5000,
+                responsive: true,
+                itemsDesktop: [1199, 1],
+                itemsDesktopSmall: [979, 1],
+                itemsTablet: [768, 1],
+                itemsMobile: [479, 1],
+                navigation: true,
+                navigationText: ["<i class='arrow-me left'></i>", "<i class='arrow-me right'></i>"],
+                stopOnHover: true
+            });
+        }
+
+        var $element = $('#banner-bottom');
+        if ($element.length > 0) {
+            $element.owlCarousel({
+                items: 3,
+                lazyLoad: true,
+                pagination: false,
+                responsive: true,
+                itemsDesktop: [1199, 3],
+                itemsDesktopSmall: [979, 3],
+                itemsTablet: [768, 2],
+                itemsMobile: [479, 1],
+                autoPlay: 3000,
+                navigation: false,
+                navigationText: ["", ""],
+                stopOnHover: true
+            });
+        }
+
+
+
+    </script>
+    <script type="text/javascript" defer>
+        $.getScript('https://www.google.com/recaptcha/api.js', function () {
+            delay(() => {
+                grecaptcha.render(document.getElementById('g-recaptcha'), {
+                    'sitekey': '6Le86ZsaAAAAAPOm092WdYu_3UbSVJxgFt4Abqkk',
+                });
+            }, 2000);
+
+        });
+
+    </script>
+
+
+}

@@ -1,0 +1,605 @@
+﻿@using eCommerce.Utils
+@using eCommerce.Web.Areas.Api.Models.General
+@using eCommerce.Web.Areas.Api.Models.Promotion;
+@{
+    InformationModel info = (InformationModel)Context.Items["info"];
+    BannerAdsResponse itemBannerAds = (BannerAdsResponse)Context.Items["bannerads"];
+    Dictionary<string, string>[] Menus = (Dictionary<string, string>[])Context.Items["Menus"];
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="keywords" content="Điện máy công thành, ">
+    <meta name="author" content="iotsoftvn">
+    @RenderSection("meta", false)
+    <meta name="facebook-domain-verification" content="dkrs30jd4doxgv0f0801coia9gt9fg" />
+    <title>@ViewBag.Title - Điện máy Công Thành | Chuyên kinh doanh các mặt hàng Điện tử, Điện lạnh, Điện gia dụng</title>
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/logo-icon-trans.png">
+    <link rel="icon" type="image/png" href="/images/logo-icon-trans.png">
+
+    <link href="~/plugins/bootstrap/bootstrap.min.css" rel="stylesheet" lazyload />
+    <link href="~/store/css/style.css" rel="stylesheet" lazyload />
+    <link href="~/store/css/animate.css" rel="stylesheet" lazyload />
+    <link href="~/store/css/mobile.css" rel="stylesheet" lazyload />
+    <link href="/plugins/alertify/css/alertify.min.css" rel="stylesheet" />
+    <link href="~/plugins/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/plugins/icofont/icofont.css" rel="stylesheet" lazyload />
+    <link href="~/plugins/owl-carousel/owl.carousel.css" rel="stylesheet" lazyload />
+    <link href="~/plugins/owl-carousel/owl.theme.css" rel="stylesheet" lazyload />
+    <link href="~/store/css/custom.css" rel="stylesheet" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156879419-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-156879419-3');
+    </script>
+
+    @RenderSection("styles", false)
+    <style>
+
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #f1f3fa;
+            z-index: 9999;
+        }
+
+        #div-product-category::-webkit-scrollbar {
+            height: 4px;
+            width: 4px;
+        }
+
+        #div-product-category {
+            max-height: 70vh;
+        }
+
+        #status {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin: -40px 0 0 -40px;
+        }
+
+        .font-18 {
+            font-size: 18px;
+        }
+
+        .bouncing-loader {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+        }
+
+        .shadow-none {
+            box-shadow: none !important;
+        }
+
+        .cart-count {
+            width: 18px;
+            height: 18px;
+            background: #fd3620;
+            text-align: center;
+            font-size: 12px;
+            color: #fff;
+            border-radius: 20px;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            text-orientation: mixed;
+            font-weight: bold;
+            font-size: 10px;
+            line-height: 19px;
+        }
+
+        .money-light {
+            font-weight: 700 !important;
+            color: #bf081f;
+        }
+
+        .line-center {
+            text-decoration: line-through;
+        }
+
+        .float-mobile {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            bottom: 70px;
+            right: 70px;
+            background-color: #0C9;
+            color: #FFF;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 2px 2px 3px #999;
+        }
+
+        .w-55 {
+            width: 55%;
+        }
+
+        .my-float-mobile {
+            margin-top: 22px;
+        }
+
+        .font-16 {
+            font-size: 16px;
+        }
+
+        .font-14 {
+            font-size: 14px;
+        }
+
+        .font-12 {
+            font-size: 12px;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        .font-24 {
+            font-size: 24px !important;
+        }
+    </style>
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '762356301313054');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+             src="https://www.facebook.com/tr?id=762356301313054&ev=PageView&noscript=1" />
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+    <script src="https://w.ladicdn.com/popupx/sdk.js" id="5fa03c50dfcdfd080799b0fa" async></script>
+</head>
+
+<body style=" background-color: #fff; font-family:Arial">
+
+    @*
+            <div id="fb-root"></div>
+            <!-- Your Chat Plugin code -->
+            <div class="fb-customerchat"
+                 attribution="setup_tool"
+                 page_id="@info.FbAppId">
+                2190614707664907
+        </div>
+
+        <script>
+            window.fbAsyncInit = function () {
+                FB.init({
+                    xfbml: true,
+                    version: 'v10.0'
+                });
+            };
+
+            (function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+
+        </script>*@
+    <!-- Messenger Plugin chat Code Cong Thanh-->
+    <div id="fb-root"></div>
+    <!-- Your Plugin chat code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+    <script>
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "@info.FbAppId");
+        chatbox.setAttribute("attribution", "page_inbox");
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '1926416454190128',
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v10.0'
+            });
+        };
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <div id="preloader" style="display: none; opacity:0.5">
+        <div id="status" style="display: none;">
+            <div class="bouncing-loader"></div>
+        </div>
+    </div>
+
+    <div class="position-sticky" style="top:0">
+        @if (itemBannerAds.IsShowTop)
+        {
+            <div class="bnnoelimg text-center btn-gradient-blue " id="banner-top-one">
+                <a data-cate="0" data-place="1295" href="@itemBannerAds.TopFriendlyUrl">
+                    <img style="cursor:pointer" class="img-fluid w-100 m-h-50" src="@itemBannerAds.TopPath">
+                </a>
+            </div>
+        }
+        <nav id="navbar-menu" class="navbar navbar-light navbar-expand-lg btn-gradient-blue bg-faded osahan-menu osahan-menu-top-2 p-lg-2">
+            <div class="container pl-0 pr-0">
+                <div class="justify-content-between d-flex w-100">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <a class="navbar-brand text-center d-none d-lg-block" href="/"><img src="@info.Logo" id="logo-top-nav" width="200" height="75" alt="Điện máy Công Thành"></a>
+                    </div>
+                    <div class="list-social w-100">
+                        <div class="navbar-collapse justify-content-between d-flex d-lg-block" id="navbarNavDropdown">
+                            <a class="navbar-brand d-block d-lg-none text-center" href="/"><img src="~/images/logo-icon-trans-mobile.png" id="logo-top-nav" width="50" alt="Điện máy Công Thành"></a>
+                            <div class="d-flex w-100 flex-row justify-content-between align-items-center">
+                                <div class="navbar-nav mt-2 mt-lg-0 top-categories-search-main w-70 ml-3 mr-1">
+                                    <div class="w-100 top-categories-search ml-auto">
+                                        <div class="input-group">
+                                            <input id="ipt-search-layout" class="form-control" placeholder="Bạn tìm gì..." />
+                                            <span class="input-group-btn input-group-btn-search">
+                                                <button onclick="searchProduct()" class="btn bg-transparent shadow-none border-0 mt-0 mb-0" type="button"><i class="icofont icofont-search-1"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="navbar-toggler navbar-toggler-white d-block d-lg-none mr-1" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-icon"></span>
+                                    </button>
+                                </div>
+                                <div class="my-2 my-lg-0 w-100">
+                                    <div class="d-none d-lg-block w-100">
+                                        <div class="d-flex flex-row align-items-center justify-content-between float-right w-100">
+                                            <div class="d-flex align-items-center div-cart-homepage">
+                                                <div class="d-block d-md-none">
+                                                    <a href="/gio-hang" class="border-2 border-primary btn ptn-primary" id="btn-my-cart" style="padding: 6px 9px;position:relative" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="icofont icofont-shopping-cart" style="font-size:20px;"></i><small class="d-none cart-count">0</small>
+                                                    </a>
+                                                </div>
+                                                <div class="d-none d-md-block">
+                                                    <a href="/gio-hang" class="border-2 border-primary btn ptn-primary" id="btn-my-cart" style="padding: 6px 9px;position:relative" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="icofont icofont-shopping-cart" style="font-size:20px;"></i><small class="d-none cart-count">0</small>
+                                                        <span>Giỏ hàng</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="item align-items-center mx-2">
+                                                <div class="icon text-primary text-center "><i class="icofont icofont-grocery font-24"></i></div>
+                                                <div class="text text-primary text-center font-12"><span>Trả góp 0%</span></div>
+                                            </div>
+                                            <div class="item align-items-center mx-2">
+                                                <div class="icon  text-primary text-center"><i class="icofont icofont-repair  font-24 "></i></div>
+                                                <div class="text text-primary text-center font-12"><span>Bảo hành 1 đổi 1</span></div>
+                                            </div>
+                                            <div class="item align-items-center mx-2 ">
+                                                <div class="icon text-primary text-center "><i class="icofont icofont-headphone-alt-2 font-24"></i></div>
+                                                <div class="text text-primary text-center font-12"><a href="tel:@Global.FormatPhoneNumber(info.CSKH)">@String.Format("{0:#### ### ###}", info.CSKH)</a></div>
+                                            </div>
+                                            <div class="item align-items-center mx-2 ">
+                                                <div class="icon  text-primary text-center "><i class="icofont icofont-shield font-24"></i></div>
+                                                <div class="text text-primary text-center font-12"><span>@*Cam kết hàng c*@ Chính hãng 100%</span></div>
+                                            </div>
+
+                                            <a class="text-primary icon-facebook mr-2" target="_blank" href="@info.FacebookUrl">
+                                                <div class="border-0 rounded-circle d-flex align-items-center justify-content-center h-100 w-100">
+                                                    @*<i class="icofont icofont-1-5x icofont-facebook"></i>*@
+                                                    <img class="icon-social" src="~/images/ic_facebook.png" />
+                                                </div>
+                                            </a>
+                                            <a class="text-primary icon-facebook mr-2" target="_blank" href="@info.YoutubeUrl">
+                                                <div class="border-0 rounded-circle d-flex align-items-center justify-content-center h-100 w-100">
+                                                    @*<i class="icofont icofont-1-5x icofont-youtube-play"></i>*@
+                                                    <img class="icon-social" src="~/images/ic_youtube.png" />
+                                                </div>
+                                            </a>
+
+                                            <a id="icon-instagram" class="text-primary icon-facebook" target="_blank" href="@info.InstagramUrl">
+                                                <div class="border-0 rounded-circle d-flex align-items-center justify-content-center h-100 w-100">
+                                                    @*<i class="icofont icofont-1-5x icofont-instagram"></i>*@
+                                                    <img class="icon-social" src="~/images/ic_instragram.png" />
+                                                </div>
+                                            </a>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="d-block d-lg-none">
+                                        <ul class="list-inline main-nav-right">
+                                            <li class="list-inline-item dropdown osahan-top-dropdown">
+                                                <a href="/gio-hang" class="btn btn-outline-light" id="btn-my-cart" style="padding: 6px 9px;" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="icofont icofont-shopping-cart" style="font-size:20px;"></i><small class="d-none cart-count">0</small>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light osahan-menu osahan-menu-2 pad-none-mobile">
+            <div class="container p-0">
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <div class="row w-100 m-0">
+                        <div class="col-md-3 mt-1 bg-blue-homepage pl-0 pr-0">
+                            <ul class="mr-auto mt-2 mt-lg-0">
+                                <li class="dropdown">
+                                    <a class="label-category-new d-flex align-items-center" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont-listine-dots mr-2 font-20"></i> Danh mục sản phẩm</a>
+                                    <hr class="m-0 d-block d-lg-none" />
+                                    <div id="div-product-category" class="dropdown-category dropdown-menu font-weight-bold w-100 p-0 mega-list height-menu"></div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-9 mobile-50vh">
+                            <ul class="navbar-nav mt-0 pl-md-5 ml-md-5">
+                                @foreach (var item in Menus)
+                                {
+                                    if (item["Name"].ToString() == "Báo giá")
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" target="_blank" href="@item["Key"]">@item["Name"]</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="@item["Key"]">@item["Name"]</a>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="btn-gradient-blue-page">
+        @RenderBody()
+    </div>
+    <section class="services-block services-block-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 d-flex">
+                    <div class="item d-flex align-items-center">
+                        <div class="icon"><i class="icofont icofont-grocery text-primary"></i></div>
+                        <div class="text"><span class="text-uppercase">Trả góp 0%</span><small>Hỗ trợ trả góp 0%</small></div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 d-flex">
+                    <div class="item d-flex align-items-center">
+                        <div class="icon"><i class="icofont icofont-repair text-primary"></i></div>
+                        <div class="text"><span class="text-uppercase">Bảo hành uy tín</span><small>Bảo hành 1 đổi 1</small></div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 d-flex">
+                    <div class="item d-flex align-items-center">
+                        <div class="icon"><i class="icofont icofont-headphone-alt-2 text-primary"></i></div>
+                        <div class="text"><span id="spCSKH" class="text-uppercase">@info.CSKH</span><small>Tổng đài hỗ trợ 24/7</small></div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 d-flex">
+                    <div class="item d-flex align-items-center">
+                        <div class="icon"><i class="icofont icofont-shield text-primary"></i></div>
+                        <div class="text"><span class="text-uppercase">100% hàng chính hãng</span><small>Cam kết hàng chính hãng</small></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <a id="mobile-float" href="tel:@info.Hotline" class="float btn-gradient-blue p-1 d-none">
+            <span class="p-1 text-white" style="display:flex;">
+                <i class="icofont icofont-phone font-20 float-hotline mr-0 font-weight-bold"></i>
+                <span class="text-white m-auto" id="#hotline-number-float"></span>
+            </span>
+        </a>
+    </section>
+
+    @if (Context.Request.Path == "/")
+    {
+        <section>
+            <div class="container">
+                <div class="section-header">
+                    <h5 class="heading-design-h5">Thương Hiệu Hợp Tác Với Điện Máy Công Thành</h5>
+                </div>
+                <div id="brand-slide" class="owl-carousel owl-carousel-featured" style="display:block!important;">
+                    @try
+                    {
+                        if (Model != null)
+                            @foreach (var item in Model.Brands)
+                            {
+                                <div class="item">
+                                    <div class="slick-slide">
+                                        <div class="partners__logo">
+                                            <img class="lazyloaded" loading="lazy" src="@item.Logo.FilePath">
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(e));
+                        }
+                </div>
+            </div>
+        </section>
+    }
+
+    <a id="web-float" href="tel:@info.Hotline" class="float-phone bg-blue font-weight-bold p-1" style="z-index:10000">
+        <span class="p-1 text-white" style="display:flex;">
+            <i class="icofont icofont-phone font-44 float-hotline  font-weight-bold"></i>
+        </span>
+    </a>
+
+    <a id="fb-float" href="https://zalo.me/0914196139" target="_blank" class="float-message-fabook" style="z-index:10000">
+        <img class="icon-zalo" src="/Images/ic-zalo.png" />
+    </a>
+    <footer>
+        <section class="footer-Content btn-gradient-blue">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="footer-widget">
+                            <h3 class="block-title">Liên hệ</h3>
+                            <div id="div-footer" class="textwidget">
+                                <div class="textwidget">
+                                    <p><span class="text-white">@info.CompanyName</span></p>
+                                    <p>Địa chỉ: &nbsp;<span class="text-white">@info.Address</span> </p>
+                                    <p>MST: &nbsp;<span class="text-white">@info.MaSoThue</span></p>
+                                    <p>Hotline: &nbsp;<span class="text-white">@Global.FormatPhoneNumber(@info.Hotline)</span> </p>
+                                    <p>Số CSKH: &nbsp;<span class="text-white">@info.CSKH</span></p>
+                                    <p>Email: &nbsp;<span class="text-white">@info.Email</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="footer-widget">
+                            <h3 class="block-title">Quy định & Chính sách</h3>
+                            <div class="textwidget a-footer">
+                                <p><a href="chinh-sach-bao-hanh">Chính sách bảo hành</a></p>
+                                <p><a href="chinh-sach-doi-tra">Chính sách đổi trả</a></p>
+                                <p><a href="chinh-sach-tra-gop">Chính sách trả góp</a></p>
+                                <p><a href="chinh-sach-van-chuyen-va-giao-hang">Chính sách vận chuyển và giao hàng</a></p>
+                                <p><a href="thong-tin-ve-cac-phuong-thuc-thanh-toan">Thông tin về các phương thức thanh toán</a></p>
+                                <p><a href="chinh-sach-bao-ve-thong-tin-khach-hang">Chính sách bảo vệ thông tin khách hàng</a></p>
+                            </div>
+                            <div class="text-left">
+                                <a href="@info.BoCongThuong_Url">
+                                    <img class="img-bo-cong-thuong" src="/images/dathongbao_bocongthuong.png" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="footer-widget">
+                                    <h3 class="block-title"> Bản đồ</h3>
+                                    <div class="textwidget">
+                                        <div class="mapouter">
+                                            <div class="gmap_canvas">
+                                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.2175248098133!2d106.81497171526101!3d10.946934559015506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174deacc5555555%3A0x16d3513b12f8f7d5!2zVHJ1bmcgVMOibSDEkGnhu4duIE3DoXkgQ8O0bmcgVGjDoG5o!5e0!3m2!1sen!2s!4v1615459760401!5m2!1sen!2s"
+                                                        width="600" height="200" style="border:0; width: 100%" allowfullscreen="" loading="lazy"></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+
+    @*<div><a href="http://m.me/@info.FbAppId"></a></div>*@
+
+    @*<div class="zalo-chat-widget" data-oaid="@info.ZaloOAId" data-welcome-message="Rất vui khi được hỗ trợ bạn!"
+        data-autopopup="0" data-width="350" data-height="420"></div>*@
+
+    @*<script src="https://sp.zalo.me/plugins/sdk.js"></script>*@
+
+
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/popper/popper.min.js"></script>
+    <script src="~/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/plugins/owl-carousel/owl.carousel.js"></script>
+    <script src="~/plugins/alertify/alertify.min.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/iotsoftvn/utils.js"></script>
+    <script>
+            var ROOT_URL = '@Html.Raw(Global.ROOT_URL)';
+            var ROOT_API = '@Html.Raw(Global.ROOT_API)';
+
+            /** Binding event search */
+            $('#ipt-search-layout').on('keydown', function (e) {
+                if (e.keyCode == 13) {
+                    searchProduct();
+                }
+            })
+
+            function closeAdv(a) {
+                if (a == 'left') {
+                    $('.banner-advertise-left').css('top', '-100000px');
+                    WriteCookieBannerLeft(false)
+                } else {
+                    $('.banner-advertise-right').css('top', '-100000px');
+                    WriteCookieBannerRight(false);
+                }
+            }
+
+            function WriteCookieBannerLeft(status) {
+                var now = new Date();
+                var minutes = 30;
+                now.setTime(now.getTime() + (minutes * 60 * 1000));
+                cookievalue = status;
+                document.cookie = "bannersleft=" + cookievalue + ";expires=" + now.toUTCString();
+            }
+
+            function WriteCookieBannerRight(status) {
+                var now = new Date();
+                var minutes = 30;
+                now.setTime(now.getTime() + (minutes * 60 * 1000));
+                cookievalue = status;
+                document.cookie = "bannersright=" + cookievalue + ";expires=" + now.toUTCString() +";path=/";
+            }
+            /** Search product */
+            function searchProduct() {
+                let keyword = $('#ipt-search-layout').val();
+                window.location.href = '/san-pham?keyword=' + keyword;
+            }
+
+            /** Render product category */
+            ajaxGet('ProductCategoryGroup', {}, function (data) {
+                if (data.IsSuccess) {
+                    let html = '';
+                    $.each(data.Result, function (index, item) {
+                        html += `<div class="dropdown-item border-bottom">`;
+                        let count = item.Categories.length;
+                        html += `<img src="${item.Icon}" class="main-layout-icon-category"/>`;
+                        $.each(item.Categories, function (index, item) {
+
+                            html += `<a href="/san-pham?cat=${item.Id}">${item.CategoryName}${count == (index + 1) ? '' : ',&nbsp;'}</a>`;
+                        })
+                        html += `<i class="arrow-me right padding-3px float-right"></i></div>`
+                    })
+                    $('#div-product-category').html(html);
+                }
+            })
+    </script>
+    <script src="~/iotsoftvn/js_cart.js"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

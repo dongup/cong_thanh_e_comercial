@@ -1,0 +1,337 @@
+﻿@model eCommerce.Web.Areas.Api.Models.Products.Product.ProductResponse;
+@{
+    ViewData["Title"] = "CẬP NHẬT SẢN PHẨM";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <style>
+        .table td, .table th {
+            padding: 0.2rem 0.5rem;
+        }
+    </style>
+    <link href="~/iotsoftvn/SummernoteElfinder.css" rel="stylesheet" />
+
+}
+@if (Model == null)
+    return;
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="/admin/product" class="btn btn-primary"><i class="mdi mdi-arrow-left font-16 mr-1"></i>Trở về trang sản phẩm</a>
+                </div>
+                <h4 class="page-title">Cập nhật sản phẩm</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form id="form-add">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-inline-flex justify-content-between w-100  mb-4">
+                            <h4 class="header-title">Thông tin</h4>
+                            <div class="custom-control d-flex flex-row align-self-center float-right">
+                                <input id="IshowPrice" @(Model.IsShowPrice ? "checked" : "") type="checkbox">
+                                <label for="#IshowPrice">Hiển thị giá ưu đãi</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group text-center">
+                                    <label>Hình đại diện<span class="text-danger">* (200x200)</span></label>
+                                    <br />
+                                    <img class="img-fluid" id="img-thumbnail-edit" src="/@Model.ThumbNail">
+                                    <button class=" btn btn-primary form-control m-w-100 mt-1" id="btn-thumbnail-product" type="button">Chọn hình đại điện</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Mã sản phẩm <span class="text-danger">*</span></label>
+                                            <input type="text" value="@Model.ProductCode" name="productCode" class="form-control" placeholder="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label>Tên sản phẩm <span class="text-danger">*</span></label>
+                                            <input type="text" value="@Model.ProductName" name="productName" id="ipt-product-name" class="form-control" placeholder="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Danh mục <span class="text-danger">*</span></label>
+                                            <select name="CategoryId" id="sl-category" class="select2 form-control select2-multiple" data-toggle="select" multiple="multiple">
+                                                @foreach (var item in Model.ProductCategories)
+                                                {
+                                                    <option selected value="@item.Id">@item.CategoryName</option>
+                                                }
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label>Đường dẫn sản phẩm <span class="text-danger">*</span></label>
+                                            <input value="@Model.FriendlyUrl" type="text" name="FriendUrl" id="ipt-product-url-Friendly" class="form-control" placeholder="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Thương hiệu</label>
+                                            <select class="form-control" name="BrandId" id="sl-brand" data-toggle="select">
+                                                <option value="@Model.ProductBrand.Id">@Model.ProductBrand.BrandName</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label>Xuất xứ</label>
+                                            <input value="@Model.Origin" class="form-control" name="origin" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>
+                                        Hiển thị  Sticker
+                                        <input id="cb-sticker" type="checkbox" value="" class="form-check-inline" />
+                                    </label><br />
+                                    <button id="btn-sticker" type="button" class="btn btn-primary btn-sm ">Chọn Sticker</button>
+                                </div>
+                                <div>
+                                    <img id="img-sticker" style="max-height:100px;" onerror="this.src='/images/default-image.png'" class="img-fluid" src="#" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Đơn vị <span class="text-danger">*</span></label>(@Model.Unit)
+                                    <input class="form-control" value="@Model.Unit" name="unit" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Số lượng tồn</label>
+                                    <input type="text" class="form-control" min="0" value="@Model.StockNumber" name="stocNumber" data-toggle="autonumeric-money" placeholder="" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Giá niêm yết</label>
+                                    <input type="text" class="form-control text-right" min="0" value="@Model.OriginPrice" name="giaNiemYet" data-toggle="autonumeric-money" placeholder="" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Giá bán lẻ</label>
+                                    <input type="text" class="form-control text-right" min="0" value="@Model.GiaBanLe" name="giaBan" data-toggle="autonumeric-money" placeholder="" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Giá bán trả góp</label>
+                                    <input type="text" class="form-control text-right" min="0" value="@Model.InstallmentPrice" name="InstallmentPrice" data-toggle="autonumeric-money" placeholder="" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Bảo hành</label>
+                                    <select class="form-control" name="baoHanh" data-toggle="select">
+                                        @{
+                                            string[] GurantyTime = { "Không bảo hành", "1 tháng", "3 tháng", "6 tháng", "12 tháng", "18 tháng", "24 tháng", "36 tháng", "48 tháng", "60 tháng" };
+                                            foreach (string p in GurantyTime)
+                                            {
+                                                if (p == Model.GurantyTime)
+                                                {
+                                                    <option selected value="@p">@p</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@p">@p</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Quà tặng</label>
+                                    <select class="form-control" name="IsGift" data-toggle="select-no-search">
+                                        <option value="0">Không</option>
+                                        <option value="1">Có</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Mô tả ngắn (Description SEO)</label>
+                                    <input type="text" name="Note" value="@Model.Note" class="form-control" placeholder="" />
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <div class="form-group">
+                                    <label>Cam kết vàng</label>
+                                    <textarea type="text" rows="4" id="GoldrenCommitment" class="form-control" placeholder="">@Model.GoldenCommitment</textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt-2">
+                                <div class="form-group">
+                                    <label>Đặc điểm nổi bật</label>
+                                    <textarea type="text" rows="4" id="hightlightProduct" class="form-control" placeholder="">@Model.HighlightProduct</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <div class="form-group">
+                                    <label>Nội dung khuyến mãi</label>
+                                    <textarea type="text" id="promoContent" name="promoContent" class="form-control" placeholder="Nội dung khuyến mãi" rows="15">@Model.PromotionContent</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <label>Hết hạn khuyến mãi</label>
+                                    <br />
+                                    <input id="dtpk-promo-deadline" value="@Model.PromotionBranchDeadline.GetValueOrDefault().Date.ToBinary()" type="text" class="form-control" data-toggle="datepicker" placeholder="" />
+                                    <label>Nội dung khuyến mãi thương hiệu</label>
+                                    <textarea type="text" rows="4" name="promoBranch" id="promoBranch" class="form-control" placeholder="">@Model.PromotionBranch</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4">Hình ảnh<button type="button" id="btn-img-add" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button></h4>
+                    <div class="row" id="divImage">
+                        @foreach (var item in @Model.ProductImages)
+                        {
+                            <div id="product-img-@item.Id" class="col-md-2 container-image">
+                                <img class="img-auto-size" src="/@item.FilePath" onerror="this.src='/images/default-image.png'" />
+                                <button onclick="removeImg(@item.Id)" type="button" class="btn btn-danger btn-remove-image d-none"><i class="mdi mdi-trash-can font-16"></i></button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-2">
+                        Thuộc tính
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-4 ">
+                            <div class="form-group">
+                                <label>Chọn mẫu thuộc tính <span class="text-danger">*</span></label>
+                                <select class="form-control float-right col-md-4" data-toggle="select-no-search" id="sl-template">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 ">
+
+                        </div>
+                        <div class="col-md-4">
+                            <br />
+                            <button id="btn-property-add" type="button" class="btn-sm float-right btn btn-primary btn-sm ml-1 ">
+                                <i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm thuộc tính
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-12">
+                            <div class="table-responsive mt-4">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <td class="w-25">Thuộc tính</td>
+                                            <td style="width:65%!important">Giá trị</td>
+                                            <td class="font-weight-bold" style="width:10%!important">
+                                                <i onclick="addPropertyRow()" style="font-size:40px!important;" class=" mdi mdi-plus cursor-pointer text-success"></i>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbl-Properties">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4">Nội dung</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea id="editor"> @Model.Description</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="button" id="btn-save" class="btn btn-primary float-right"><i class="mdi mdi-check-bold font-16 mr-1"></i>Lưu sản phẩm</button>
+        </div>
+    </div>
+</div>
+<!--  Modal thêm giá trị thuộc tính -->
+<div class="modal fade" id="modal-add-value">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Tạo thuộc tính</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group mb-3" id="div-modal-property-add">
+                            <label for="ipt-value"><span class="text-danger"> &nbsp;* </span><span> Chọn danh mục</span></label>
+                            <div class="input-group">
+                                <select id="sl-modal-category" class="form-control" data-toggle="select"></select>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="ipt-value"><span class="text-danger"> &nbsp;* </span><span id="modal-label"></span></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="ipt-value">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-add" type="button" class="btn btn-primary">Thêm mới</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+@section Scripts {
+    <script>
+    var ROOT_PRODUCT = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
+    </script>
+    <script src="/lib/summernote/summernote-bs4.js"></script>
+    <script src="/lib/summernote/summernote-image-attributes.js"></script>
+    <script src="/iotsoftvn/js_file_manager.js"></script>
+    <script src="~/iotsoftvn/Product/product_edit.js"></script>
+}

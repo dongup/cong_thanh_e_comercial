@@ -1,0 +1,261 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="/Admin/ProductCombo/Add" class="btn btn-primary"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm mới combo sản phẩm</a>
+                </div>
+                <h4 class="page-title">Quản lý combo sản phẩm</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-aside-left p-0">
+                        <button onclick="getDataTable()" type="button" class="btn btn-block btn-primary"><i class="mdi mdi-refresh font-16 mr-1"></i>Làm mới dữ liệu</button>
+                        <div class="mt-4">
+                            <h5 class="text-primary">Tìm kiếm</h5>
+                            <div class="form-group">
+                                <input id="ipt-text-search" type="text" class="form-control" placeholder="Tìm theo tên, mã sản phẩm..." autocomplete="off" />
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="mt-2">
+                            <h5 class="text-primary">Sắp sếp theo</h5>
+                            <select class="form-control" data-toggle="select-no-search" id="sl-sort">
+                                <option selected value="0">Giá tăng dần</option>
+                                <option value="1">Giá giảm dần</option>
+                            </select>
+                        </div>
+                        <hr />
+                        <div class="mt-2" id="divFilterPrice">
+                            <h5 class="text-primary">Giá</h5>
+                            <div class="custom-control custom-radio mt-1">
+                                <input name="sts" type="radio" value="0,999999999" id="checkmeout" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="checkmeout">Tất cả</label>
+                            </div>
+                            <div class="custom-control custom-radio mt-1">
+                                <input name="sts" type="radio" value="0,500000" id="checkmeout2" class="custom-control-input">
+                                <label class="custom-control-label" for="checkmeout2">Dưới 500.000đ</label>
+                            </div>
+                            <div class="custom-control custom-radio mt-1">
+                                <input name="sts" type="radio" value="500000,1000000" id="checkmeout3" class="custom-control-input">
+                                <label class="custom-control-label" for="checkmeout3">Từ 500.000đ - 1.000.000đ</label>
+                            </div>
+                            <div class="custom-control custom-radio mt-1">
+                                <input name="sts" type="radio" value="1000000,2000000" id="checkmeout4" class="custom-control-input">
+                                <label class="custom-control-label" for="checkmeout4">Từ 1.000.000đ - 2.000.000đ</label>
+                            </div>
+                            <div class="custom-control custom-radio mt-1">
+                                <input name="sts" type="radio" value="2000000,3000000" id="checkmeout6" class="custom-control-input">
+                                <label class="custom-control-label" for="checkmeout6">Từ 2.000.000đ - 3.000.000đ</label>
+                            </div>
+                            <div class="custom-control custom-radio mt-1">
+                                <input name="sts" type="radio" value="3000000,5000000" id="checkmeout7" class="custom-control-input">
+                                <label class="custom-control-label" for="checkmeout7">Từ 3.000.000đ - 5.000.000đ</label>
+                            </div>
+                            <div class="custom-control custom-radio align-content-end mt-1">
+                                <input name="sts" type="radio" value="5000000,999999999" id="checkmeout8" class="custom-control-input">
+                                <label class="custom-control-label" for="checkmeout8">Trên 5.000.000đ</label>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="mt-2">
+                            <h5 class="text-primary">Số sản phẩm</h5>
+                            <div class="form-group">
+                                <select id="sel-record-search" class="form-control" data-toggle="select-no-search">
+                                    <option value="20">20 sản phẩm</option>
+                                    <option value="30">30 sản phẩm</option>
+                                    <option value="50">50 sản phẩm</option>
+                                    <option value="100">100 sản phẩm</option>
+                                    <option value="200">200 sản phẩm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-aside-right">
+                        <div class="table-responsive">
+                            <table id="btn-product" class="table table-hover table-centered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center px-w-50">#</th>
+                                        <th class="text-center">Tên combo</th>
+                                        <th class="text-right">Giá bán</th>
+                                        <th class="text-center">Ghi chú</th>
+                                        <th class="text-center px-w-50"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-body">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div id="div-pagination-info" class="col-6 mt-2"></div>
+                            <div class="col-6"><div id="div-pagination-selection" class="float-right mb-3 mt-1"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            reloadPagination();
+        })
+
+        /** Binding event search */
+        $('#ipt-text-search').keyup(function () {
+            delay(function () {
+                reloadPagination();
+            }, 250);
+        });
+
+        /*sort by price*/
+        $('#sl-sort').on('change', function () {
+            reloadPagination();
+        })
+
+        /*checked checkbox*/
+        $('input[name="sts"]').on('change', function (e) {
+            reloadPagination();
+        })
+        /** Reload pagination */
+        function reloadPagination() {
+            $('#div-pagination-selection').twbsPagination('destroy');
+            initPagination();
+        }
+        /** init Pagination */
+        function initPagination() {
+            let keyword = $('#ipt-text-search').val();
+            let pageItem = $('#sel-record-search').find('option:selected').val();
+            let SortBy = parseInt($('#sl-sort').val());
+            let values = $('#divFilterPrice').find('input:checked').val();
+            let arr = values.split(',');
+            let min = parseInt(arr[0]);
+            let max = parseInt(arr[1]);
+            let FromPrice = min;
+            let ToPrice = max;
+
+            let d = {
+                keyword: keyword,
+                PageItem: pageItem,
+                FromPrice: FromPrice,
+                ToPrice: ToPrice,
+                sortOrder: SortBy
+            };
+
+            ajaxGet('Combo', d, function (data) {
+                if (data.IsSuccess) {
+                    let totalPage = data.Result.TotalPage;
+                    if (totalPage == 0) {
+                        renderTable([]);
+                        return;
+                    } else if (totalPage > 0) {
+                        $('#div-pagination-selection').twbsPagination({
+                            totalPages: totalPage,
+                            visiblePages: 5,
+                            initiateStartPageClick: true,
+                            hideOnlyOnePage: true,
+                            paginationClass: 'pagination pagination-rounded',
+                            first: '←',
+                            last: '→',
+                            prev: '«',
+                            next: '»',
+                            onPageClick: function (event, page) {
+                                d.PageIndex = page;
+                                ajaxGet('Combo', d, function (res) {
+                                    if (res.IsSuccess) {
+                                        renderTable(res.Result, pageItem, page, data.Result.TotalRow);
+                                    } else {
+                                        alertify.error(res.Message);
+                                    }
+                                })
+                            }
+                        });
+                    } else {
+                        $('#div-pagination-selection').empty();
+                    }
+                } else {
+                    alertify.alert(data.Message);
+                }
+            });
+        }
+
+        /** Render table */
+        function renderTable(data, pageItem, pageIndex, totalRow) {
+            let html = "";
+            $.each(data.Data, function (index, item) {
+                html += `
+               <tr>
+                    <td class="text-center">${index + 1}</td>
+                    <td class="text-center">${item.Name}</td>
+                    <td class="text-right">${formatMoney(item.Price)}</td>
+                    <td class="text-center">${item.Note}</td>
+
+                    <td class="text-center px-w-50">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle text-muted arrow-none cursor-pointer" data-toggle="dropdown"><i class="mdi mdi-dots-vertical font-18 text-primary"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="/admin/ProductCombo/detail?comboid=${item.Id}" class="a-detail dropdown-item cursor-pointer"><i
+                                        class="mdi mdi-window-restore mr-1"></i>Xem chi tiết combo</a>
+                                <a href="/Admin/ProductCombo/edit?comboid=${item.Id}" class="a-detail dropdown-item cursor-pointer"><i
+                                        class="mdi mdi-export mr-1"></i>Cập nhật combo sản phẩm</a>
+                                <a onclick="showDelete(${item.Id})" class="a-delete dropdown-item cursor-pointer"><i
+                                        class="mdi mdi-trash-can-outline mr-1"></i>Xóa combo sản phẩm</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                    `
+            })
+            if (html == '') {
+                $("#tbl-body").html(htmlEmptyTableAuto('#btn-product'));
+            }
+            else {
+                $("#tbl-body").html(html)
+            }
+
+            let $tblBody = $('#tbl-body');
+            if (html == '') {
+                $tblBody.html(htmlEmptyTableAuto('#btn-product'));
+                $('#div-pagination-info').empty();
+            } else {
+                $tblBody.html(html);
+
+                /** Render pagination des */
+                let count = Object.keys(data).length;
+                let start = (pageIndex - 1) * pageItem + 1;
+                let end = start + count - 1;
+                $('#div-pagination-info').html(`Đang xem <b>${(count == 0 ? 0 : start)}</b> - <b>${end}</b> trong <b>${totalRow}</b> sản phẩm`);
+            }
+        }
+
+        /** Xóa */
+        function showDelete(id) {
+            alertify.confirm("Xác nhận xóa combo sản phẩm ", function () {
+                ajaxDelete('Combo/'+id, function (res) {
+                    if (res.IsSuccess) {
+                        alertify.success("Xóa sản phẩm thành công");
+                        reloadPagination();
+                    } else {
+                        alertify.alert("Lỗi không xóa được sản phẩm");
+                    }
+                })
+            });
+        }
+
+    </script>
+}

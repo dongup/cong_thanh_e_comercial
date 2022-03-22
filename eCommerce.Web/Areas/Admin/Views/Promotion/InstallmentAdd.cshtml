@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewData["Title"] = "QUẢN LÝ CHƯƠNG TRÌNH TRẢ GÓP 0%";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Quản lí chương trình trả góp 0%</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Tên chương trình <span class="text-danger"> *</span> </label>
+                                <input class="form-control" id="ipt-name" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Ngân hàng <span class="text-danger">*</span></label>
+                                <select id="sl-bank" class="select form-control " data-toggle="select">
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Thời gian bắt đầu <span class="text-danger">*</span></label>
+                                <input id="dtpk-from-date" name="FromDate" type="text" class="form-control" data-toggle="datepicker" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Thời gian kết thúc <span class="text-danger">*</span></label>
+                                <input id="dtpk-to-date" name="FromDate" type="text" class="form-control" data-toggle="datepicker" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    Chọn sản phẩm <br />
+                    <input id="ipt-text-search-root" type="text" class="form-control" placeholder="Tìm theo tên, mã sản phẩm..." autocomplete="off">
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 h-500-oveflow-auto" >
+                            <table class="table-hover table-centered table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center px-w-50">#</th>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Tên </th>
+                                        @*<th>Giá gốc</th>
+                                            <th>Giá bán lẻ</th>*@
+                                        <th>Giá sau khuyến mãi</th>
+                                        <th>Giá bán trả góp</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-root">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    Sản phẩm đã chọn
+                    <input id="ipt-text-search-selected" type="text" class="form-control" placeholder="Tìm theo tên, mã sản phẩm..." autocomplete="off">
+
+                </div>
+                <div class="card-body">
+                    <div class="col-12  h-500-oveflow-auto">
+                        <table class="table-hover table-centered table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center px-w-50">#</th>
+                                    <th>Mã sản phẩm</th>
+                                    <th>Tên </th>
+                                    @*<th>Giá gốc</th>
+                    <th>Giá bán lẻ</th>*@
+                                    <th>Giá sau khuyến mãi</th>
+                                    <th>Giá bán trả góp</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-selected">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+        <button onclick="SaveChange()" class="btn btn-primary float-right">Thêm mới</button>
+</div>
+
+@section scripts {
+    <script src="~/iotsoftvn/PromotionAndAds/js_installment_0_percent_add.js"></script>
+}

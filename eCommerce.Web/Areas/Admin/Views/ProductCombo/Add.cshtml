@@ -1,0 +1,364 @@
+﻿
+@{
+    ViewData["Title"] = "THÊM MỚI SẢN PHẨM";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .table td, .table th {
+            padding: 0.2rem 0.5rem;
+        }
+    </style>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="/admin/ProductCombo" class="btn btn-primary"><i class="mdi mdi-arrow-left font-16 mr-1"></i>Trở về trang combo sản phẩm</a>
+                </div>
+                <h4 class="page-title">Thêm mới combo sản phẩm</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form id="form-add">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mb-4">Thông tin Combo sản phẩm</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tên sản phẩm <span class="text-danger"> *</span></label>
+                                    <input type="text" name="Name" id="ipt-product-name" class="form-control" placeholder="" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Đường dẫn sản phẩm <span class="text-danger"> *</span></label>
+                                    <input type="text" name="FriendUrl" id="ipt-product-url-Friendly" class="form-control" placeholder="" />
+                                </div>
+                             
+                                    <div class="form-group">
+                                        <label>Ghi chú</label>
+                                        <input type="text" name="note" class="form-control" placeholder="" />
+                                    </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>Giá bán <span class="text-danger"> *</span></label>
+                                        <input type="text" class="form-control" min="0" value="0" name="Price" data-toggle="autonumeric-money" placeholder="" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Bảo hành <span class="text-danger"> *</span></label>
+                                        <select class="form-control" name="GurantyTime" data-toggle="select">
+                                            <option value="Không bảo hành">Không</option>
+                                            <option value="1 tháng">1 tháng</option>
+                                            <option value="3 tháng">3 tháng</option>
+                                            <option value="6 tháng">6 tháng</option>
+                                            <option value="12 tháng">12 tháng</option>
+                                            <option value="24 tháng">24 tháng</option>
+                                            <option value="36 tháng">36 tháng</option>
+                                            <option value="48 tháng">48 tháng</option>
+                                            <option value="60 tháng">60 tháng</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Nội dung khuyến mãi</label>
+                                        <textarea type="text" rows="12" name="PromoContent" class="form-control p-b-22" placeholder=""></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4">
+                        Danh sách sản phẩm
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive mt-4">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <td class="font-weight-bold">#</td>
+                                            <td class="w-50">Sản phẩm</td>
+                                            <td class="w-15">Số lượng </td>
+                                            <td class="w-15 text-right" tyle="width:65%!important">Đơn giá</td>
+                                            <td class="w-25 text-right" tyle="width:65%!important">Thành tiền</td>
+                                            <td class="font-weight-bold" style="width:10%!important">
+                                                <i onclick="addPropertyRow()" style="font-size:40px!important;" class=" mdi mdi-plus cursor-pointer text-success"></i>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbl-combo">
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3"></td>
+                                            <td class="text-right font-weight-bold">Tổng tiền</td>
+                                            <td class="text-right font-weight-bold text-danger" id="TongTienCombo"></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4">Hình ảnh<button type="button" id="btn-img-add" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button></h4>
+                    <div class="row" id="divImage">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4">Nội dung</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea id="editor"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="button" id="btn-save" class="btn btn-primary float-right"><i class="mdi mdi-check-bold font-16 mr-1"></i>Lưu combo sản phẩm</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="~/iotsoftvn/js_file_manager.js"></script>
+    <script>
+        var $tblProperties = $('#tbl-Properties');
+        var FILES = [];
+        var COUNTID = 0;
+        $(document).ready(function () {
+            COUNTID = 0;
+            CKEDITOR.replace('editor', { height: '600px' });
+            INIT_FILE_MANAGE('#btn-img-add', function (file) {
+                FILES.push(file);
+                renderImage(file);
+            })
+            initGenerateFriendlyUrl('#ipt-product-name', '#ipt-product-url-Friendly');
+
+        });
+
+        /*Thêm từ row vào table
+         currentId: Khi đổi template sẽ truyền curentId và , lấy giá trị
+         */
+        function addPropertyRow(currentId = null) {
+            COUNTID ++;
+            let id = "PR" + new Date().getTime();
+            let html = `<tr id="${id}">
+                            <td>
+                               ${COUNTID}
+                            </td>
+                            <td>
+                                <select class="form-control" id="${id + 'product'}" data-toggle="select" >
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" min="1" value="1" data-price="0" class="form-control quantity">
+                            </td>
+                            <td  class="price text-right"> 0đ
+                            </td>
+                            <td class= "totalPrice text-danger text-right">0đ
+                            </td>
+                            <td class="text-center px-w-50">
+                                <span>
+                                    <i id="${id + 'remove'}" class=" ml-3 mdi mdi-trash-can  mdi-18px cursor-pointer text-danger"></i>
+                                </span>
+                            </td>
+                        </tr>`;
+
+            $("#tbl-combo").append(html);
+            let $slPro = $('#' + id + 'product');
+            let $row = $('#' + id);
+            let $quantity = $row.find('.quantity');
+            let $price = $row.find('.price');
+            let $totalPrice = $row.find('.totalPrice');
+            $slPro.select2();
+            initSelectSearch({
+                Element: '#' + id + 'product',
+                Url: 'Product/ByName',
+                Value: 'ProductName',
+                Id: 'Id',
+                Placeholder: ''
+            });
+
+            let Price = 0;
+            $slPro.on('change', function () {
+                let idproduct = parseInt($slPro.val());
+                ajaxGet('product/byid/' + idproduct, null, function (res) {
+
+                    if (res.IsSuccess) {
+                        let data = res.Result;
+                        Price = data.SaleOffPrice;
+                        $price.html(formatMoney(data.SaleOffPrice));
+                        $price.attr("data-price", data.SaleOffPrice);
+
+
+                        let count = parseInt($quantity.val());
+                        let total = Price * count;
+                        if (!!total)
+                            $totalPrice.text(formatMoney(total));
+                        else
+                            $totalPrice.text("0đ")
+                        setComboPrice();
+
+
+                    }
+                })
+            })
+            $quantity.on('change', function () {
+                if (IsNullOrEmpty($quantity.val()) || $quantity.val() == 0)
+                    $quantity.val(1)
+                let count = parseInt($quantity.val());
+                let total = Price * count;
+                if (!!total)
+                    $totalPrice.text(formatMoney(total));
+                else
+                    $totalPrice.text("0đ")
+                setComboPrice();
+            })
+
+            $('#' + id + 'remove').on('click', function () {
+                $('#' + id).fadeOut(function () { $('#' + id).remove(); })
+                setTimeout(function () {
+                    setComboPrice();
+                }, 300)
+            })
+
+            function setComboPrice() {
+                let totals = $('#tbl-combo tr .totalPrice');
+                let totalMoney = 0;
+                for (var i = 0; i < totals.length; i++) {
+                    let text = $(totals[i]).html();
+                    let money = stringToIntMoney(text);
+                    totalMoney += money;
+                }
+                $('#TongTienCombo').html(formatMoney(totalMoney));
+            }
+
+        }
+        //=================================
+
+
+
+        /*Save change*/
+
+        $('#btn-save').on('click', function () {
+            let combo = formToObject('#form-add');
+            var content = CKEDITOR.instances.editor.getData();
+            let ImageIds = FILES.map(n => n.Id);
+            let error = '';
+            combo.Price = stringToIntMoney(combo.Price);
+            if (IsNullOrEmpty(combo.Name))
+                error = "Chưa nhập tên sản phẩm";
+            else if (IsNullOrEmpty(combo.FriendUrl))
+                error = "Chưa nhập đường dẫn sản phẩm";
+            else if (!isValidFriendlyUrl(combo.FriendUrl))
+                alertify.alert('Đường dẫn chứa kí tự không hợp lệ');
+            else if (IsNullOrEmpty(combo.Price) || combo.Price == 0)
+                error = "Chưa nhập giá bán";
+            else if (FILES.length == 0)
+                error = "Chọn ít nhất 1 hình ảnh";
+            let productIds = [];
+            let countquantity = [];
+            let rows = $('#tbl-combo tr');
+            for (var i = 0; i < rows.length; i++) {
+                let id = $(rows[i]).find('select').val();
+                let count = $(rows[i]).find('td .quantity').val()
+                if (IsNullOrEmpty(id)) {
+                    productIds = [];
+                    error = "Danh sách sản phẩm không hợp lệ";
+                    break;
+                }
+                productIds.push(id)
+                countquantity.push(count)
+            }
+            if (productIds.length < 2)
+                error = "Chọn ít nhất 2 sản phẩm";
+            else {
+                if (new Set(productIds).size < productIds.length) {
+                    error = "Sản phẩm bị trùng lặp , vui lòng thử lại";
+                }
+            }
+
+            if (error != "") {
+                alertify.error(error);
+                return;
+            } else {
+                let productCombo = {
+                    Name: combo.Name,
+                    Note: combo.note,
+                    ThumbNail: FILES[0].ThumbNailPath,
+                    Description: $.trim(content),
+                    PromoContent: $.trim(combo.PromoContent),
+                    Price: combo.Price,
+                    GurantyTime: combo.GurantyTime,
+                    FriendlyUrl: combo.FriendUrl,
+                    ImageIds: ImageIds,
+                    ComboProduct: countquantity.map((x, index) => { return { ProductId: parseInt(productIds[index]), Quantity: parseInt(x) } }),
+                }
+                alertify.confirm("Xác nhân tạo mới combo", function () {
+                    ajaxPost('Combo', productCombo, function (res) {
+                        if (res.IsSuccess) {
+                            alertify.success("Tạo Combo  thành công");
+                            location.href = "/admin/productcombo";
+                        } else {
+                            alertify.alert("Có lỗi xảy ra: " + res.Message);
+                        };
+                    })
+                })
+            }
+        });
+
+        /*Render html khi chọn hình ảnh*/
+        function renderImage(file) {
+            let html = ` <div id = "product-img-${file.Id}" class="col-md-2 container-image">
+                                                    <img class="img-auto-size" src="${getImagePath(file.FilePath)}" />
+                                                    <button onclick="removeImg(${file.Id})" type="button" class="btn btn-danger btn-remove-image d-none"><i class="mdi mdi-trash-can font-16"></i></button>
+                                                </div>`;
+            $('#divImage').append(html);
+        }
+
+        /*Xóa  hình ảnh*/
+        function removeImg(id) {
+            FILES = FILES.filter(n => n.Id != id);
+            $("#product-img-" + id).remove();
+        }
+
+
+        function stringToIntMoney(text) {
+            if (IsNullOrEmpty(text)) return 0;
+            let money = text.replace(/ /, '');
+            money = text.replace(/đ/g, '');
+            money = text.replace(/,/g, '');
+
+            return parseInt(money);
+        }
+    </script>
+}

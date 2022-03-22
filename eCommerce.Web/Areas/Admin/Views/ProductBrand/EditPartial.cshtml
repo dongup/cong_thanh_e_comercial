@@ -1,0 +1,44 @@
+﻿<!--Modal Product Brand Edit-->
+<div class="modal fade" id="modal-edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Chỉnh sửa thương hiệu</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group text-center">
+                            <label>Logo</label>
+                            <img class="img-fluid cursor-pointer col-md-12" id="img-logo-edit" src="~/images/default-image.png" />
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <form id="form-edit">
+                            <div class="form-group">
+                           
+                                <label>Tên thương hiệu <span class="text-danger">*</span></label>
+                                <input type="text" id="ipt-name-edit" class="form-control" height="100" placeholder="Nhập tên thương hiệu" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Mô tả</label>
+                                <textarea type="text" rows="2" id="ipt-note-edit" class="form-control" placeholder="Nhập mô tả"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Danh mục sản phẩm</label>
+                                <select id="sl-categories-edit" class="select2 form-control select2-multiple" data-toggle="select" multiple="multiple" data-placeholder="Choose ...">
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete" type="button" class="btn btn-danger m-w-100 mr-auto ml-1"><i class="mdi mdi-trash-can mr-1"></i>Xoá</button>
+                <button type="button" class="btn btn-light m-w-100" data-dismiss="modal"><i class="mdi mdi-block-helper mr-1"></i>Đóng</button>
+                <button id="btn-edit-branch" onclick="javascript:$('#form-edit').submit()" type="submit" class="btn btn-primary ml-1" ><i class="mdi mdi-check mr-1"></i>Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>

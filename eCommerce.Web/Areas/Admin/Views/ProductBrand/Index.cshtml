@@ -1,0 +1,281 @@
+﻿@{
+    ViewData["Title"] = "DANH MỤC THƯƠNG HIỆU SẢN PHẨM";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <button onclick="showModal('#modal-add')" type="button" class="btn btn-primary"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm mới thương hiệu</button>
+                </div>
+                <h4 class="page-title">Danh mục thương hiệu sản phẩm</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-aside-left p-0">
+                        <button onclick="getDataTable()" type="button" class="btn btn-block btn-primary"><i class="mdi mdi-refresh font-16 mr-1"></i>Làm mới dữ liệu</button>
+                        <div class="mt-4">
+                            <h5 class="text-primary">Tìm kiếm</h5>
+                            <div class="form-group">
+                                <input id="ipt-text-search" type="text" class="form-control" placeholder="Tìm tên thương hiệu..." autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <h5 class="text-primary">Tìm danh mục</h5>
+                            <div class="form-group">
+                                <select class="form-control select2" id="sl-categories" data-toggle="select">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-aside-right">
+                        <div class="table-responsive">
+                            <table class="table table-centered table-hover dt-responsive nowrap w-100" id="products-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Tên thương hiệu</th>
+                                        <th>Mô tả</th>
+                                        <th>Danh mục sp</th>
+                                        <th class="text-right">Tổng danh mục <i data-toggle="tooltip" title="Tổng số lượng danh mục đang kinh doanh" class="mdi mdi-18px mdi-information text-primary cursor-pointer"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("AddPartial.cshtml")
+@await Html.PartialAsync("EditPartial.cshtml")
+
+@section scripts {
+    <script src="~/iotsoftvn/js_file_manager.js"></script>
+    <script>
+        $(document).ready(function () {
+            initSelectCategory();
+            reloadTable()
+        });
+
+        /*DECLARE VARIABLE*/
+        var IS_TYPING = false;
+        var CURRENT_ID_EDIT = 0;
+        var CURRENT_IMG_ID = 0;
+        var KEY_WORD = "";
+        /*Binding file add */
+        INIT_FILE_MANAGE('#img-logo-add', function (file) {
+            CURRENT_IMG_ID = file.Id;
+            $('#img-logo-add').attr('src', getImagePath(file.ThumbNailPath))
+
+        })
+        /*Binding file edit  */
+        INIT_FILE_MANAGE('#img-logo-edit', function (file) {
+            CURRENT_IMG_ID = file.Id;
+            $('#img-logo-edit').attr('src', getImagePath(file.ThumbNailPath))
+
+        })
+
+
+        /*Binding add */
+        $("#form-add").on('submit', function (e) {
+            e.preventDefault();
+            try {
+                let name = $("#ipt-name-add").val();
+                let note = $("#ipt-note-add").val();
+                if (CURRENT_IMG_ID == 0) {
+                    alertify.alert("Chưa chọn logo")
+                } else if (IsNullOrEmpty(name)) {
+                    alertify.alert("Tên không được để trống")
+                }
+                else {
+                    let categoryIds = stringToInt($('#sl-categories-add').val());
+                    ajaxPost('ProductBrand', {
+                        BrandName: name,
+                        Note: note,
+                        LogoId: CURRENT_IMG_ID,
+                        CategoryIds: categoryIds
+                    },
+                        function (rs) {
+                            if (rs.IsSuccess) {
+                                hideModal("#modal-add");
+                                $("#ipt-name-add").val();
+                                $("#img-logo-add").attr('src', '/images/default-image.png');
+                                $('#sl-categories-add').val([]).trigger('change');
+                                $("#form-add").trigger('reset');
+                                alertify.success("Thêm thành công")
+                               
+                                CURRENT_IMG_ID = 0;
+                                reloadTable();
+                            } else {
+                                alertify.alert(rs.Message);
+                            }
+                        }
+                    );
+                }
+            } catch (e) {
+                alertify.error(e);
+            }
+        });
+
+        /*Binding edit */
+        $("#form-edit").on('submit', function (e) {
+            e.preventDefault();
+            try {
+                let name = $("#ipt-name-edit").val();
+                let note = $("#ipt-note-edit").val();
+                if (IsNullOrEmpty(name)) {
+                    alertify.alert("Tên không được để trống")
+                }
+                else {
+                    let categoryIds = stringToInt($('#sl-categories-edit').val());
+                    ajaxPut('ProductBrand/' + CURRENT_ID_EDIT, {
+                        BrandName: name,
+                        Note: note,
+                        LogoId: CURRENT_IMG_ID,
+                        CategoryIds: categoryIds
+                    },
+                        function (rs) {
+                            if (rs.IsSuccess) {
+                                CURRENT_IMG_ID = 0;
+                                alertify.success("Cập nhật thành công");
+                                $("#ipt-name-edit").val("");
+                                CURRENT_IMG_ID = 0;
+                                reloadTable();
+                                hideModal("#modal-edit");
+                            } else {
+                                alertify.error(rs.Message);
+                            }
+                        }
+                    );
+                }
+            } catch (e) {
+                alertify.error(e.Message);
+            }
+        });
+
+        //search
+        $("#ipt-text-search").keyup(function (e) {
+            delay(function () {
+                KEY_WORD = e.target.value;
+                reloadTable();
+            }, 250);
+        });
+
+        /*Binding search */
+        $('#btn-delete').on('click', function (e) {
+            alertify.confirm("Xác nhận xóa thương hiệu", function () {
+                ajaxDelete('ProductBrand/' + CURRENT_ID_EDIT, function (res) {
+                    if (res.IsSuccess) {
+                        alertify.success("Xóa thành công")
+                        $('#category-' + CURRENT_ID_EDIT).remove();
+                        reloadTable()
+                        hideModal('#modal-edit');
+                    }
+                    else alertify.error(rs.Message);
+                });
+            });
+        });
+
+        /*load data when select categories change*/
+        $('#sl-categories').on('change', function () { reloadTable(); });
+
+
+        /*FUNCTION*/
+
+        /*Hiển thị modal edit*/
+        function showModalEdit(id) {
+            try {
+                $("#img-logo-edit").attr('src', '/images/default-image.png');
+                $('#sl-categories-edit').val([]).trigger('change');
+                $("#form-edit").trigger('reset');
+                CURRENT_ID_EDIT = id;
+                ajaxGet('ProductBrand/' + id, null, function (res) {
+                    if (res.IsSuccess) {
+                        let data = res.Result;
+                        CURRENT_IMG_ID = data.Logo.Id;
+                        $("#ipt-name-edit").val(data.BrandName);
+                        $("#ipt-note-edit").val(getEmptyOrDefault(data.Note));
+                        $("#img-logo-edit").attr('src', getImagePath(data.Logo.FilePath));
+                        let ids = [];
+                        data.Categories.map(item => { ids.push(item.Id.toString()) })
+                        $('#sl-categories-edit').val(ids).trigger('change');
+                        showModal('#modal-edit');
+                        //let categoryIds = [1, 2];
+                        //$('#sl-categories-edit').val(categoryIds).trigger('change');
+                    } else {
+                        alertify.error(res.Message);
+                    }
+                });
+
+            } catch (e) {
+                alertify.error("Có lỗi xảy ra");
+            }
+            showModal("#modal-edit");
+        }
+
+        /*Reload table*/
+        function reloadTable() {
+            let categoryId = 0;
+            if ($('#sl-categories').val() == null) {
+                categoryId = 0;
+            } else
+                categoryId = isNaN($('#sl-categories').val()) ? 0 : $('#sl-categories').val();
+            ajaxGet('ProductBrand', {
+                keyword: KEY_WORD,
+                categoryIds: parseInt(categoryId)
+            }, res => {
+                if (res.IsSuccess) {
+                    let html = '';
+                    let data = res.Result;
+                    if (data.length == 0) {
+                        html = htmlEmptyTable(4);
+                    } else {
+                        html = data.map((item, i) => (
+                            `<tr class ="cursor-pointer" onclick="showModalEdit(${item.Id})">
+                                    <td class="table-user">
+                                        <img src="${getImagePath(item.Logo.ThumbNailPath)}" class="mr-2  onerror="this.src='/images/default-image.png'"">
+                                        <span>${item.BrandName}</span>
+                                    </td>
+                                    <td>${getEmptyOrDefault(item.Note)}</td>
+                                    <td>${getBadgeCategory(item.Categories)}</td>
+                                    <td class="text-right">${item.CountProduct}</td>
+                                </tr>`
+                        ));
+
+                    }
+                    $('#tbl-body').html(html);
+                }
+            });
+        }
+
+        function getBadgeCategory(categories) {
+            let html = categories.map(n => (`<span class="badge badge-primary-lighten">${n.CategoryName}</span>`))
+            return html;
+        }
+
+        /*init data select category*/
+        function initSelectCategory() {
+            ajaxGet('ProductCategory', { keyword: KEY_WORD }, res => {
+                if (res.IsSuccess) {
+                    data = res.Result;
+                    let html = data.map(item => (`<option value="${item.Id}">${item.CategoryName}</option>`));
+                    $('#sl-categories').append(`<option value="0">Tất cả</option>`)
+                    $('#sl-categories').append(html);
+                    $('#sl-categories-add').html(html);
+                    $('#sl-categories-edit').html(html);
+                }
+            });
+        }
+
+    </script>
+}

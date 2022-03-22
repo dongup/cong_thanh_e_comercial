@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewData["Title"] = "Thanh toán (Bước 2)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="osahan-breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Thanh toán</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="shopping_cart_page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="checkout-step mb-40">
+                    <ul>
+                        <li><a href="/checkout"><div class="step"><div class="line"></div><div class="circle">1</div></div><span>Thông tin</span></a></li>
+                        <li class="active"><a href="/checkout/cart"><div class="step"><div class="line"></div><div class="circle">2</div></div><span>Giỏ hàng</span></a></li>
+                        <li><a href="/checkout/payment"><div class="step"><div class="line"></div><div class="circle">3</div></div><span>Thanh toán</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8">
+                <div class="widget">
+                    <div class="section-header">
+                        <h3 class="heading-design-h5">
+                            Giỏ hàng
+                        </h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table cart_summary">
+                            <thead>
+                                <tr>
+                                    <th class="cart_product">Sản phẩm</th>
+                                    <th>Mô tả</th>
+                                    <th class="money">Giá</th>
+                                    <th>Số lượng</th>
+                                    <th class="money">Tổng </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-body">
+                            </tbody>
+                            <tfoot id="tbl-foot">
+                            </tfoot>
+                        </table>
+                    </div>
+                    <a href="/checkout/payment" class="btn btn-theme-round pull-right mt-3"><i class="icofont icofont-square-right mr-1"></i>Tiếp tục</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4">
+                <div class="widget mb18">
+                    <div class="section-header">
+                        <h3 class="heading-design-h5">
+                            Thông tin người nhận
+                        </h3>
+                        <p class="mb-0 text-black">Tên người nhận: <strong id="lb-full-name"></strong></p>
+                        <p class="mb-0 text-black">Số điện thoại: <strong id="lb-phone"></strong></p>
+                        <p class="mb-0 text-black">Địa chỉ email: <strong id="lb-email"></strong></p>
+                    </div>
+                </div>
+                <div class="widget mb18">
+                    <div class="section-header">
+                        <h3 class="heading-design-h5">
+                            Địa chỉ nhận hàng
+                        </h3>
+                        <p id="lb-address" class="mb-0 text-black"></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            checkCart();
+            loadMyCard();
+        });
+        function loadMyCard() {
+            // load thông tin khách
+            var customer = localStorage.getItem('customer');
+            if (customer == null || customer == 'null' || customer == '') {
+                location.href = '/checkout';
+                return;
+            }
+            customer = JSON.parse(customer);
+            $('#lb-full-name').text(customer.FullName);
+            $('#lb-address').text(customer.Address);
+            $('#lb-email').text(customer.Email);
+            $('#lb-phone').text(customer.Phone);
+
+            let myCart = getMyCart();// hàm này trong layout
+            let TotalCartSellOfPrice = 0;// tổng tiền khuyến mãi
+            let TotalCart = 0;// tổng tiền giỏ hàng
+            let html = '';
+            for (var i = 0; i < myCart.length; i++) {
+
+                let item = myCart[i];
+                TotalCart += myCart[i].Quantity * item.SaleOffPrice;
+                html += `
+                                                                                 <tr id ="product-cart-${item.ProductId}">
+                                                                                     <td class="cart_product"><a href="#"><img class="img-fluid" src="${getImagePath(item.ThumbNail)}" alt="Product"></a></td>
+                                                                                     <td class="cart_description">
+                                                                                         <p class="product-name"><a href="#">${item.ProductName} </a></p>
+                                                                                         <small><a href="#">${item.Description}</a></small>
+                                                                                     </td>
+                                                                                     <td class="price money"><span>${formatMoney(item.SaleOffPrice)}</span></td>
+                                                                                     <td class="qty">
+                                                                                         <div class="input-group">
+                                                                                             <input name="quant[1]" bg-white readonly class="form-control border-form-control form-control-sm input-number" value="${myCart[i].Quantity}" type="text">
+                                                                                         </div>
+                                                                                     </td>
+                                                                                     <td class="price money"><span>${formatMoney(myCart[i].Quantity * item.SaleOffPrice)}</span></td>
+                                                                                 </tr>`;
+            }
+
+            let htmlFooter = `
+                                <tr>
+                                        <td colspan="1"></td>
+                                        <td colspan="3">
+                                            Giá giảm
+                                        </td>
+                                        <td colspan="2">${formatMoney(TotalCartSellOfPrice)} </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td colspan="2">Tạm tính</td>
+                                        <td colspan="2">${formatMoney(TotalCart)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4"><strong>Thành tiền</strong></td>
+                                        <td colspan="2"><strong>${formatMoney(TotalCart - TotalCartSellOfPrice)} </strong></td>
+                                </tr>
+                                `;
+            $('#tbl-body').html(html);
+            $('#tbl-foot').html(htmlFooter);
+
+
+
+
+        }
+    </script>
+
+}
+
+
+@*<div class="input-group">
+    <span class="input-group-btn">
+        <button onclick="changeQuantity(${item.ProductId},'minus')" type="button" class="btn btn-theme-round btn-number" data-type="minus" data-field="quant[1]">
+            <span class="fa fa-minus"></span>
+        </button>
+    </span>
+    <input name="quant[1]" class="form-control border-form-control form-control-sm input-number" value="${myCart[i].Quantity}" type="text">
+    <span class="input-group-btn">
+        <button type="button" onclick="changeQuantity(${item.ProductId},'plus')" class="btn btn-theme-round btn-number" data-type="plus" data-field="quant[1]">
+            <span class="fa fa-plus"></span>
+        </button>
+    </span>
+</div>
+                                                                 </td>*@

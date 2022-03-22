@@ -1,0 +1,69 @@
+﻿<div class="modal " id="modal-add">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Tạo tài khoản</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form id="form-add">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group text-center">
+                                        <img class="img-fluid cursor-pointer rounded-circle col-md-8" id="img-avatar-add" src="~/images/default-avatar.jpg" />
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3 ">
+                                        <label>
+                                            Họ tên
+                                            <span class="text-danger">&nbsp;*</span>
+                                        </label>
+                                        <input type="text" class="form-control" name="FullName" placeholder="Nguyễn Văn A">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label>Số điện thoại</label>
+                                        <input type="text" class="form-control" name="Phone" placeholder="xxxx-xxx-xxx " >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Email</label>
+                                    <input type="text" class="form-control" name="Email" placeholder="abc@gmail.com" >
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>
+                                        Chức vụ
+                                        <span class="text-danger">&nbsp;*</span>
+                                    </label>
+                                    <select class="select2 form-control " id="sl-role-add" name="RoleId" data-toggle="select2-no-search" data-placeholder="Chọn chức vụ ...">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group mb-3 col-md-6">
+                                    <label>Tên tài khoản<span class="text-danger">&nbsp;*</span></label>
+                                    <input type="text" class="form-control" name="UserName" placeholder="nguyenvana">
+                                </div>
+                                <div class="form-group mb-3 col-md-6">
+                                    <label>
+                                        Mật khẩu
+                                        <span class="text-danger">&nbsp;*</span>
+                                    </label>
+                                    <input type="text" class="form-control" name="Password" placeholder="********">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                <button onclick="javascript:$('#form-add').submit()" type="submit"  class="btn btn-primary" type="submit">Thêm mới</button>
+            </div>
+        </div>
+    </div>
+</div>

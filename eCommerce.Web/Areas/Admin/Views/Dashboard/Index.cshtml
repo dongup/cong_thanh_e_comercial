@@ -1,0 +1,729 @@
+﻿
+@{
+    ViewData["Title"] = "TỔNG QUAN";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model Google.Apis.AnalyticsReporting.v4.Data.GetReportsResponse
+
+@{ 
+    bool isAdmin = User.IsInRole("Admin");
+
+}
+<div class="container mt-3">
+    <div class="row">
+        <button id="btn-file" style="opacity:0;">GET FILE</button>
+        @if (isAdmin)
+        {
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body chart-report py-2"></div>
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-12 mt-0">
+                <div class="card m-0">
+                    <div class="card-body py-2">
+                        <p class="font-weight-bold">Thời gian thống kê</p>
+
+                        <div class="d-flex">
+                            <div class="input-group mr-2" style="width: 400px !important">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Từ ngày</span>
+                                </div>
+                                <input type='date' class="start-date form-control" aria-label="Username" aria-describedby="basic-addon1" />
+                            </div>
+
+                            <div class="input-group" style="width: 400px !important">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon2">Đến ngày</span>
+                                </div>
+                                <input type='date' class="end-date form-control" aria-label="Username" aria-describedby="basic-addon2" />
+                            </div>
+                            <div class="mr-2"></div>
+                            <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Mặc định 30 ngày gần nhất." onclick="handleButtonSubmit()">Áp dụng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 d-none col-lg-6 mt-2 border-left">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="font-weight-bold">Thống kê</p>
+                        <div class="form-group">
+                            <select id="slt-report" class="form-control float-right" data-toggle="select-no-search">
+                                <option value="ga:pageviews">Theo lượt xem trang</option>
+                                <option value="ga:sessions">Theo lượt truy cập</option>
+                                <option value="ga:users">Theo tất cả người dùng</option>
+                                <option value="ga:newUsers">Theo người dùng mới</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-block btn-primary" data-toggle="tooltip" data-placement="bottom" title="Mặc định 30 ngày gần nhất." onclick="handleButtonSubmit()">Áp dụng</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="col-md-12 mt-4">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table id="btn-product" class="table table-hover table-centered">
+                            <thead id="tbl-head">
+                                <tr class="text-center">
+                                    <th class="">STT</th>
+                                    <th class="">Mã sản phẩm</th>
+                                    <th class="">Tên sản phẩm</th>
+                                    <th class="">Danh mục</th>
+                                    <th class="">DESKTOP</th>
+                                    <th class="">MOBILE</th>
+                                    <th class="">TABLET</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-body-1">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="col-xl-12 col-lg-12">
+            <h4 class="page-title mb-4">Thông kê số lượng đơn đặt hàng</h4>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card widget-flat cursor-pointer" onclick='window.location.href = "/admin/purchaseorder"'>
+                        <div class="card-body">
+                            <div class="float-right">
+                                <a href="/admin/purchaseorder"> <i class="mdi mdi-file-star-outline widget-icon"></i></a>
+                            </div>
+                            <h5 class="font-weight-normal mt-0">Đơn đặt hàng</h5>
+                            <h3 class="mt-3 mb-3"><span id="sp-total-order">0</span> <small> đơn</small></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card widget-flat cursor-pointer" onclick='window.location.href = "/admin/purchaseorder"'>
+                        <div class="card-body">
+                            <div class="float-right">
+                                <a href="/admin/purchaseorder"><i class="mdi mdi-alert-decagram widget-icon"></i></a>
+                            </div>
+                            <h5 class="font-weight-normal mt-0">Đơn đặt hàng chưa xử lý</h5>
+                            <h3 class="mt-3 mb-3"><span id="sp-pending-order">0</span> <small> đơn</small></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card widget-flat cursor-pointer" onclick='window.location.href = "/admin/promotion"'>
+                        <div class="card-body">
+                            <div class="float-right">
+                                <a href="/admin/promotion"> <i class="mdi mdi-credit-card-multiple-outline widget-icon"></i></a>
+                            </div>
+                            <h5 class="font-weight-normal mt-0">Tổng chương trình khuyến mãi</h5>
+                            <h3 class="mt-3 mb-3"><span id="sp-total-promotion">0</span><small> chương trình</small></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card widget-flat cursor-pointer" onclick='window.location.href = "/admin/product"'>
+                        <div class="card-body">
+                            <div class="float-right">
+                                <a href="/admin/product"><i class="mdi mdi-archive-outline widget-icon"></i></a>
+                            </div>
+                            <h5 class="font-weight-normal mt-0">Tổng số sản phẩm</h5>
+                            <h3 class="mt-3 mb-3"><span id="sp-total-product">0</span> <small> sản phẩm</small></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card widget-flat cursor-pointer" onclick='window.location.href = "/admin/product"'>
+                        <div class="card-body">
+                            <div class="float-right">
+                                <a href="/admin/product"><i class="mdi mdi-archive-outline widget-icon"></i></a>
+                            </div>
+                            <h5 class="font-weight-normal mt-0">Số lượng mã trùng</h5>
+                            <h3 class="mt-3 mb-3"><span id="sp-duplicate-code">0</span> <small> sản phẩm</small></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 bg-white" id="div-duplicate">
+                    <h5>Danh sách sản phẩm trùng mã </h5>
+                    <table class="table table-striped table-centered mb-0">
+                        <thead>
+                            <tr>
+                                <th class="font-weight-bold">#</th>
+                                <th>Mã sản phẩm</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbl-duplicate-code">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-12 col-lg-12 mt-3">
+            <div class="row">
+                <div class="col-md-9">
+                    <h4 class="page-title mb-1">Biều đồ thống kê số lượng đơn đặt hàng</h4>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <select id="slt-chart-range" class="form-control float-right" data-toggle="select-no-search">
+                            <option value="1">Tuần này</option>
+                            <option value="2">Tháng này</option>
+                            <option value="3">Năm nay</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div id="order-chart" class="apex-charts" data-colors="#727cf5,#e3eaef"></div>
+                </div>
+            </div>
+        </div>
+        <!--Bảng thống kê số lượt truy cập-->
+        <div class="col-xl-12 col-lg-12 mt-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="page-title mb-1">Top sản phẩm được quan tâm nhất</h4>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table id="btn-product" class="table table-hover table-centered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center px-w-50">#</th>
+                                    <th>Mã sản phẩm</th>
+                                    <th style="width:33%;">Tên sản phẩm</th>
+                                    <th class="">Danh mục</th>
+                                    <th class="">Thương hiệu</th>
+                                    <th>Xuất xứ</th>
+                                    <th>Tình trạng</th>
+                                    <th class="money">Giá niêm yết</th>
+                                    <th class="money">Giá bán lẻ</th>
+                                    <th class="">Lượt truy cập</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        var jsonData =  @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
+        loadDataFromAnalyics(jsonData)
+         // Đặt giới hạn ngày cho input date
+         function maxDate() {
+             let today = new Date();
+             let date = today.getFullYear() + '-' + `0${(today.getMonth() + 1)}`.slice(-2) + '-' + `0${today.getDate()}`.slice(-2);
+             $('.start-date').attr('max', date)
+             $('.end-date').attr('max', date)
+         }
+         maxDate()
+
+        // Load dữ liệu mới khi submit button
+        function handleButtonSubmit() {
+            const startDate = $('.start-date').val() || '30daysAgo';
+            const endDate = $('.end-date').val() || 'today';
+            const metrics = $('#slt-report').val()
+
+            $.ajax({
+                url: '/admin/Dashboard/index',
+                type: "POST",
+                data: { startDate: startDate, endDate: endDate, metrics: metrics },
+                success: function (response) {
+                    loadDataFromAnalyics(response)
+                },
+                error: function (err) {
+                    console.log(err.statusText);
+                }
+            });
+        }
+
+        // Load dữ liệu từ Google Analytics lên View
+        function loadDataFromAnalyics(response) {
+
+            // Dữ liệu phần header table
+            const arrHead = response.reports == undefined ? response.Reports[0].ColumnHeader.MetricHeader.PivotHeaders[0].PivotHeaderEntries : response.reports[0].columnHeader.metricHeader.pivotHeaders[0].pivotHeaderEntries;
+            // Dữ liệu phần body table
+            const arrBody = response.reports == undefined ? response.Reports[0].Data.Rows : response.reports[0].data.rows;
+
+            let htmlTblHead = ''
+            let htmlTblBody = ''
+            let total = 0;
+            let totalDesktop = 0;
+            let totalMobile = 0;
+            let totalTablet = 0;
+
+            // Html header table
+            htmlTblHead = `<tr class='text-center'>
+                      <th class="">NGÀY</th>
+                      <th class="">THÁNG</th>
+                      <th class="">NĂM</th>
+                      <th class="">${arrHead[0].metric == undefined ? arrHead[0].Metric.Name.slice(3).toUpperCase() : arrHead[0].metric.name.slice(3).toUpperCase()}</th>
+                      `
+            arrHead.forEach((item) => {
+                htmlTblHead += `<th>${item.dimensionValues == undefined ? item.DimensionValues[0] : item.dimensionValues[0]}</th>`.toUpperCase()
+            })
+            htmlTblHead += "</tr>"
+
+            arrBody.map(function (item, index) {
+                let value = arrBody[index].dimensions == undefined ? arrBody[index].Dimensions[0] : arrBody[index].dimensions[0]
+                let date = value.slice(6, 8)
+                let month = value.slice(4, 6)
+                let year = value.slice(0, 4)
+
+                // Tính tổng của từng thiết bị (dòng đầu table)
+                total += Number(arrBody[index].metrics == undefined ? arrBody[index].Metrics[0].Values[0] : arrBody[index].metrics[0].values[0])
+                totalDesktop += Number(arrBody[index].metrics == undefined ? arrBody[index].Metrics[0].PivotValueRegions[0].Values[0] : arrBody[index].metrics[0].pivotValueRegions[0].values[0]);
+                totalMobile += Number(arrBody[index].metrics == undefined ? arrBody[index].Metrics[0].PivotValueRegions[0].Values[1] : arrBody[index].metrics[0].pivotValueRegions[0].values[1]);
+                totalTablet += Number(arrBody[index].metrics == undefined ? arrBody[index].Metrics[0].PivotValueRegions[0].Values[2] : arrBody[index].metrics[0].pivotValueRegions[0].values[2]);
+
+                // Html body table
+                htmlTblBody += `
+                      <tr class="text-center">
+                           <td class="date-time">${date}/${month}/${year}</td>
+                           <td class="">${month}/${year}</td>
+                           <td class="">${year}</td>
+                           <td class="">${arrBody[index].metrics == undefined ? arrBody[index].Metrics[0].Values[0] : arrBody[index].metrics[0].values[0]}</td>
+                      `
+                const array = arrBody[index].metrics == undefined ? arrBody[index].Metrics[0].PivotValueRegions[0].Values : arrBody[index].metrics[0].pivotValueRegions[0].values
+                array.forEach((i) => {
+                    htmlTblBody += `<td>${i}</td>`
+                })
+                htmlTblBody += "</tr>"
+            })
+
+            // In tổng ở dòng đầu table
+            let htmlFirstRow = `
+                      <tr class="text-center">
+                           <td class=""></td>
+                           <td class=""></td>
+                           <td class=""></td>
+                           <td class="">${total}</td>
+                      `
+            const arrTotal = [totalDesktop, totalMobile, totalTablet]
+            arrTotal.forEach((i) => {
+                if (!isNaN(i)) {
+                    htmlFirstRow += `<td>${i}</td>`
+                }
+            })
+            htmlFirstRow += "</tr>"
+
+            // Hiển thị lên table
+            $("#tbl-head").html(htmlTblHead)
+            $("#tbl-body-1").html(htmlFirstRow.concat(htmlTblBody))
+
+            // Hiển thị ngày lên ô input
+            const valueStartDate = $('#tbl-body-1 tr:nth-child(2) .date-time').text()
+            let startDateComplete = valueStartDate.slice(0, 2)
+            let startMonthComplete = valueStartDate.slice(3, 5)
+            let startYearComplete = valueStartDate.slice(6, 10)
+            $('.start-date').val(`${startYearComplete}-${startMonthComplete}-${startDateComplete}`)
+
+            const valueEndDate = $('#tbl-body-1 tr:last-child .date-time').text()
+            let endDateComplete = valueEndDate.slice(0, 2)
+            let endMonthComplete = valueEndDate.slice(3, 5)
+            let endYearComplete = valueEndDate.slice(6, 10)
+            $('.end-date').val(`${endYearComplete}-${endMonthComplete}-${endDateComplete}`)
+
+            // ----- Hiển thị lên Chart -----
+            renderChart(arrBody);
+        }
+
+        function renderChart(arrayData) {
+            const labels = []
+            const dataDesktop = []
+            const dataMobile = []
+            const dataTablet = []
+            arrayData.map(function (item, index) {
+                // Lấy ngày/tháng/năm
+                let value = arrayData[index].dimensions == undefined ? arrayData[index].Dimensions[0] : arrayData[index].dimensions[0]
+                let date = value.slice(6, 8)
+                let month = value.slice(4, 6)
+                let year = value.slice(0, 4)
+                labels.push(`${date}/${month}/${year}`)
+
+                // Lấy dữ liệu của các thiết bị
+                dataDesktop.push(arrayData[index].metrics == undefined ? arrayData[index].Metrics[0].PivotValueRegions[0].Values[0] : arrayData[index].metrics[0].pivotValueRegions[0].values[0] )
+                dataMobile.push(arrayData[index].metrics == undefined ? arrayData[index].Metrics[0].PivotValueRegions[0].Values[1] : arrayData[index].metrics[0].pivotValueRegions[0].values[1] )
+                dataTablet.push(arrayData[index].metrics == undefined ? arrayData[index].Metrics[0].PivotValueRegions[0].Values[2] : arrayData[index].metrics[0].pivotValueRegions[0].values[2] )
+            })
+            const data = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Desktop',
+                        data: dataDesktop,
+                        backgroundColor: '#5494FE'
+                    },
+                    {
+                        label: 'Mobile',
+                        data: dataMobile,
+                        backgroundColor: '#FE6383'
+                    },
+                    {
+                        label: 'Tablet',
+                        data: dataTablet,
+                        backgroundColor: 'yellow'
+                    },
+                ]
+            }
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `¤ Thống kê ${$('#slt-report :selected').text().toLowerCase()} ¤`,
+                            color: '#000000',
+                            font: {
+                                size: 24,
+                                weight: 'bold'
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        },
+
+                    }
+                }
+
+            };
+            // Hủy Chart cũ và tạo Chart mới
+            $("canvas#myChart").remove();
+            $("div.chart-report").append('<canvas id="myChart"></canvas>')
+            let myChart = new Chart(document.getElementById('myChart'), config);
+        }
+    </script>
+
+
+    <script>
+        PAGE_INDEX = 1;
+        var $spTotalOrder = $("#sp-total-order");
+        var $spPendingOrder = $("#sp-pending-order");
+        var $spTotalPromo = $("#sp-total-promotion");
+        var $spTotalProduct = $("#sp-total-product");
+        var $chartOrder = $("#order-chart");
+        var $sltChartType = $("#slt-chart-range");
+        var $CountDuplicateCode = $("#sp-duplicate-code");
+
+        var chart;
+
+        let data = {
+            TotalOrder: 0,
+            PendingOrder: 0,
+            TotalPromotion: 0,
+            TotalProduct: 0,
+            OrderChartData: {}
+        }
+
+        let dataFilter = {
+            chartType: 1
+        }
+
+        $sltChartType.on('change', function () {
+            loadPage();
+        });
+
+        $(function () {
+            initPagination();
+            loadPage();
+        })
+
+        function loadPage() {
+            loadFilter();
+
+            ajaxGet('dashboard', { chartType: dataFilter.chartType }, function (res) {
+                if (res.IsSuccess) {
+                    data = res.Result;
+                    renderPage();
+                } else {
+                    alertify.error(res.Message);
+                }
+            });
+        }
+
+        function loadFilter() {
+            dataFilter.chartType = $sltChartType.val();
+        }
+
+        function renderPage() {
+            $spPendingOrder.html(data.PendingOrder);
+            $spTotalOrder.html(data.TotalOrder);
+            $spTotalProduct.html(data.TotalProduct);
+            $spTotalPromo.html(data.TotalPromotion);
+            $CountDuplicateCode.html(data.CountDuplicateCode);
+            if (data.Products.length == 0)
+                $('#div-duplicate').hide();
+            let html = data.Products.map((n, i) => (`
+                                                        <tr>
+                                                        <td class="font-weight-bold" style="width: 50px;">
+                                                          ${i + 1}
+                                                        </td>
+                                                        <td class="table-user">
+                                                           ${n.ProductCode}
+                                                        </td>
+                                                    </tr>
+`));
+            $('#tbl-duplicate-code').html(html);
+            initOrderChart();
+        }
+
+        function initOrderChart() {
+            var chartData = data.OrderChartData.map(x => x.Count);
+            var chartLabel = data.OrderChartData.map(x => x.Date);
+            var title = "";
+            switch (parseInt(dataFilter.chartType)) {
+                case 1:
+                    title = "tuần này"
+                    break;
+                case 2:
+                    title = "tháng này"
+                    break;
+                case 3:
+                    title = "năm nay"
+                    break;
+                default:
+                    title = "tuần này"
+                    break;
+            }
+
+            if (chart == undefined) {
+                var options = {
+                    series: [{
+                        name: 'Số đơn đặt hàng',
+                        data: chartData
+                    }],
+                    chart: {
+                        zoom: {
+                            enabled: true,
+                            type: 'x',
+                            resetIcon: {
+                                offsetX: -10,
+                                offsetY: 0,
+                                fillColor: '#fff',
+                                strokeColor: '#37474F'
+                            },
+                            selection: {
+                                background: '#90CAF9',
+                                border: '#0D47A1'
+                            }
+                        },
+                        id: 'order-chart',
+                        height: 350,
+                        type: 'bar',
+                    },
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 10,
+                            dataLabels: {
+                                position: 'top', // top, center, bottom
+                            },
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function (val) {
+                            return val + "%";
+                        },
+                        offsetY: -20,
+                        style: {
+                            fontSize: '12px',
+                            colors: ["#304758"]
+                        }
+                    },
+
+                    xaxis: {
+                        categories: chartLabel,
+                        position: 'top',
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false
+                        },
+                        crosshairs: {
+                            fill: {
+                                type: 'gradient',
+                                gradient: {
+                                    colorFrom: '#D8E3F0',
+                                    colorTo: '#BED1E6',
+                                    stops: [0, 100],
+                                    opacityFrom: 0.4,
+                                    opacityTo: 0.5,
+                                }
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                        }
+                    },
+                    yaxis: {
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false,
+                        },
+                        labels: {
+                            show: false,
+                            formatter: function (val) {
+                                return val + " đơn";
+                            }
+                        }
+
+                    },
+                    title: {
+                        text: `Biểu đồ thống kê số lượng đơn đặt hàng trong ${title}`,
+                        floating: true,
+                        offsetY: 330,
+                        align: 'center',
+                        style: {
+                            color: '#444'
+                        }
+                    }
+                };
+
+                chart = new ApexCharts(document.querySelector("#order-chart"), options);
+                chart.render();
+            }
+            else {
+                ApexCharts.exec('order-chart', 'updateSeries', [{
+                    data: chartData
+                }], true);
+
+                ApexCharts.exec('order-chart', 'updateOptions', {
+                    xaxis: {
+                        categories: chartLabel,
+                    },
+                    title: {
+                        text: `Biểu đồ thống kê số lượng đơn đặt hàng trong ${title}`
+                    }
+                }, false, true);
+            }
+        }
+
+        /** Reload pagination */
+        function reloadPagination() {
+            $('#div-pagination-selection').twbsPagination('destroy');
+            initPagination();
+        }
+
+        /** init Pagination */
+        function initPagination() {
+            let keyword = "";
+            let pageItem = 20;
+            let SortBy = 6;
+            let brandId = 0;
+            let categoryId = 0;
+            let min = 0;
+            let max = 999999999;
+            let FromPrice = min;
+            let ToPrice = max;
+
+            let d = {
+                keyword: keyword,
+                BrandId: brandId,
+                PageItem: pageItem,
+                CategoryUrl: '',
+                CategoryId: categoryId,
+                FromPrice: FromPrice,
+                ToPrice: ToPrice,
+                sortOrder: SortBy,
+                status: 100
+            };
+
+            ajaxGet('product/admin', d, function (data) {
+                if (data.IsSuccess) {
+                    let totalPage = data.Result.TotalPage;
+                    if (totalPage == 0) {
+                        renderTable([]);
+                        return;
+                    } else if (totalPage > 0) {
+
+                        ajaxGet('product/admin', d, function (res) {
+                            if (res.IsSuccess) {
+                                renderTable(res.Result, res.TotalPage, 1, res.TotalRow);
+                            } else {
+                                alertify.alert(res.Message);
+                            }
+                        })
+                    } else {
+                        $('#div-pagination-selection').empty();
+                    }
+                } else {
+                    alertify.alert(data.Message);
+                }
+            });
+
+        }
+
+        function generateCategory(categories) {
+            return categories.map(n => `<span class="badge badge-primary">${n.CategoryName}</span>`)
+        }
+
+        /** Render table */
+        function renderTable(data, pageItem, pageIndex, totalRow) {
+            let html = ""
+            let sttStart = (pageIndex - 1) * pageItem + 1;
+            $.each(data.Data, function (index, item) {
+                html += `
+                                        <tr>
+                                        <td class="text-center">${index + 1}</td>
+                                        <td>${item.ProductCode}</td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-md-8">${item.ProductName}</div>
+                                            </div>
+                                        </td>
+                                        <td class="text-left">${generateCategory(item.ProductCategories)}</td>
+                                        <td class="text-left">${item.ProductBrand.BrandName}</td>
+                                        <td>${getEmptyOrDefault(item.Origin)}</td>
+                                        <td><span class="badge badge-${item.Status ? "primary-lighten" : "danger-lighten"}">${item.Status ? "Đang bán" : "Dừng bán"}</span></td>
+                                        <td class="money">${formatMoney(item.OriginPrice)}</td>
+                                        <td class="money">${formatMoney(item.SaleOffPrice)}</td>
+                                        <td class="text-right"> <span class="badge badge-danger">${item.AccessCount}</span></td>
+                                    </tr>
+`
+            })
+            if (html == '') {
+                $("#tbl-body").html(htmlEmptyTableAuto('#btn-product'));
+            }
+            else {
+                $("#tbl-body").html(html)
+            }
+
+            let $tblBody = $('#tbl-body');
+            if (html == '') {
+                $tblBody.html(htmlEmptyTableAuto('#btn-product'));
+                $('#div-pagination-info').empty();
+            } else {
+                $tblBody.html(html);
+            }
+        }
+    </script>
+}
+

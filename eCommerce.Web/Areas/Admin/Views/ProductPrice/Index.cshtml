@@ -1,0 +1,307 @@
+﻿
+@{
+    ViewData["Title"] = "LỊCH SỬ CẬP NHẬT GIÁ";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Lịch sử cập nhật giá</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-aside-left p-0">
+                        <button onclick="reloadPagination()" type="button" class="btn btn-block btn-primary"><i class="mdi mdi-refresh font-16 mr-1"></i>Làm mới dữ liệu</button>
+                        <div class="mt-4">
+                            <h5 class="text-primary">Tìm sản phẩm</h5>
+                            <div class="form-group">
+                                <input id="ipt-text-search" type="text" class="form-control" placeholder="Tìm tên sản phẩm..." autocomplete="off" />
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="mt-2">
+                            <h5 class="text-primary">Ngày cập nhật</h5>
+                            <div class="form-group">
+                                <input type="text" id="ipt-date-search" class="form-control" data-toggle="date-range-picker" placeholder="Chọn ngày cập nhật..." autocomplete="off" />
+                            </div>
+                        </div>
+                        @*<hr />
+                            <div class="mt-2 d-none">
+                                <h5 class="text-primary">Người cập nhật</h5>
+                                <div class="form-group">
+                                    <select id="sel-user-search" class="form-control" data-toggle="select-search"></select>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="mt-2 d-none">
+                                <h5 class="text-primary">Danh mục sản phẩm</h5>
+                                <div class="form-group">
+                                    <select id="sel-category-search" class="form-control" data-toggle="select-no-search"></select>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="mt-2 d-none">
+                                <h5 class="text-primary">Thương hiệu</h5>
+                                <div class="form-group">
+                                    <select id="sel-brand-search" class="form-control" data-toggle="select-no-search"></select>
+                                </div>
+                            </div>*@
+                        <hr />
+                        <div>
+                            <h5 class="text-primary">Số sản phẩm</h5>
+                            <div class="form-group">
+                                <select id="sel-record-search" class="form-control" data-toggle="select-no-search">
+                                    <option value="20">20 sản phẩm</option>
+                                    <option value="30">30 sản phẩm</option>
+                                    <option value="50">50 sản phẩm</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-aside-right">
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover table-centered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center px-w-50">#</th>
+                                        <th>Sản phẩm</th>
+                                        <th class="text-right">Thời gian cập nhật</th>
+                                        <th class="text-right">Người cập nhật</th>
+                                        <th class="text-right">Giá niêm yết cũ</th>
+                                        <th class="text-right">Giá niêm yết mới</th>
+                                        <th class="text-right">Giá bán lẻ cũ</th>
+                                        <th class="text-right">Giá bán lẻ mới</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body" class="cursor-pointer">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div id="div-pagination-info" class="col-6 mt-2"></div>
+                            <div class="col-6"><div id="div-pagination-selection" class="float-right mb-3 mt-1"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("DetailPartial")
+
+@section Scripts {
+    <script>
+        $(function () {
+            reloadPagination()
+            let paramsUserSelect = {
+                Element: '#sel-user-search',
+                Url: URL_BASE.User,
+                Value: 'FullName',
+                Id: 'Id',
+                Placeholder: 'Tìm theo tên nhân viên'
+            }
+            initSelect(paramsUserSelect);
+
+            let paramsCategorySelect = {
+                Element: '#sel-category-search',
+                Url: URL_BASE.ProductCategory,
+                Value: 'CategoryName',
+                Id: 'Id'
+            }
+            initSelect(paramsCategorySelect);
+            let paramsBrandSelect = {
+                Element: '#sel-brand-search',
+                Url: URL_BASE.ProductBrand,
+                Value: 'BrandName',
+                Id: 'Id'
+            }
+            initSelect(paramsBrandSelect);
+            let Day = $("#ipt-date-search").val()
+            StartDay = Day.slice(0, 10)
+            EndDay = Day.slice(13)
+        })
+        var PAGE_INDEX = 0;
+        let StartDay;
+        let EndDay;
+        let USER_ID = 0;
+        let CATEGORY_ID = 0;
+        let BRAND_ID = 0
+        let Record = $('#sel-record-search').val();
+        $('#ipt-date-search').change(function () {
+            let Day = $("#ipt-date-search").val()
+            StartDay = Day.slice(0, 10)
+            EndDay = Day.slice(13)
+
+            delay(function () {
+                reloadPagination();
+            }, 250);
+        });
+        $('#sel-record-search').change(function () {
+            Record = $('#sel-record-search').val()
+            console.log(Record)
+            delay(function () {
+                reloadPagination();
+            }, 250);
+        });
+        $('#sel-user-search').on('select2:select', function (e) {
+            let id = e.params.data.id;
+            USER_ID = id;
+            reloadPagination()
+        })
+        $('#sel-category-search').on('select2:select', function (e) {
+            let id = e.params.data.id;
+            CATEGORY_ID = id;
+            reloadPagination()
+        })
+        $('#sel-brand-search').on('select2:select', function (e) {
+            let id = e.params.data.id;
+            BRAND_ID = id;
+            reloadPagination()
+        })
+        //search
+        $("#ipt-text-search").keyup(function () {
+            delay(function () {
+                reloadPagination();
+            }, 250);
+        });
+
+        //reloadPagination
+        function reloadPagination() {
+            $('#div-pagination-selection').twbsPagination('destroy');
+            initPagination();
+        }
+        //initPagination
+        function initPagination() {
+            let d = {
+                keyword: $('#ipt-text-search').val(),
+                updatedUserId: USER_ID,
+                fromDate: StartDay,
+                toDate: EndDay,
+                pageItem: Record,
+                pageIndex: PAGE_INDEX
+
+            };
+
+            ajaxGet('ProductPriceLog/ProductPriceLogs', d, function (data) {
+
+                if (data.IsSuccess) {
+                    let totalPage = data.Result.TotalPage;
+                    let totalRow = data.Result.TotalRow;
+
+                    if (totalPage == 0) {
+                        renderTable([]);
+                        return;
+                    } else if (totalPage > 0) {
+
+                        $('#div-pagination-selection').twbsPagination({
+                            totalPages: totalPage,
+                            visiblePages: 5,
+                            initiateStartPageClick: true,
+                            hideOnlyOnePage: totalRow < d.pageItem ? true : false,
+                            paginationClass: 'pagination pagination-rounded',
+                            first: '←',
+                            last: '→',
+                            prev: '«',
+                            next: '»',
+                            onPageClick: function (event, page) {
+                                d.pageIndex = page;
+                                ajaxGet('ProductPriceLog/ProductPriceLogs', d, function (res) {
+                                    if (res.IsSuccess) {
+                                        renderTable(res.Result, d.pageItem, page, data.Result.TotalRow);
+                                    } else {
+                                        alertify.error(res.Message);
+                                    }
+                                })
+                            }
+                        });
+                    } else {
+                        $('#div-pagination-selection').empty();
+                    }
+                } else {
+                    alertify.alert(data.Message);
+                }
+            });
+        }
+        function renderTable(data, pageItem, pageIndex, totalRow) {
+            let html = "";
+            $.each(data.Data, function (index, item) {
+                html += `
+                                <tr  onclick=openModalDetails(${item.Id},${item.ProductId})>
+                                       <td class="text-center">${index + 1}</td>
+                                       <td class="text-primary">${item.ProductName}</td>
+                                       <td class="text-right">${item.CreatedDate}</td>
+                                       <td class="text-primary text-right">${getEmptyOrDefault(item.UpdatedUser.FullName)}</td>
+                                       <td class="text-primary text-right">${formatMoney(item.OriginPriceOld)}</td>
+                                       <td class="text-primary text-right">${formatMoney(item.OriginPrice)}</td>
+                                       <td class="text-primary text-right">${formatMoney(item.SaleOffPriceOld)}</td>
+                                       <td class="text-primary text-right">${formatMoney(item.SaleOffPrice)}</td>
+                               </tr>
+                                `
+            })
+            //< td class="text-primary text-right" > ${ formatMoney(item.GiaBanLe) } VNĐ</td >
+            let $tbl = $("#table-body");
+            if (html == '') {
+                $tbl.html(htmlEmptyTable(7));
+                $('#div-pagination-info').empty();
+            } else {
+                $tbl.html(html);
+                /** Render pagination des */
+                let count = data.Data.length;
+                let start = (pageIndex - 1) * pageItem + 1;
+                let end = start + count - 1;
+                $('#div-pagination-info').html(`Đang xem <b>${(count == 0 ? 0 : start)}</b> - <b>${end}</b> trong <b>${totalRow}</b> sản phẩm`);
+            }
+        }
+        //details
+        function openModalDetails(id, productId) {
+            ajaxGet(`ProductPriceLog/${id}`, {}, function (res) {
+                if (res.IsSuccess) {
+                    let data = res.Result
+                    $('#ipt-sp-code').val(data.Product.ProductCode)
+                    $('#ipt-sp-name').val(data.ProductName)
+                    $('#ipt-sp-price-origin').val(formatMoney(data.OriginPriceOld))
+                    $('#ipt-sp-price-now').val(formatMoney(data.SaleOffPrice))
+                    $('#ipt-sp-before-update').val(formatMoney(data.SaleOffPriceOld))
+                    $('#ipt-sp-date-update').val(data.CreatedDate)
+                    $('#ipt-user-name').val(data.UpdatedUser.FullName)
+                    $('#ipt-user-email').val(data.UpdatedUser.Email)
+                    $('#ipt-user-sdt').val(data.UpdatedUser.Phone)
+                    $("#img-user").attr('src', ROOT_URL + data.UpdatedUser.Avatar);
+                }
+                else {
+                    alertify.alert(res.Message)
+                }
+            })
+
+            ajaxGet(`ProductPriceLog/ByProductId/${productId}`, {}, function (res) {
+                if (res.IsSuccess) {
+                    let data = res.Result
+                    let html = ``
+                    $.each(data, function (index, item) {
+                        html += `<tr>
+                                        <td>${item.CreatedDate}</td>
+                                        <td class="text-right">${formatMoney(item.SaleOffPriceOld)
+                            }</td >
+                                        <td class="text-right">${formatMoney(item.SaleOffPrice)
+                            }</td >
+                                    </tr>`
+                    })
+                    $('#table-body-time-update').html(html)
+
+                }
+            })
+            showModal("#modal-detail")
+            $('#btn-delete').attr('onclick', `detele(${id})`)
+            $('#btn-update').attr('onclick', `update(${id})`)
+        }
+    </script>
+}

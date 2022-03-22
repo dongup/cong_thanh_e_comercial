@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Thanh toán (Bước 1)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="osahan-breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Thanh toán</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="shopping_cart_page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="checkout-step mb-40">
+                    <ul>
+                        <li class="active"><a href="/checkout"><div class="step"><div class="line"></div><div class="circle">1</div></div><span>Thông tin</span></a></li>
+                        <li><a href="/checkout/cart"><div class="step"><div class="line"></div><div class="circle">2</div></div><span>Giỏ hàng</span></a></li>
+                        <li><a href="/checkout/payment"><div class="step"><div class="line"></div><div class="circle">3</div></div><span>Thanh toán</span></a></li>
+                    </ul>
+                </div>
+            </div>
+         
+        </div>
+    </div>
+</section>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            checkCart();
+           
+        })
+
+        function ContinueClick() {
+            
+        }
+
+    </script>
+}

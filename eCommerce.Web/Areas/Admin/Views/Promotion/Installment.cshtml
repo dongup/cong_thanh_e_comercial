@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewData["Title"] = "QUẢN LÝ CHƯƠNG TRÌNH TRẢ GÓP 0%";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="/admin/promotion/installmentadd" class="btn btn-primary"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm mới </a>
+                </div>
+                <h4 class="page-title">Quản lí chương trình trả góp 0%</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-aside-left p-0">
+                        <button onclick="load()" type="button" class="btn btn-block btn-primary"><i class="mdi mdi-refresh font-16 mr-1"></i>Làm mới dữ liệu</button>
+                    </div>
+                    <div class="page-aside-right">
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table id="btn-product" class="table table-hover table-centered">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center px-w-50">#</th>
+                                            <th>Tên nhóm</th>
+                                            <th>Ngân hàng hỗ trợ</th>
+                                            <th>Ngày bắt đầu </th>
+                                            <th>Ngày kết thúc</th>
+                                            <th>Số lượng sản phẩm</th>
+                                            <th>Còn hạn</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbl-body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="div-pagination-info" class="col-6 mt-2"></div>
+                            <div class="col-6"><div id="div-pagination-selection" class="float-right mb-3 mt-1"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/iotsoftvn/PromotionAndAds/js_installment_0_percent_index.js"></script>
+}

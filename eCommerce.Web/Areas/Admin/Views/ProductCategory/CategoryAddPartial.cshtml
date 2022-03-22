@@ -1,0 +1,52 @@
+﻿<!--  Modal content for the Large example -->
+<div class="modal fade" id="modal-category-add" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="form-add-category">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tạo danh mục</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group text-center">
+                                <img class="img-fluid cursor-pointer col-md-12" id="img-logo-add" src="~/images/default-image.png" />
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="form-group mb-3">
+                                <label for="ipt-add-name">Tên danh mục<span class="text-danger"> &nbsp;* </span></label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="ipt-add-name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Hiển thị  Sticker
+                                    <input id="cb-sticker-add" type="checkbox" value="" class="form-check-inline" />
+                                </label><br />
+                                <button id="btn-sticker-add" type="button" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Chọn Sticker</button>
+                            </div>
+                            <div>
+                                <img id="img-sticker-add" class="img-fluid" src="" />
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="ipt-add-name">Mô tả<span class="text-danger">  </span></label>
+                                <div class="input-group">
+                                    <textarea type="text" class="form-control" id="ipt-add-note"> </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="btn-add-category" type="submit" class="btn btn-primary">Thêm mới</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

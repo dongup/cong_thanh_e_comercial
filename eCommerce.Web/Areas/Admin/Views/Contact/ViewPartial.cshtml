@@ -1,0 +1,84 @@
+﻿<div id="modal-view-contact" class="modal">
+        <div class="modal-content modal-dialog modal-lg">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Thông tin liên hệ khách hàng</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body ">
+                    <div class="form-horizontal">
+                        <div class="form-group row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <label class="col-md-3 col-form-label">Họ tên <span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <input id="ipt-name" class="form-control" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <label class="col-md-3 col-form-label">Ngày gửi</label>
+                                    <div class="col-md-9">
+                                        <input id="ipt-date" class="form-control" readonly autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <label class="col-md-3 col-form-label">Sđt <span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <input id="ipt-phone" class="form-control " autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <label class="col-md-3 col-form-label">Email</label>
+                                    <div class="col-md-9">
+                                        <input id="ipt-email" class="form-control " autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Địa chỉ</label>
+                            <div class="col-md-10">
+                                <input id="ipt-address" class="form-control" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Nội dung <span class="text-danger">*</span></label>
+                            <div class="col-md-10">
+                                <textarea id="ipt-content" class="form-control" rows="2" autocomplete="off"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Ghi chú</label>
+                            <div class="col-md-10">
+                                <textarea id="ipt-note" class="form-control" rows="2" autocomplete="off"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">Tình Trạng</label>
+                            <div class="col-md-10">
+                                <select id="status_edit" class="form-control" data-toggle="select-no-search">
+                                    <option value="0">Chưa liên hệ</option>
+                                    <option value="1">Đã liên hệ</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-delete-branch" type="button" class="btn btn-danger m-w-100 mr-auto ml-1"><i class="mdi mdi-trash-can mr-1"></i>Xoá</button>
+                    <button id="btn-close-edit" type="button" class="btn btn-light m-w-100" data-dismiss="modal"><i class="mdi mdi-block-helper mr-1"></i>Đóng</button>
+                    <button id="btn-edit-branch" type="button" class="btn btn-primary ml-1"><i class="mdi mdi-check mr-1"></i>Cập nhật</button>
+                </div>
+            </form>
+        </div>
+</div>

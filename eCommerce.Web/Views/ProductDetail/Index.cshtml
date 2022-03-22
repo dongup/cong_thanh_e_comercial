@@ -1,0 +1,612 @@
+﻿@using eCommerce.Utils
+@using eCommerce.Web.Areas.Api.Models.Products.Product;
+@using eCommerce.Web.Areas.Api.Models.General
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    InformationModel info = (InformationModel)Context.Items["info"];
+    ProductResponse Product = (ProductResponse)ViewData["Product"];
+    List<SimpleProductResponse> ProductRelated = (List<SimpleProductResponse>)ViewData["ProductRelated"];
+    ViewData["Title"] = Product.ProductName;
+    int.TryParse(Context.Items["MiximumBuyInstallment"]?.ToString(), out int MiximumBuyInstallment);
+}
+@section styles{
+    <style>
+        .bg-gradient {
+            background: rgb(230,88,35);
+            background: linear-gradient(90deg, rgba(230,88,35,1) 0%, rgba(192,10,31,1) 100%);
+        }
+
+        .font-15 {
+            font-size: 15px;
+        }
+
+        .content-hightlightProduct > ul {
+            list-style: unset;
+        }
+
+        .content-hightlightProduct {
+            padding-left: 20px;
+        }
+
+        .font-24 {
+            font-size: 24px;
+        }
+
+        .font-13 {
+            font-size: 13px;
+        }
+
+        .text-sale {
+            text-transform: uppercase;
+            font-weight: bold;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .px-w-100 {
+            max-width: 100px;
+        }
+
+        .img-product {
+            object-fit: contain !important;
+            width: 429px;
+            height: 429px;
+        }
+
+        .p-px-15 {
+            padding: 15px;
+        }
+
+        .policy_new li {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-bottom: 10px;
+        }
+
+            .policy_new li:last-child {
+                padding-bottom: 0px;
+            }
+
+            .policy_new li i {
+                color: #8bbf8e;
+            }
+
+
+        /* #carousel-product-sub > div > div {
+            width: 100% !important;
+            justify-content: center;
+        }*/
+
+        div.list-unset > ul, ol {
+            list-style: unset
+        }
+
+            div.list-unset > ul > li::marker {
+                color: #004cc6;
+            }
+
+        div.list-unset > ol > li::marker {
+            color: #004cc6;
+        }
+
+        .font-sm-24 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .font-sm-20 {
+            font-size: 16px;
+        }
+
+        @@media (min-width: 576px) {
+            .font-sm-24 {
+                font-size: 24px;
+                font-weight: 500;
+            }
+
+            .font-sm-20 {
+                font-size: 20px;
+            }
+        }
+
+        .carousel-product-sub .owl-controls {
+            display: block !important;
+        }
+
+        .carousel-product-sub .owl-prev {
+            left: -15%;
+            position: absolute;
+            top: 42%;
+            transition: all 0.45s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+        }
+
+        .carousel-product-sub .owl-next {
+            right: -10%;
+            position: absolute;
+            top: 42%;
+            z-index: 10;
+            transition: all 0.45s cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+        }
+
+        .productdetail-tragop-0-small {
+            position: absolute;
+            top: 10px !important;
+            left: 10px;
+            border-radius: 30px;
+            background-color: #ff4e00;
+            z-index: 1;
+            text-transform: uppercase;
+            color: #000;
+        }
+
+        /*  .btn-gradient-blue-page{
+            background:#fff!important;
+        }*/
+    </style>
+}
+
+<div class="osahan-breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    @foreach (var item in Product.ProductCategories)
+                    {
+                        <li class="breadcrumb-item"><a href="/san-pham?cat=@(item.Id)">@(item.CategoryName)</a></li>
+                    }
+                    <li class="breadcrumb-item active">@(Product.ProductName)</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="products_page pt-0">
+    <div class="container bg-white p-t-10">
+        <div class="row">
+            <div class="col-lg-5 col-md-5">
+
+                <div class="shop-detail-left">
+                    <div class="item-img-grid">
+                        @if (Product.IsInstallment0Percent)
+                        {
+                            <div class="productdetail-tragop-0-small">
+                                <p class="pl-2 pr-2">Trả góp 0%</p>
+                            </div>
+                        }
+                        <div id="carousel-product-view" class="owl-carousel carousel-product-view">
+                            @foreach (var img in Product.ProductImages)
+                            {
+                                <div class="item"><img loading="lazy" onerror="this.src='/images/default-image.png'" src="@(img.FilePath)" class="img-responsive img-center img-product"></div>
+                            }
+                        </div>
+
+                        <div class="m-auto px-w-450">
+                            <div id="carousel-product-sub" class="owl-carousel carousel-product-sub">
+                                @foreach (var img in Product.ProductImages)
+                                {
+                                    <div class="item"><img loading="lazy" onerror="this.src='/images/default-image.png'" src="@(img.ThumbNailPath)" class="img-responsive img-center m-w-100"></div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 pr-sm-0">
+                <div class="shop-detail-right">
+                    <div class=" pb-3">
+                        <div class="product-name">
+                            <h2 class="font-sm-24">@(Product.ProductName)</h2>
+
+                            @if (Product.SaleOffPrice < Product.OriginPrice)
+                            {
+                                decimal precent = Math.Abs(Global.CaculatorSaleOff(Product.OriginPrice, Product.SaleOffPrice));
+                                if (precent <= 0) // Có giảm giá
+                                {
+                                    <div class="row m-0">
+                                        <div class="col-md-6" style="font-size:16px;">
+                                            @if (Product.IsShowPrice)
+                                            {
+                                                <p class="text-dark font-weight-bold font-14">Giá chính hãng</p>
+                                                <span class="line-center text-muted" style="font-size: 17px;">@Global.FormatMoney(Product.OriginPrice)</span>
+
+                                                <p class="text-dark font-weight-bold font-14">Giá ưu đãi</p>
+                                                <span class="text-orange font-weight-bold font-sm-20">@Global.FormatMoney(Product.SaleOffPrice)</span>
+                                            }
+                                            else
+                                            {
+                                                <p class="text-dark font-weight-bold font-14">Giá chính hãng</p>
+                                                <span class="text-orange font-weight-bold font-sm-20" style="font-size: 17px;">@Global.FormatMoney(Product.OriginPrice)</span>
+                                            }
+                                        </div>
+                                        <div class="col-md-6 mt-2 pr-0" style="font-size:16px;">
+                                            <p class="d-flex d-sm-inline-flex">
+                                                <span class="min-w-100 text-dark">Thương hiệu:</span>
+                                                <span class="text-blue">
+                                                    <a href="/san-pham?brand=@Product.ProductBrand?.Id">@Product.ProductBrand.BrandName</a>
+                                                </span>
+                                            </p>
+                                            <p class="d-flex d-sm-inline-flex">
+                                                <span class="min-w-100 text-dark">Tình trạng: </span><span class="text-blue">
+                                                    @Product.StockNumber dfads
+                                                    @{
+                                                        if (Product.Status && Product.StockNumber > 0)
+                                                        {
+                                                            <span class="text-blue">Còn hàng</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="text-blue">Đặt hàng</span>
+                                                        }
+                                                    }
+                                                </span>
+                                            </p>
+
+                                            <p class="">&nbsp;</p>
+                                            <p class="d-inline-flex text-dark"><span class="min-w-100"><b>Bảo hành: </b></span><span><b>@(Product.GurantyTime)</b></span></p>
+                                        </div>
+                                    </div>
+                                }
+                                else // không giảm giá
+                                {
+                                    <div class="row m-0">
+                                        <div class="col-md-6 mt-2 pr-0" style="font-size:16px;">
+                                            @if (Product.IsShowPrice)
+                                            {
+                                                <p class="text-dark font-weight-bold font-14">Giá chính hãng</p>
+                                                <span style="font-size:11.5px;padding: 5px 4px;" class="productdetail-bg-orange m-0">-@(Product.SaleOffPrice < Product.OriginPrice ? precent.ToString("N0") + "%" : "")</span>
+                                                <span class="line-center text-muted" style="font-size: 17px;">@Global.FormatMoney(Product.OriginPrice)</span>
+
+                                                <p class="text-dark font-weight-bold font-14">Giá ưu đãi</p>
+                                                <span class="text-orange font-weight-bold font-sm-20" style="margin-right:5px;">@(Product.SaleOffPrice < Product.OriginPrice ? Product.SaleOffPrice.ToString("N0") + "đ" : Product.OriginPrice.ToString("N0") + "đ")</span>
+                                            }
+                                            else
+                                            {
+                                                <p class="text-dark font-weight-bold font-14">Giá chính hãng</p>
+                                                <span class="text-orange font-weight-bold font-sm-20" style="margin-right:5px;">@Global.FormatMoney(Product.OriginPrice)</span>
+                                            }
+
+                                        </div>
+                                        <div class="col-md-6 mt-2 pr-0" style="font-size:16px;">
+                                            <p class="d-flex d-sm-inline-flex"><span class="min-w-100 text-dark">Thương hiệu:</span> <span class="text-blue"><a href="/san-pham?brand=@Product.ProductBrand?.Id">@Product.ProductBrand.BrandName</a></span> </p>
+                                            <p class="d-flex d-sm-inline-flex">
+                                                <span class="min-w-100 text-dark">Tình trạng: </span>
+                                                @{
+                                                    if (Product.Status && Product.StockNumber > 0)
+                                                    {
+                                                        <span class="text-blue">Còn hàng</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-blue">Đặt hàng</span>
+                                                    }
+                                                }
+
+                                            </p>
+                                            <p class="">&nbsp;</p>
+                                            <p class="d-inline-flex text-dark"><span class="min-w-100"><b>Bảo hành: </b></span><span><b>@(Product.GurantyTime)</b></span></p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="row m-0">
+                                    <div class="col-md-6" style="font-size:16px;">
+                                        <p class="text-dark font-weight-bold font-14">Giá ưu đãi</p>
+                                        <span class="text-orange font-weight-bold font-sm-20">@Global.FormatMoney(Product.OriginPrice)</span>
+                                    </div>
+                                    <div class="col-md-6 mt-2 pr-0" style="font-size:16px;">
+                                        <p class="d-flex d-sm-inline-flex"><span class="min-w-100 text-dark">Thương hiệu:</span> <span class="text-blue"><a href="/san-pham?brand=@Product.ProductBrand?.Id">@Product.ProductBrand.BrandName</a></span> </p>
+                                        <p class="d-flex d-sm-inline-flex">
+                                            <span class="min-w-100 text-dark">Tình trạng: </span>@{
+                                                if (Product.Status && Product.StockNumber > 0)
+                                                {
+                                                    <span class="text-blue">Còn hàng</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-blue">Đặt hàng</span>
+                                                }
+                                            }
+                                        </p>
+                                        <p class="">&nbsp;</p>
+                                        <p class="d-inline-flex text-dark"><span class="min-w-100"><b class="text-dark">Bảo hành: </b></span><span><b class="text-dark">@(Product.GurantyTime)</b></span></p>
+                                    </div>
+                                </div>
+                            }
+
+                            @{
+                                string urlProduct = Html.Encode(String.Format("{0}://{1}/{2}", Html.ViewContext.HttpContext.Request.Scheme, Html.ViewContext.HttpContext.Request.Host, Product.FriendlyUrl));
+                                string hrefurrllike = "https://www.facebook.com/plugins/like.php?href=" + urlProduct + "&width=119&layout=button_count&action=like&size=small&share=false&height=21";
+                                string hrefurrlshare = "https://www.facebook.com/plugins/share_button.php?href=" + urlProduct + "&layout=button_count&size=small&width=119&height=20";
+                                @*<iframe src="@hrefurrl" width="450" height="35" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>*@
+                                <div class="d-flex d-md-none mt-2">
+                                    <iframe src="@hrefurrllike" width="86" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                                    <iframe src="@hrefurrlshare" width="86" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                                </div>
+
+
+                            }
+                        </div>
+                        <div class="d-flex flex-column justify-content-md-start bg-white border-bottom-0 border-top-0 pb-3 mt-2 mb-0">
+
+                            <div class="d-flex align-items-center flex-column justify-content-start justify-content-md-between mt-4">
+                                <div class="text-center d-flex flex-row h-100 mr-2">
+                                    <div class="input-group border quantity-input px-w-120 px-h-42">
+                                        <span class="input-group-btn">
+                                            <button onclick="changeQuantity('minus')" type="button" class="shadow-none btn btn-count-buy btn-number pl-2 pr-2"><i class="icofont-minus"></i></button>
+                                        </span>
+                                        <input id="inputQuantity" type="text" required readonly min="1" max="10" class="text-center border-none form-control bg-transparent form-control-sm input-number" value="1">
+                                        <span class="input-group-btn">
+                                            <button onclick="changeQuantity('plus')" type="button" class="shadow-none btn btn-count-buy btn-number"><i class="icofont-plus"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                                @if (Product.StockNumber <= 0 || Product.Status == false)
+                                {
+
+                                    <div class="px-h-42 w-100 d-flex align-items-center mt-2  pt-md-0">
+                                        <a class="px-h-42 w-100 text-center" href="tel:@info.Hotline">
+                                            <p class="btn btn-gradient-orange text-white font-weight-bold justify-content-center rounded-8px d-flex align-items-center h-100 w-100 m-0">
+                                                Gọi @Global.FormatPhoneNumber(info.Hotline) để được giá tốt
+                                            </p>
+                                        </a>
+                                    </div>
+
+                                    @if (Product.SaleOffPrice >= MiximumBuyInstallment)
+                                    {
+                                        if (Product.IsInstallment0Percent)
+                                        {
+                                            <div class="px-h-42 w-100 d-flex align-items-center mt-2  pt-md-0">
+                                                <a class="px-h-42 w-100 text-center" href="/tra-gop/@Product.FriendlyUrl">
+                                                    <p class="btn btn-gradient-orange text-white font-weight-bold justify-content-center rounded-8px d-flex align-items-center h-100 w-100 m-0">mua trả góp 0%</p>
+                                                </a>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+
+                                    <div class="px-h-42 mt-2 mr-0  mr-sm-2 w-100 d-flex align-items-center">
+                                        <p onclick="addToCartWithQuantity(@Product.Id);RedirectCart()" class="btn text-white justify-content-center font-weight-bold h-100 w-100 btn-gradient-blue rounded-8px d-flex align-items-center mb-0">
+                                            Mua ngay với giá ưu đãi
+                                        </p>
+                                    </div>
+
+                                    @if (Product.SaleOffPrice >= MiximumBuyInstallment)
+                                    {
+                                        if (!Product.IsInstallment0Percent)
+                                        {
+                                            <div class="px-h-42 w-100 d-flex align-items-center mt-2  pt-md-0 ">
+                                                <a class="px-h-42 w-100 text-center" href="/tra-gop/@Product.FriendlyUrl">
+                                                    <p class="btn btn-gradient-orange text-white font-weight-bold justify-content-center rounded-8px d-flex align-items-center h-100 w-100 m-0">mua trả góp</p>
+                                                </a>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="px-h-42 w-100 d-flex align-items-center mt-2  pt-md-0">
+                                                <a class="px-h-42 w-100 text-center" href="/tra-gop/@Product.FriendlyUrl">
+                                                    <p class="btn btn-gradient-orange text-white font-weight-bold justify-content-center rounded-8px d-flex align-items-center h-100 w-100 m-0">mua trả góp 0%</p>
+                                                </a>
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                            @if (Product.IsShowSticker && !string.IsNullOrEmpty(Product.StickerImage))
+                            {
+                                <div class="mt-5">
+                                    <img loading="lazy" src="@Product.StickerImage" class="img-fluid" />
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(Product.HighlightProduct))
+                            {
+                                <div class="pt-3">
+                                    <div class="section-header">
+                                        <h4 class="text-left text-uppercase mb-0 font-weight-bold text-title-detail-product">&nbsp;</h4>
+                                        <hr class="mt-3 m-0" />
+                                    </div>
+
+                                    <div class="list-unset" id="pro-detail-hilight">
+                                        @Html.Raw(Product.HighlightProduct)
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                @{
+                    <div class="d-none d-md-flex mb-3">
+                        <iframe src="@hrefurrllike" width="86" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                        <iframe src="@hrefurrlshare" width="86" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Product.PromotionContent) || !string.IsNullOrEmpty(Product.PromotionBranch) && Product.PromotionBranchDeadline.GetValueOrDefault().Date>= DateTime.Now.Date)
+                {
+                    <div class="border rounded p-px-15 mt-0 mb-3">
+                        <div class="section-header">
+                            <h4 class="text-center text-uppercase mb-0 text-title-detail-product text-blue">khuyến mãi</h4>
+                            <hr class="mt-3 m-0" />
+                        </div>
+                        <div class="list-unset " id="pro-detail-promotion">
+                            @Html.Raw(Product.PromotionContent)
+                            @if (!string.IsNullOrEmpty(Product.PromotionBranch))
+                            {
+                                
+                                <b class="text-blue">Khuyến mãi khác</b>
+                                    @Html.Raw(Product.PromotionBranch)
+                            }
+                        </div>
+                    </div>
+                }
+
+
+                @if (!string.IsNullOrEmpty(Product.GoldenCommitment))
+                {
+                    <div class="border rounded p-px-15 mt-0">
+                        <div class="section-header goldenCommit-box">
+                            <h4 class="goldenCommit-name text-center text-uppercase mb-0 text-title-detail-product text-blue">Cam kết vàng</h4>
+                            <hr class="m-0" />
+                        </div>
+                        <div class="pt-3 font-12">
+                            @Html.Raw(Product.GoldenCommitment)
+                           
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="section-header">
+                    <div class="wp-title-box tilte-style-2 text-left">
+                        <h2 class="h2-title-box"><span>Thông tin sản phẩm </span><img loading="lazy" style="margin-right:-1px" class="px-h-40" src="~/images/tempsnip.png" /></h2>
+                    </div>
+                </div>
+                <div class="widget reviews-section-comment mb18 font-13">
+                    @Html.Raw(Product.Description)
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="section-header">
+                    <div class="wp-title-box tilte-style-2 text-left">
+                        <div class="wp-title-box tilte-style-2 text-left">
+                            <h2 class="h2-title-box"><span>Thông số kỹ thuật</span><img loading="lazy" style="margin-right:-1px" class="px-h-40" src="~/images/tempsnip.png" /></h2>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="widget reviews-section-comment mb18 font-13 pl-2 pr-2">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <tbody>
+                                @foreach (var item in Product.ProductProperties)
+                                {
+                                    if (!string.IsNullOrEmpty(item.Property.PropertyName))
+                                    {
+                                        <tr>
+                                            <td class="min-w-150">@(item.Property.PropertyName)</td>
+                                            <td>
+                                                @foreach (var value in item.Property.Values)
+                                                {
+                                                    @value.Value
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (ProductRelated?.Count > 0)
+{
+    <section class="deals-of-the-day">
+        <div class="container">
+            <div class="section-header">
+                <div class="wp-title-box tilte-style-2 text-left">
+                    <h2 class="h2-title-box"><span>Sản phẩm tương tự</span><img loading="lazy" style="margin-right:-1px" class="px-h-40" src="~/images/tempsnip.png" /></h2>
+                </div>
+            </div>
+            <section class="categories-list pt-0">
+                <div class="p-0">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="single-categorie">
+                                <div id="carousel-product-related" class="owl-carousel">
+                                    @foreach (var item in ProductRelated)
+                                    {
+                                        <div class="item">
+                                            <div class="h-100">
+                                                <div class="product-item">
+                                                    <div class="product-item-image">
+                                                        <a href="/@(item.FriendlyUrl)"><img loading="lazy" class="card-img-top img-fluid" onerror="this.src='/images/default-image.png'" src="@(item.ThumbNail)"></a>
+                                                    </div>
+                                                    <div class="product-item-body px-4 text-left">
+                                                        <a href="/@(item.FriendlyUrl)">
+                                                            <p class="card-title text-black">@(item.ProductName)</p>
+                                                            @{
+                                                                var rootPrice = item.OriginPrice > item.SaleOffPrice ? @Global.FormatMoney(item.OriginPrice) : "";
+
+
+                                                            }
+                                                            @if (item.OriginPrice > item.SaleOffPrice)
+                                                            {
+                                                                <p> <b class="text-black">Giá chính hãng </b></p>
+                                                                <p>
+                                                                    <span class="badge badge-orange badge-percent">@Global.CaculatorSaleOff(item.OriginPrice, item.SaleOffPrice) %</span>
+                                                                    <span class="product-desc-price text-left">
+                                                                        @Global.FormatMoney(item.OriginPrice)
+                                                                    </span>
+                                                                </p>
+
+                                                                <p> <b class="text-black">Giá ưu đãi </b></p>
+                                                                <span class="product-price text-left text-orange">@Global.FormatMoney(item.SaleOffPrice)</span>
+
+                                                                @if (!string.IsNullOrEmpty(item.GurantyTime))
+                                                                {<p><b class="text-black">Bảo hành: @item.GurantyTime</b></p>}
+                                                            else
+                                                            {<p>&nbsp;</p>}
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <p> <b class="text-black">Giá ưu đãi </b></p>
+                                                                <span class="product-price text-left text-orange">@Global.FormatMoney(item.SaleOffPrice)</span>
+
+                                                                @if (!string.IsNullOrEmpty(item.GurantyTime))
+                                                                {<p><b class="text-black">Bảo hành: @item.GurantyTime</b></p>}
+                                                            else
+                                                            {<p>&nbsp;</p>}
+                                                                <p>&nbsp;</p>
+                                                                <p>&nbsp;</p>
+                                                            }
+
+
+
+
+                                                        </a>
+                                                    </div>
+                                                    @*<p class="text-right text-primary mr-4" style="font-family: Arial,Helvetica,sans-serif;"><a href="/compareproducts?s1=@item.FriendlyUrl&s2=@Product.FriendlyUrl">So sánh</a></p>*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+}
+@section meta {
+    <meta name="description" content="@Html.Raw(Product.Note)" title="@Html.Raw(Product.ProductName)" />
+    <meta property="og:url" content="@Html.Raw(urlProduct)" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="@Html.Raw(Product.ProductName)" />
+    <meta property="og:description" content="@Html.Raw(Product.ProductName)" />
+    <meta property="og:image" content="@(Html.Raw(HtmlEncoder.Encode(string.Format("{0}://{1}/{2}",ViewContext.HttpContext.Request.Scheme,ViewContext.HttpContext.Request.Host,Product.ThumbNail))))" />
+}
+@section Scripts {
+    <script src="~/iotsoftvn/Product/Product_user_detail.js"></script>
+}

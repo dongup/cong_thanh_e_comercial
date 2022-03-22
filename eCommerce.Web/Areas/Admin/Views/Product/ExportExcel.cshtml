@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewData["Title"] = "QUẢN LÝ SẢN PHẨM";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <link href="/plugins/table-export/css/tableexport.min.css" rel="stylesheet" />
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <button onclick="openTableExport('#div-export', 'xlsx', 'DANH_SACH_SAN_PHAM');" class="btn btn-primary"><i class="mdi mdi mdi-file-export font-16 mr-1"></i>Export Excel</button>
+                </div>
+                <h4 class="page-title">Export Excel</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div id="div-export" class="col-lg-12">
+                            <table class="table table-hover table-centered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center px-w-50">#</th>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th class="">Danh mục</th>
+                                        <th class="">Thương hiệu</th>
+                                        <th>Xuất xứ</th>
+                                        <th>Tình trạng</th>
+                                        <th>ĐVT</th>
+                                        <th>Bảo hành</th>
+                                        <th>Nội dung khuyến mãi</th>
+                                        <th class="money">Giá niêm yết</th>
+                                        <th class="money">Giá bán lẻ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-export-product">
+                                    <tr>
+                                        <td class="text-center" colspan="15"><i class="mdi mdi-48px mdi-spin mdi-loading"></i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="/plugins/table-export/xlsx.core.min.js"></script>
+    <script src="/plugins/table-export/libs/FileSaver/FileSaver.min.js"></script>
+    <script src="/plugins/table-export/tableExport.js"></script>
+    <script src="~/iotsoftvn/Product/product_export_product.js"></script>
+}

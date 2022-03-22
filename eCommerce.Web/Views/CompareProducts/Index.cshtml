@@ -1,0 +1,280 @@
+﻿@using System.Linq;
+@using eCommerce.Utils
+@using eCommerce.Web.Areas.Api.Models.Products.Product;
+@{
+    ViewData["Title"] = "So sánh sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ProductResponse Pro1 = (ProductResponse)ViewData["pro1"];
+    ProductResponse Pro2 = (ProductResponse)ViewData["pro2"];
+}
+@section Styles{ <style>
+    .container.bg-white{
+        padding-left:0px!important;
+        padding-right:0px!important;
+    }
+</style>}
+<section class="products_page">
+    <div class="container">
+        <div class="row">
+            <div class="col-2 p-0 p-sm-2 offset-md-1 bg-white" style="min-height:100%"></div>
+            <div class="card col-5 p-0 p-sm-2">
+                <div class="card-body">
+                    <div class="shop-detail-left">
+                        <div class="item-img-grid">
+                            <div id="carousel-product-view1" class="owl-carousel carousel-product-view">
+                                @foreach (var item in Pro1.ProductImages)
+                                {
+                                    <div class="item"><img src="/@item.FilePath" class="img-responsive img-center" onerror="this.src='/images/default-image.png'"></div>
+                                }
+                            </div>
+                            <div id="carousel-product-sub1" class="owl-carousel carousel-product-sub d-none d-sm-block">
+                                @foreach (var item in Pro1.ProductImages)
+                                {
+                                    <div class="item"><img src="/@item.FilePath" class="img-responsive img-center" onerror="this.src='/images/default-image.png'"></div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="/@Pro2.FriendlyUrl">@Pro1.ProductName</a>
+                    <p class="product-price text-center text-danger">@Global.FormatMoney(Pro1.SaleOffPrice)</p>
+                </div>
+            </div>
+
+
+            <div class="card col-5 p-0 p-sm-2">
+                <div class="card-body ">
+                    <div class="shop-detail-left">
+                        <div class="item-img-grid">
+                            <div id="carousel-product-view2" class="owl-carousel carousel-product-view">
+                                @foreach (var item in Pro2.ProductImages)
+                                {
+                                    <div class="item"><img src="/@item.FilePath" class="img-responsive img-center" onerror="this.src='/images/default-image.png'"></div>
+
+                                }
+                            </div>
+                            <div id="carousel-product-sub2" class="owl-carousel carousel-product-sub d-none d-sm-block" ">
+                                @foreach (var item in Pro2.ProductImages)
+                                {
+                                    <div class="item"><img src="/@item.FilePath" class="img-responsive img-center" onerror="this.src='/images/default-image.png'"></div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <h4 class="text-center"> <a href="/@Pro2.FriendlyUrl">@Pro2.ProductName</a></h4>
+                    <p class="product-price text-center text-danger">@Global.FormatMoney(Pro2.SaleOffPrice)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container bg-white " style="margin-bottom:200px;">
+    <h5 class="heading-design-h5 font-20 ">Đặc điểm sản phẩm</h5>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <tbody>
+                    @foreach (var item in Pro1.ProductProperties)
+                    {
+                        <tr>
+                            <td class="font-weight-bold"> @item.Property.PropertyName: </td>
+                            <td>
+                                @foreach (var itemValue in item.Values)
+                                {
+                                    @itemValue.Value @Html.Raw("  ")
+                                }
+                            </td>
+                            <td>
+                                @{ var property = Pro2.ProductProperties.Where(n => n.PropertyId == item.PropertyId).FirstOrDefault();}
+                                @if (property != null)
+                                {
+                                    foreach (var itemValue in property.Values)
+                                    {
+                                        @itemValue.Value @Html.Raw("  ")
+                                    }
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                    
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div class="row  mt-3  m-auto">
+                                <button type="button" class="btn btn-theme-round col-12 col-sm-6" onclick="AddToCart(@Pro1.Id)"> <i class="icofont icofont-shopping-cart mr-1"></i>Thêm giỏ hàng</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row  mt-3 m-auto ">
+                                <button type="button" class="btn btn-theme-round col-12 col-sm-6 " onclick="AddToCart(@Pro2.Id)"> <i class="icofont icofont-shopping-cart mr-1"></i>Thêm giỏ hàng</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        initCarousel('#carousel-product-related', 5, 2000);
+
+        /** Init carousel product view */
+        var $view = $("#carousel-product-view1");
+        $view.owlCarousel({
+            singleItem: true,
+            slideSpeed: 1000,
+            pagination: false,
+            navigation: true,
+            navigationText: ["Sau", "Tiếp"],
+            autoPlay: 2500,
+            afterAction: syncPosition1(),
+            responsiveRefreshRate: 200,
+        });
+
+        /** Init carousel product sub */
+        var $sub = $("#carousel-product-sub1");
+        $sub.owlCarousel({
+            items: 5,
+            navigation: true,
+            itemsDesktop: [1199, 10],
+            itemsDesktopSmall: [979, 10],
+            itemsTablet: [768, 8],
+            itemsMobile: [479, 4],
+            pagination: false,
+            navigationText: ["Sau", "Tiếp"],
+            responsiveRefreshRate: 100,
+            afterInit: function (el) {
+                el.find(".owl-item1").eq(0).addClass("synced");
+            }
+        });
+
+        /** Sync position */
+        function syncPosition1(el) {
+            var current = this.currentItem;
+            $("#carousel-product-sub1")
+                .find(".owl-item1")
+                .removeClass("synced")
+                .eq(current)
+                .addClass("synced")
+            if ($("#carousel-product-sub1").data("owlCarousel1") !== undefined) {
+                center(current)
+            }
+        }
+
+        /** Binding click item product sub */
+        $("#carousel-product-sub2").on("click", ".owl-item", function (e) {
+            e.preventDefault();
+            var number = $(this).data("owlItem");
+            $view.trigger("owl.goTo", number);
+        });
+
+        /** Fix center */
+        function center(number) {
+            var sync2visible = $sub.data("owlCarousel").owl.visibleItems;
+            var num = number;
+            var found = false;
+            for (var i in sync2visible) {
+                if (num === sync2visible[i]) {
+                    var found = true;
+                }
+            }
+            if (found === false) {
+                if (num > sync2visible[sync2visible.length - 1]) {
+                    $sub.trigger("owl.goTo", num - sync2visible.length + 2)
+                } else {
+                    if (num - 1 === -1) {
+                        num = 0;
+                    }
+                    $sub.trigger("owl.goTo", num);
+                }
+            } else if (num === sync2visible[sync2visible.length - 1]) {
+                $sub.trigger("owl.goTo", sync2visible[1])
+            } else if (num === sync2visible[0]) {
+                $sub.trigger("owl.goTo", num - 1)
+            }
+        }
+        /////
+        /** Init carousel product view */
+        var $view2 = $("#carousel-product-view2");
+        $view2.owlCarousel({
+            singleItem: true,
+            slideSpeed: 1000,
+            pagination: false,
+            navigation: true,
+            navigationText: ["Sau", "Tiếp"],
+            autoPlay: 2500,
+            afterAction: syncPosition2(),
+            responsiveRefreshRate: 200,
+        });
+
+        /** Init carousel product sub */
+        var $sub2 = $("#carousel-product-sub2");
+        $sub2.owlCarousel({
+            items: 5,
+            navigation: true,
+            itemsDesktop: [1199, 10],
+            itemsDesktopSmall: [979, 10],
+            itemsTablet: [768, 8],
+            itemsMobile: [479, 4],
+            pagination: false,
+            navigationText: ["Sau", "Tiếp"],
+            responsiveRefreshRate: 100,
+            afterInit: function (el) {
+                el.find(".owl-item").eq(0).addClass("synced");
+            }
+        });
+
+        /** Sync position */
+        function syncPosition2(el) {
+            var current = this.currentItem;
+            $("#carousel-product-sub2")
+                .find(".owl-item")
+                .removeClass("synced")
+                .eq(current)
+                .addClass("synced")
+            if ($("#carousel-product-sub2").data("owlCarousel") !== undefined) {
+                center(current)
+            }
+        }
+
+        /** Binding click item product sub */
+        $("#carousel-product-sub2").on("click", ".owl-item", function (e) {
+            e.preventDefault();
+            var number = $(this).data("owlItem");
+            $view.trigger("owl.goTo", number);
+        });
+
+        /** Fix center */
+        function center(number) {
+            var sync2visible = $sub.data("owlCarousel").owl.visibleItems;
+            var num = number;
+            var found = false;
+            for (var i in sync2visible) {
+                if (num === sync2visible[i]) {
+                    var found = true;
+                }
+            }
+            if (found === false) {
+                if (num > sync2visible[sync2visible.length - 1]) {
+                    $sub.trigger("owl.goTo", num - sync2visible.length + 2)
+                } else {
+                    if (num - 1 === -1) {
+                        num = 0;
+                    }
+                    $sub.trigger("owl.goTo", num);
+                }
+            } else if (num === sync2visible[sync2visible.length - 1]) {
+                $sub.trigger("owl.goTo", sync2visible[1])
+            } else if (num === sync2visible[0]) {
+                $sub.trigger("owl.goTo", num - 1)
+            }
+        }
+    </script>
+}

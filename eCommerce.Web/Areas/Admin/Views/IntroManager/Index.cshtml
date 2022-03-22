@@ -1,0 +1,153 @@
+﻿@model eCommerce.Web.Areas.Api.Models.General.IntroduceResponse
+@{
+    ViewData["Title"] = "QUẢN LÝ TRANG GIỚI THIỆU";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Quản lý trang giới thiệu</h4>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title mb-4">Banner</h4>
+                            <div id="carousel-banner" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                </ol>
+                                <div class="carousel-inner">
+                                    @foreach (var item in @Model.BannerImages)
+                                    {
+                                        <div class="carousel-item active crs-item-@item.Id">
+                                            <img class="d-block w-100" onerror="this.src='/images/default-banner.jpg'" src="/@item.FilePath" />
+                                        </div>
+                                        <button type="button" onclick="Remove(@item.Id)" class="crs-item-@item.Id btn btn-danger btn-remove-image "><i class="mdi mdi-trash-can font-16"></i></button>
+                                    }
+
+                                </div>
+                                <a class="carousel-control-prev" href="#carousel-banner" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carousel-banner" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <button type="button" id="btn-add-banner" class="btn btn-primary btn-sm float-right mt-3"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm baner</button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title mb-4">Thông tin</h4>
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Mô tả ngắn</label>
+                                        <textarea type="text" id="iptDescription" class="form-control " placeholder="" rows="10">@Model.Introduction</textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <div class="form-group">
+                                        <label>Bài viết giới thiệu</label>
+                                        <select class="form-control" id="sl-news" data-toggle="select">
+                                            <option value="@Model.Post.Id">@Model.Post.Title</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button type="button" id="btn-save" class="btn btn-primary float-right"><i class="mdi mdi-check-bold font-16 mr-1"></i>Lưu </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/iotsoftvn/js_file_manager.js"></script>
+    <script src="/lib/summernote/summernote.js"></script>
+    <script src="/lib/summernote/summernote-image-attributes.js"></script>
+    <script src="~/plugins/owl-carousel/owl.carousel.js"></script>
+    <script>
+        var FILES =  @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.BannerImages, Newtonsoft.Json.Formatting.Indented));
+
+
+        $(document).ready(function () {
+            INIT_FILE_MANAGE(function (file) {
+                FILES.push(file);
+                renderBanner(file);
+            })
+            INIT_SUMMERNOTE('#iptDescription');
+
+            initSelectSearch({
+                Element: '#sl-news',
+                Url: 'post/titles',
+                Id: 'Id',
+                Value: 'Title',
+                Placeholder: 'Nhập tiêu đề bài viết'
+            });
+        });
+        $('#btn-save').on('click', () => {
+            let Description = $('#iptDescription').val();
+            let newId = $("#sl-news").val();
+            if (FILES.length < 1)
+                alertify.error("Chọn ít nhất 1 tấm hình banner");
+            else if (IsNullOrEmpty(Description)) {
+                alertify.error("Mô tả ngắn không được để trống");
+            } else if (IsNullOrEmpty(newId)) {
+                alertify.error("Chưa chọn bài viết giới thiều");
+            } else {
+                alertify.confirm("Xác nhận cập nhật", function () {
+                    ajaxPut('introduce',
+                        {
+                            BannerImages: FILES.map(n => n.Id).join(','),
+                            Introduction: Description,
+                            PostId: parseInt(newId)
+                        }, function (res) {
+                            if (res.IsSuccess)
+                                alertify.alert("Cập nhật thành công");
+                            else {
+                                alertify.alert(res.Mesage);
+                            }
+                        }
+                    );
+                });
+
+            }
+        })
+
+        function renderBanner(item) {
+            let htmlIndi = FILES.map((item, i) => (`<li data-target="#carousel-banner" data-slide-to="${i}"></li>`));
+            $('.carousel-indicators').html(htmlIndi);
+            $('.carousel-item').removeClass('active');
+
+            let html = ` <div class="carousel-item crs-item-${item.Id}" style="max-height:400px;">
+                             <img onerror="this.src='/images/default-banner.jpg'" class="d-block w-100" src="${getImagePath(item.FilePath)}" />
+                         </div>
+                        <button type="button" onclick="Remove(${item.Id})" class="btn btn-danger btn-remove-image crs-item-${item.Id}"><i class="mdi mdi-trash-can font-16"></i></button>
+                        `;
+            $('.carousel-inner').prepend(html);
+            $($('.carousel-item')[0]).addClass('active');
+
+        }
+        function Remove(Id) {
+            alertify.confirm("Xác nhân xóa banner ", function () {
+                FILES = FILES.filter(n => n.Id != Id);
+                $(".crs-item-" + Id ).remove();
+            });
+        }
+    </script>
+}

@@ -1,0 +1,902 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>eCommerce.Web</name>
+    </assembly>
+    <members>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Cart.CartController.Post(eCommerce.Web.Areas.Api.Models.Cart.CartRequestModel)">
+            <summary>
+            Thêm sản phẩm trong giỏ hàng
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Cart.CartController.Delete(System.Int32)">
+            <summary>
+            Xóa sản phẩm trong giỏ hàng
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Cart.CartController.Put(System.Int32)">
+            <summary>
+            Trừ số lượng sản phẩm trong giỏ hàng, nếu + sẽ vào post 
+            </summary>
+            <param name="Id">CartId</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ContactController.Get(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Lấy danh sách các tin nhẵn liên hệ khách hàng gửi lên
+            </summary>
+            <param name="keyword">Từ khóa tìm kiếm theo tên khách hàng, sđt, email</param>
+            <param name="fromDate">Ngày bắt đầu</param>
+            <param name="toDate">Ngày kết thúc</param>
+            <param name="pageIndex">Trang hiện tại</param>
+            <param name="pageItem">Số dòng cần lấy</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ContactController.Get">
+            <summary>
+            Lấy danh sách các tin nhẵn liên hệ chưa xử lý
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ContactController.PutStatus(System.Int32,System.Int32)">
+            <summary>
+            Cập nhập trạng thái liên hệ 
+            </summary>
+            <param name="id">Mã liên hệ</param>
+            <param name="statusId">Mã trạng thái, gửi lên qua query ?statusId=1</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ContactController.Put(System.Int32,eCommerce.Web.Areas.Api.Models.Contact.ContactRequest)">
+            <summary>
+            Cập nhập trạng thái liên hệ 
+            </summary>
+            <param name="id">Mã liên hệ</param>
+            <param name="value">Thông tin liên hệ</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.DashBoardController.Order(System.Int32)">
+            <summary>
+            Lấy dữ liệu cho dashboard
+            </summary>
+            <param name="chartType">Loại biểu đồ 1: tuần này, 2: tháng này, 3: năm nay</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.General.FolderController.Delete(System.Int32)">
+            <summary>
+                Xóa folder
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.General.FolderController.DeleteFile(System.Int32)">
+            <summary>
+                Xóa file
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:eCommerce.Web.Areas.Api.Controllers.General.InformationController">
+            <summary>
+            Thông tin hệ thống
+            </summary>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.OurBrandController.Get(System.String)">
+            <summary>
+            Lấy danh sách popup dựa theo keyword tìm kiếm
+            </summary>
+            <param name="keyword">Từ khóa theo tiêu đề và phụ đề</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PopupController.PopupIsShow">
+            <summary>
+            Lấy ra những popup được hiện lên trang chủ
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PopupController.PopupIsModal">
+            <summary>
+            Lấy ra những popup là modal
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PopupController.Get(System.String)">
+            <summary>
+            Lấy danh sách popup dựa theo keyword tìm kiếm
+            </summary>
+            <param name="keyword">Từ khóa theo tiêu đề và phụ đề</param>
+            <returns></returns>
+        </member>
+        <member name="T:eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType">
+            <summary>
+            Loại ảnh tải lên
+            </summary>
+        </member>
+        <member name="F:eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType.System">
+            <summary>
+            Hệ thống
+            </summary>
+        </member>
+        <member name="F:eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType.Product">
+            <summary>
+            Ảnh sản phẩm
+            </summary>
+        </member>
+        <member name="F:eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType.Post">
+            <summary>
+            Ảnh tin tưc
+            </summary>
+        </member>
+        <member name="F:eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType.Popup">
+            <summary>
+            Ảnh quảng cáo
+            </summary>
+        </member>
+        <member name="F:eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType.Promo">
+            <summary>
+            Chương trình giảm giá
+            </summary>
+        </member>
+        <member name="F:eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType.Brand">
+            <summary>
+            Thương hiệu
+            </summary>
+        </member>
+        <member name="F:eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType.Unknown">
+            <summary>
+            Loại khác
+            </summary>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.UploadController.Upload(System.String,eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType,System.Nullable{System.Int32})">
+            <summary>
+            Upload files
+            </summary>
+            <param name="fileName">Tên file</param>
+            <param name="uploadType">Loại ảnh tải lên</param>
+            <param name="FolderId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.UploadController.UploadFromTool(System.String,eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType,System.Nullable{System.Int32},System.String,System.String)">
+            <summary>
+            Upload from tool 
+            </summary>
+            <param name="fileName">Tên file</param>
+            <param name="uploadType">Loại ảnh tải lên</param>
+            <param name="FolderId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.UploadController.UploadForm(System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile},System.String,eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType,System.Nullable{System.Int32})">
+            <summary>
+            Dùng test upload bằng swagger
+            </summary>
+            <param name="files">Files</param>
+            <param name="fileName">Tên file</param>
+            <param name="uploadType">Loại hình ảnh 0: System, 1: Product, 2: Post, 3: Popup, 4: Promo, 5: Thương hiệu, 6: loại khác</param>
+            <param name="forderId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.UserController.ResetPassword(System.Int32,eCommerce.Web.Areas.Api.Models.User.ResetPaswordRequest)">
+            <summary>
+            Đặt lại mật khẩu cho người dùng
+            </summary>
+            <param name="id">Mã người dùng</param>
+            <param name="value">Chứa thông tin mật khẩu mới</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.UserController.LockDownUser(System.Int32)">
+            <summary>
+            Khóa tài khoản người dùng
+            </summary>
+            <param name="id">Mã người dùng</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.UserController.UnLockUser(System.Int32)">
+            <summary>
+            Mở khóa tài khoản cho người dùng
+            </summary>
+            <param name="id">Mã người dùng</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.OrderController.GetTotalPending">
+            <summary>
+            Lấy tổng số đơn hàng đang chờ xử lý
+            </summary>
+            <returns>int: số đơn hàng</returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.OrderController.Get(System.String,System.Int32,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Lấy danh sách đơn đặt hàng
+            </summary>
+            <param name="keyword">Từ khóa tìm kiếm theo tên khách hàng, mã đơn hàng</param>
+            <param name="statusId">Trạng thái đơn hàng</param>
+            <param name="fromDate">Từ ngày</param>
+            <param name="toDate">Đến ngày</param>
+            <param name="pageItem">Số lượng bản ghi</param>
+            <param name="pageIndex">Chỉ mục trang</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.OrderController.Get(System.Int32)">
+            <summary>
+            Lấy đơn hang theo mã 
+            </summary>
+            <param name="id">Mã đơn hàng</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.OrderController.Post(eCommerce.Web.Areas.Api.Models.Orders.OrderRequest)">
+            <summary>
+            Thêm một đơn đặt hàng
+            </summary>
+            <param name="value">Thông tin đơn đặt hàng</param>
+            <returns>Trả về result là false nếu giá gửi lên chênh lệch với giá thực</returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.OrderController.PostInstallment(eCommerce.Web.Areas.Api.Models.Orders.OrderRequest)">
+            <summary>
+            Thêm một đơn đặt hàng trả góp
+            </summary>
+            <param name="value">Thông tin đơn đặt hàng</param>
+            <returns>Trả về result là false nếu giá gửi lên chênh lệch với giá thực</returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.OrderController.Put(System.Int32,System.Int32,System.String)">
+            <summary>
+            Thay đổi trạng thái đơn hàng
+            </summary>
+            <param name="id">Mã đơn hàng</param>
+            <param name="statusId">Trạng thái mới</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.OrderNotificationController.Get(System.String,System.String,System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Lấy danh sách đơn đặt hàng
+            </summary>
+            <param name="keyword">Từ khóa tìm kiếm theo tên khách hàng</param>
+            <param name="statusId">Trạng thái đơn hàng</param>
+            <param name="fromDate">Từ ngày</param>
+            <param name="toDate">Đến ngày</param>
+            <param name="pageItem">Số lượng bản ghi</param>
+            <param name="pageIndex">Chỉ mục trang</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PostController.RelatedPost(System.Int32)">
+            <summary>
+            Lấy ra 10 bài viết cùng chuyên mục với bài viết hiện tại
+            </summary>
+            <param name="id">Mã bài viết hiện tại</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PostController.LastestPost(System.Int32)">
+            <summary>
+            Lấy ra một số lượng bài viết nhất định dựa theo loại danh mục
+            </summary>
+            <param name="take">Số lượng bài viết cần lấy, mặc định = 9</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PostController.Titles(System.String)">
+            <summary>
+            Lấy danh sách tiêu đề bài viết
+            </summary>
+            <param name="keyword">Từ khóa tìm kiếm theo tiêu đề</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PostController.Get(System.String,System.Int32,System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Lấy ra danh sách dữ liệu phân trang bài viết theo từ khóa, theo tag, và danh mục bài viết
+            </summary>
+            <param name="keyword">Từ khóa tìm kiếm theo tiêu đề</param>
+            <param name="categoryId"></param>
+            <param name="tag">Thẻ của bài viết</param>
+            <param name="friendlyurl">url danh mục bài viết</param>
+            <param name="fromDate"></param>
+            <param name="toDate"></param>
+            <param name="pageItem">Số lượng bài viết, mặc định bằng 12</param>
+            <param name="pageIndex">Chỉ mục trang</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Product.ProductGroupController.GetFilter(System.String)">
+             <summary>
+            lấy để thể hiện lên select box, chi lấy tên và Id
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Product.ProductGroupController.Get(System.String)">
+            <summary>
+            Lấy danh sách nhóm kèm theo danh sách sản phẩm
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Product.ProductGroupController.Get(System.Int32)">
+            <summary>
+            Lấy danh sách nhóm kèm theo danh sách sản phẩm
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Product.ProductGroupController.GetFrame(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Lấy danh sách nhóm kèm theo danh sách sản phẩm
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Product.ProductGroupController.GetByUrl(System.String,System.Boolean)">
+            <summary>
+            Lấy danh sách nhóm kèm theo danh sách sản phẩm
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Product.ProductLogController.Get(System.String,System.Int32,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Lịch sử cập nhật của tất cả sản phẩm
+            </summary>
+            <param name="keyword">Từ khóa tìm kiếm theo tên sản phẩm</param>
+            <param name="updatedUserId">Mã người cập nhập</param>
+            <param name="fromDate">Từ ngày</param>
+            <param name="toDate">Đến ngày</param>
+            <param name="pageIndex">Chỉ mục trang</param>
+            <param name="pageItem">Số dòng lấy</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Product.ProductPriceLogController.ProductPriceLogs(System.String,System.Int32,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Lịch sử giá của sản phẩm
+            </summary>
+            <param name="keyword">Từ khóa tìm kiếm theo tên sản phẩm</param>
+            <param name="updatedUserId">Mã người cập nhập</param>
+            <param name="fromDate">Từ ngày</param>
+            <param name="toDate">Đến ngày</param>
+            <param name="pageIndex">Chỉ mục trang</param>
+            <param name="pageItem">Số dòng lấy</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ComboController.GetAdmin(System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Lấy ra danh sách combo
+            </summary>
+            <param name="keyword">Từ khóa tìm theo danh mục sản phẩm</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ComboController.Post(eCommerce.Web.Areas.Api.Models.Products.ComboProduct.ComboRequest)">
+            <summary>
+            Tạo combo sản phẩm mới
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductBrandController.GetAll(System.String,System.String,System.String)">
+            <summary>
+            Lấy danh sách các nhãn hiệu
+            </summary>
+            <param name="keyword">Từ khóa tìm kiếm</param>
+            <param name="categoryIds">Danh sách các danh mục, định dạng: "1,2,3,4"</param>
+            <param name="categoryUrl">Url danh mục</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductCategoryController.GetFilter">
+            <summary>
+            Lấy ra các danh mục kem cac thuoc tinh filter
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductCategoryController.GetFilterByCategoryId(System.Int32)">
+            <summary>
+            Lấy ra các thuộc tính bộ lọc theo danh mục
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductCategoryController.NoGroupCategory">
+            <summary>
+            Lấy ra các danh mục chưa có nhóm
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.TopSale">
+            <summary>
+            Lấy những sản phẩm có giá khuyến mãi lớn nhất, Hien thi ngoai trang chu. Hiện tại ko sử dụng.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.AllSaleOff(System.Boolean,System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Lấy những tất cả sản phẩm đang khuyến mãi
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.RelatedProduct(System.Int32)">
+            <summary>
+            Lấy ra những sản phẩm tương tự với sản phẩm hiện tại
+            </summary>
+            <param name="id">Mã sản phẩm hiện tại</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.Get(System.String,System.Boolean)">
+            <summary>
+            Lấy ra danh sách sản phẩm /san-pham
+            </summary>
+            <param name="filterStr">Tham số lọc</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.GetAdmin(System.Int32,System.String,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Lấy ra danh sách sản phẩm trên trang admin
+            </summary>
+            <param name="sortOrder">Trình tự sắp xếp sản phẩm theo giá
+            1: giá gốc tăng dần
+            2: giá gốc giảm dần
+            3: giá bán lẻ tăng dần
+            4: giá bán lẻ giảm dần
+            </param>
+            <param name="keyword">Từ khóa tìm kiếm theo tên sản phẩm</param>
+            <param name="isSortNewPrice"></param>
+            <param name="fromPrice"></param>
+            <param name="toPrice"></param>
+            <param name="brandId">Mã nhãn hàng</param>
+            <param name="categoryId"></param>
+            <param name="pageIndex">Chỉ mục trang</param>
+            <param name="pageItem">Số lượng sản phẩm</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.GetById(System.Int32)">
+            <summary>
+            Su dung trong in label, Lấy ít thuộc tính, KO dùng ById ở trên vì by Id Lấy full thuộc tính => Chậm.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.UpdatePrice(System.Int32,eCommerce.Web.Areas.Api.Models.Products.Product.ProductPriceRequest)">
+            <summary>
+            Cập nhập giá cho sản phẩm
+            </summary>
+            <param name="id"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.UpdateStockNumber(System.Int32,System.Int32)">
+            <summary>
+            Cập nhập số lượng tồn cho sản phẩm
+            </summary>
+            <param name="id">Mã sản phẩm</param>
+            <param name="stock">Số lượng tồn mới</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.isPromoInstal(System.Int32)">
+            <summary>
+            Kiem tra san pham co tra gop 0% ko
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.ToggleStatus(System.Int32,System.Boolean)">
+            <summary>
+            Bán hoặc dừng bán sp
+            </summary>
+            <param name="id">Mã sản phẩm</param>
+            <param name="status">true = bán, fales = dừng bán</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.AllProductOnSale">
+            <summary>
+            Lấy tất cả sản phẩm đang bán, 
+            dùng trong trang thêm sửa chương trình trả góp 0%
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.syncPrice(System.Collections.Generic.List{eCommerce.Web.Areas.Api.Models.Products.Product.SyncPriceModelResponse})">
+            <summary>
+            gửi danh sách sản phẩm cần đồng bộ lên update.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ProductController.GetSyncPrice">
+            <summary>
+            Lấy danh sách sản phẩm cần đồng bộ về.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PropertyController.GetAlphabet">
+            <summary>
+            Lấy danh sách thuộc tính nhóm theo bảng chữ cái
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PropertyController.ByCategory(System.Int32)">
+            <summary>
+            Lấy danh sách theo danh mục id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PropertyController.ByCategoryMultiple(System.String)">
+            <summary>
+            Lấy danh sách theo nhiều  danh mục, dạng 1,2
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PropertyController.IsFilter(System.Int32)">
+            <summary>
+            Lấy danh sách nhưng thuộc tính là filter trong danh mục
+            <param name="id">Mã danh mục</param>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.TemplateController.Get(System.String)">
+            <summary>
+            Lấy ra danh sách danh mục kèm theo các template của danh mục đó
+            </summary>
+            <param name="keyword">Từ khóa tìm theo danh mục sản phẩm hoặc tên template</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.TemplateController.ByName(System.String)">
+            <summary>
+            Tìm template theo tên
+            </summary>
+            <param name="keyword">Từ khóa tìm theo danh mục sản phẩm</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.TemplateController.ByCategoryId(System.Int32)">
+            <summary>
+            Lấy template theo danh mục sản phẩm
+            </summary>
+            <param name="id">Mã danh mục</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.TemplateController.ByCategoryId(System.String)">
+            <summary>
+            Lấy template nhiều danh mục
+            </summary>
+            <param name="ids">Dạng 1,2 </param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ValueController.Get(System.String)">
+            <summary>
+            Lấy ra danh sách danh mục kèm theo các template của danh mục đó
+            </summary>
+            <param name="keyword">Từ khóa tìm theo danh mục sản phẩm</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ValueController.Post(eCommerce.Web.Areas.Api.Models.Products.Property.ValueModel)">
+            <summary>
+            Tạo giá trị mới
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ValueController.Mutiple(System.Collections.Generic.List{eCommerce.Web.Areas.Api.Models.Products.Property.ValueModel})">
+            <summary>
+            Tạo nhiều giá trị mới, trả về danh sách các id của giá trị
+            </summary>
+            <param name="values">Danh sách các giá trị mới</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.Promotion.BannerAdsController.Get(System.String)">
+            <summary>
+            Lấy ra danh sách danh mục kèm theo các template của danh mục đó
+            </summary>
+            <param name="keyword">Từ khóa tìm theo danh mục sản phẩm</param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PromotionController.ActivePromotion">
+            <summary>
+            Lấy ra những chương trình giảm giá hiện đang hoạt động
+            </summary>
+            <returns></returns>
+            
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PromotionController.ActivePromotionHome">
+            <summary>
+            Sự dug trên trang chủ. TOÀN_EDIT Từ câu  ActivePromotion
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PromotionController.Get(System.String,System.Int32,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Lấy ra các chương trình khuyến mãi theo keyword
+            </summary>
+            <param name="keyword">Từ khóa tìm kiếm theo tên chương trình</param>
+            <param name="status">Trạng thái 1: hoạt động, 2: Không hoạt động</param>
+            <param name="fromDate"></param>
+            <param name="toDate"></param>
+            <param name="pageItem"></param>
+            <param name="pageIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PromotionController.IsInOrtherPromo(System.Int32)">
+            <summary>
+            Kiểm trả sản phẩm đã có trong chương trình khác khi thêm 
+            sản phẩm,nếu có thì warning
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PromotionController.GetByUrl(System.String,System.String)">
+            <summary>
+            Lấy ra các chương trình khuyến mãi theo url
+            </summary>
+            <param name="promotionUrl">Promo url</param>
+            <param name="filterStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PromotionController.GetFilter(System.String)">
+             <summary>
+            lấy để thể hiện lên select box, chi lấy tên và Id 
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.PromotionController.products(System.Int32)">
+            <summary>
+            Lấy danh sash sản phẩm theo id promotion,
+            dùng trong page in label
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ZaloController.getauthcodezalo">
+            Dự phòng cho Access Token V4
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ZaloController.getmoda">
+            Dự phòng cho Access Token V4
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ZaloController.Put(System.String)">
+            <summary>
+            Thêm người nhận tin nhắn
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Web.Areas.Api.Controllers.ZaloController.Delete(System.String)">
+            <summary>
+            Xóa người nhận tin nhắn
+            </summary>
+            <param name="user_id"></param>
+            <returns></returns>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Contact.ContactRequest.Status">
+            <summary>
+            Trạng thái của liên hệ 
+            0: Chưa xử lý
+            1: Đã xử lý
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Contact.ContactResponse.Status">
+            <summary>
+            Trạng thái của liên hệ 
+            0: Chưa xử lý
+            1: Đã xử lý
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentBankResponse.Papers">
+            <summary>
+            // Giấy tờ cần thiết nhưn chứng minh, hóa đơn điện nước
+            </summary>ư
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentBankResponse.InterestRate">
+            <summary>
+            Lãi xuất
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentBankResponse.CountMonth">
+            <summary>
+            Thời gian trả trong vòng mấy tháng .
+            Ví dụ: 6,9,12 => Lưu theo chuỗi cách bởi đấu ','
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentBankResponse.MiximumPrepay">
+            <summary>
+            Số tiền trả trước tối thiểu
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentBankResponse.MaximumPrepay">
+            <summary>
+            Số tiền trả trước tối đa
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentBankResponse.PhiHoSo">
+            <summary>
+            Phí làm hồ sơ
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentClientResponse.MoneyPerMonth">
+            <summary>
+            Tiền trả góp mỗi tháng
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentClientResponse.InterestRateObject">
+            <summary>
+             Lãi xuất , dùng object vì khi query lấy firtOrDefault().InterestRate có thể null 
+            </summary>
+            
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentClientResponse.InterestRate">
+            <summary>
+            Lãi xuất
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentClientResponse.TotalMoney">
+            <summary>
+            Tổng tiền phải trả cộng cả gốc và lãi 
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentClientResponse.DifferencePrice">
+            <summary>
+             Chênh lệch với mua trả thẳng vs trả góp
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Installment.InstallmentClientResponse.IsSupport">
+            <summary>
+            Có hỗ trợ trả với thời hạn trả và mức trả trước gửi lên ko.
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Posts.PostResponse.ThumbNail">
+            <summary>
+            Ảnh đại diện bài viết (Thumbnail)
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Products.Product.ProductResponse.IsInstallment0Percent">
+            <summary>
+               Sản phẩm có cho trả góp 0% không
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Products.Product.ProductResponse.AccessCount">
+            <summary>
+            Lượt truy cập của sản phẩm
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.Products.Product.ProductSimpleMostRespone.DiscountPrice">
+            <summary>
+            Giá tiền giẩm trong các chương trình khuyến mãi.
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.CategoryResponse.OrderLevel">
+            <summary>
+            Thứ tự sắp xếp danh mục để thể hiện trang chủ
+            Ví dụ Tivi (Order=1), Quạt làm mát (Order= 2), Amply (Order=3)
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.CategoryResponse.NoteInt">
+            <summary>
+            Conver note to in để order số thứ tự sắp sếp TAB ngoài trang chủ
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Areas.Api.Models.User.UserResponse.Status">
+            <summary>
+            1: Active, 2: Lockdown
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Generals.ContactEntity.Status">
+            <summary>
+            Trạng thái của liên hệ 
+            0: chưa xử lý
+            1: Đã xử lý
+            </summary>
+        </member>
+        <member name="T:eCommerce.Web.Entities.Installment.InstallmentBankEntity">
+            <summary>
+            Ngân hàng hỗ trợ trả góp
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Installment.InstallmentBankEntity.Papers">
+            <summary>
+            // Giấy tờ cần thiết nhưn chứng minh, hóa đơn điện nước
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Installment.InstallmentBankEntity.InterestRate">
+            <summary>
+            Lãi xuất
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Installment.InstallmentBankEntity.CountMonth">
+            <summary>
+            Thời gian trả trong vòng mấy tháng .
+            Ví dụ: 6|9|12 => Lưu theo chuỗi cách bởi đấu '|'
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Installment.InstallmentBankEntity.MiximumPrepay">
+            <summary>
+            Số tiền trả trước tối thiểu
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Installment.InstallmentBankEntity.MaximumPrepay">
+            <summary>
+            Số tiền trả trước tối đa
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Installment.InstallmentBankEntity.PhiHoSo">
+            <summary>
+            Phí làm hồ sơ
+            </summary>
+        </member>
+        <member name="T:eCommerce.Web.Entities.Installment.InstallmentOrderEntity">
+            <summary>
+               Đơn hàng trả góp tham chiếu sản phẩm từ tbl Đơn hàng, 
+            </summary>
+        </member>
+        <member name="T:eCommerce.Web.Entities.Installment.InstallmentPromotionEntity">
+            <summary>
+            Chương trình trả góp 0%
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Orders.OrderEntity.IsInstallment">
+            <summary>
+            Là trả góp hay trả thẳng, 0 trả thẳng, 1 trả góp
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Post.PostEntity.ThumbNail">
+            <summary>
+            Ảnh đại diện bài viết (Thumbnail)
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Product.CategoryEntity.OrderLevel">
+            <summary>
+            Thứ tự sắp xếp danh mục để thể hiện trang chủ
+            Ví dụ Tivi (Order=1), Quạt làm mát (Order= 2), Amply (Order=3)
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.ProductBrandEntity.Order">
+            <summary>
+            sort acs
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.ProductEntity.PromotionBranch">
+            <summary>
+            Khuyến mãi của hãng
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.ProductEntity.PromotionBranchDeadline">
+            <summary>
+            thời gian kết thúc của khuyến mãi. Nếu quá thời gian này ko hiển thị 
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.ProductEntity.OriginPrice">
+            <summary>
+            Giá niêm yết
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.ProductEntity.SaleOffPrice">
+            <summary>
+            giá bán ra cho khách . = giá bán lẻ - Sum(Khuyến mãi)
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.ProductEntity.GiaBanLe">
+            <summary>
+            giá bản lẻ công thành cung cấp
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Promotion.BannerAdsEntity.PathBannerBottomSlide1">
+            <summary>
+            3 banner dưỡi slide
+            </summary>
+        </member>
+        <member name="P:eCommerce.Web.Entities.Promotion.BannerAdsEntity.BannerTopPromotionPath">
+            <summary>
+            Banner top chương trình khuyến mãi
+            </summary>
+            
+        </member>
+        <member name="M:eCommerce.Utils.AppExtensions.ReplaceNull(System.String,System.String)">
+            <summary>
+            Replace string with replacement value if it is null
+            </summary>
+            <param name="str"></param>
+            <param name="replacement"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Utils.AppExtensions.IsNullOrEmpty(System.String)">
+            <summary>
+            Determine whether this string is null or empty
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:eCommerce.Utils.ImageHelper.CopyImage(System.String,System.String,eCommerce.Web.Areas.Api.Controllers.UploadController.UploadType)">
+            <summary>
+            Copy image từ thư mục này tới thư mục khác
+            </summary>
+            <param name="from">Đường dẫn hình ảnh ban đầu</param>
+            <param name="to">Đường dẫn hình ảnh mới</param>
+            <param name="type">Loại hình ảnh</param>
+        </member>
+        <member name="M:eCommerce.Utils.ImageHelper.CreateThumbnail(System.String)">
+            <summary>
+            Tạo hình ảnh thu nhỏ
+            </summary>
+            <param name="filePath">Đường dẫn hình ảnh muốn tạo thumbnail</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

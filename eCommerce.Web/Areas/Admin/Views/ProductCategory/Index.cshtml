@@ -1,0 +1,94 @@
+﻿@*@model List<eCommerce.Web.Areas.Api.Models.ProductCategoryResponse>*@
+@{
+    ViewData["Title"] = "DANH MỤC SẢN PHẨM";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+
+                <h4 class="page-title">Danh mục sản phẩm</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-aside-left p-0">
+                        <a href="javascript:reloadTable()" class="btn btn-block btn-primary"><i class="mdi mdi-refresh font-16 mr-1"></i>Làm mới dữ liệu</a>
+                        <!-- Search -->
+                        <div class="mt-4">
+                            <h5 class="text-primary">Tìm kiếm danh mục</h5>
+                            <div class="form-group">
+                                <input id="ipt-text-search" type="text" class="form-control" placeholder="Tìm tên danh mục" autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="page-aside-right">
+                        <ul class="nav nav-tabs nav-bordered mb-3">
+                            <li class="nav-item"><a href="#tab-category" data-toggle="tab" class="nav-link active"><span>Danh mục</span></a></li>
+                            <li class="nav-item"><a href="#tab-category-group" data-toggle="tab" class="nav-link"><span>Nhóm danh mục</span></a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane show active" id="tab-category">
+                                <button onclick="showModal('#modal-category-add')" type="button" class="float-right btn btn-sm m-b-15 btn-primary"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm mới danh mục</button>
+
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-hover dt-responsive nowrap" id="tbl-category">
+                                        <thead>
+                                            <tr>
+                                                <th class="stt">#</th>
+                                                <th style="width:80px!important;">Banner</th>
+                                                <th>Tên danh mục</th>
+                                                <th>Mô tả</th>
+                                                <th>Sticker</th>
+                                                <th class="text-right">Số lượng sản phẩm</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbl-body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane " id="tab-category-group">
+                                <button onclick="showModal('#modal-group-add')" type="button" class=" float-right btn btn-sm m-b-15 btn-primary"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm mới nhóm danh mục</button>
+
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-striped dt-responsive nowrap" id="tbl-category">
+                                        <thead>
+                                            <tr>
+                                                <th class="stt">#</th>
+                                                <th>Biểu tượng</th>
+                                                <th>Tên nhóm</th>
+                                                <th>Danh mục</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbl-body-group">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- Table -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("CategoryAddPartial.cshtml")
+@await Html.PartialAsync("CategoryEditPartial.cshtml")
+@await Html.PartialAsync("GroupCategoryAddPartial.cshtml")
+@await Html.PartialAsync("GroupCategoryEditPartial.cshtml")
+@section scripts {
+    <script src="~/iotsoftvn/js_file_manager.js"></script>
+    <script src="~/iotsoftvn/Product/category_group.js"></script>
+}
+

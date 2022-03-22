@@ -1,0 +1,245 @@
+﻿
+@{
+    ViewData["Title"] = "THIẾT LẬP HÌNH ẢNH QUẢNG CÁO";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Thiết lập hình ảnh quảng cáo</h4>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+
+        @*Hình ảnh đầu trang*@
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            Hình ảnh đầu trang
+                        </h5>
+                        <div class="custom-control d-flex flex-row align-self-center float-right">
+                            <p class="text-primary m-0 mr-1">Cho phép hiển thị</p>
+                            <input id="ipt-check-show-top" class="mt-auto mb-auto" type="checkbox">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <img id="img-banner-top" src="/images/default-banner.jpg" class="img-auto-size" onerror="this.src='/images/default-banner.jpg'">
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <div class="form-group">
+                                    <label>Đường dẫn</label>
+                                    <input id="ipt-friendly-url-top" name="Title" type="text" class="form-control" placeholder="Đường dẫn chương trình">
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <button id="btn-img-advertise-top" type="button" class="btn btn-primary mr-1 btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            Banner quảng cáo trên chương trình khuyến mãi
+                        </h5>
+                        <div class="custom-control d-flex flex-row align-self-center float-right">
+                            <p class="text-primary m-0 mr-1">Cho phép hiển thị</p>
+                            <input id="ipt-check-show-top-promotion" class="mt-auto mb-auto" type="checkbox">
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <img id="img-banner-top-promotion" src="/images/default-banner.jpg" class="img-auto-size" onerror="this.src='/images/default-banner.jpg'">
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <div class="form-group">
+                                    <label>Đường dẫn</label>
+                                    <input id="ipt-friendly-url-top-promotion" name="Title" type="text" class="form-control" placeholder="Đường dẫn chương trình">
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <button id="btn-img-advertise-top-promotion" type="button" class="btn btn-primary mr-1 btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*3 Hình ảnh dưới Slide*@
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Hình ảnh quảng cáo dưới slide  2 <span class="text-danger font-12">( 400X150 )</span></h5>
+                            <div class="custom-control d-flex flex-row align-self-center float-right">
+                                <p class="text-primary m-0 mr-1">Cho phép hiển thị</p>
+                                <input id="cbox-bottom-slide-2" class="mt-auto mb-auto" type="checkbox">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <img id="img-bottom-slide-2" src="/images/default-banner.jpg" class="img-auto-size" onerror="this.src='/images/default-banner.jpg'" />
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <button id="btn-bottom-slide-2" type="button" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <div class="form-group">
+                                        <label>Đường dẫn</label>
+                                        <input id="ipt-bottom-slide-2" name="Title" type="text" class="form-control" placeholder="Đường dẫn chương trình">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Hình ảnh quảng cáo dưới slide  3 <span class="text-danger font-12">( 400X150 )</span></h5>
+                            <div class="custom-control d-flex flex-row align-self-center float-right">
+                                <p class="text-primary m-0 mr-1">Cho phép hiển thị</p>
+                                <input id="cbox-bottom-slide-3" class="mt-auto mb-auto" type="checkbox">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <img id="img-bottom-slide-3" src="/images/default-banner.jpg" class="img-auto-size" onerror="this.src='/images/default-banner.jpg'" />
+                                </div>
+                                <div class="col-md-12 mt-2">
+
+                                    <button id="btn-bottom-slide-3" type="button" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button>
+                                </div>
+                                <div class="col-md-12 mt-2">
+                                    <div class="form-group">
+                                        <label>Đường dẫn</label>
+                                        <input id="ipt-bottom-slide-3" name="Title" type="text" class="form-control" placeholder="Đường dẫn chương trình">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Hình ảnh slider bên trái<span class="text-danger font-12">( 170X350 )</span></h5>
+                    <div class="custom-control d-flex flex-row align-self-center float-right">
+                        <p class="text-primary m-0 mr-1">Cho phép hiển thị</p>
+                        <input id="cbox-bottom-slide-1" class="mt-auto mb-auto" type="checkbox">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <img id="img-bottom-slide-1" src="/images/default-banner.jpg" class="img-auto-size" onerror="this.src='/images/default-banner.jpg'" />
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <button id="btn-bottom-slide-1" type="button" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="form-group">
+                                <label>Đường dẫn</label>
+                                <input id="ipt-bottom-slide-1" name="Title" type="text" class="form-control" placeholder="Đường dẫn chương trình">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        @*2 Hình ảnh bên hông*@
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Hình ảnh quảng cáo 2 bên</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between align-self-center mb-4">
+                            <h4 class="header-title ">Hình ảnh bên trái <span class="text-danger font-12">( 150x550 )</span></h4>
+                            <div class="custom-control d-flex flex-row align-self-center">
+                                <p class="text-primary m-0 mr-1">Cho phép hiển thị</p>
+                                <input id="ipt-check-show-left" class="mt-auto mb-auto" type="checkbox">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <img id="img-banner-left" src="/images/default-bannerads.jpg" class="img-auto-size" style="width: 150px;height: 550px;object-fit:cover;" onerror="this.src='/images/default-bannerads.jpg'">
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <button id="btn-img-advertise-left" type="button" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <div class="form-group">
+                                    <label>Đường dẫn</label>
+                                    <input id="ipt-friendly-url-left" name="Title" type="text" class="form-control" placeholder="Đường dẫn chương trình">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Hình ảnh quảng cáo 2 bên</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-row justify-content-between align-self-center mb-4">
+                            <h4 class="header-title ">Hình ảnh bên phải <span class="text-danger font-12">( 150x550 )</span></h4>
+
+                            <div class="custom-control d-flex flex-row align-self-center">
+                                <p class="text-primary m-0 mr-1">Cho phép hiển thị</p>
+                                <input id="ipt-check-show-right" class="mt-auto mb-auto" type="checkbox">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <img id="img-banner-right" src="/images/default-bannerads.jpg" class="img-auto-size" style="width: 150px;height: 550px;object-fit:cover;" onerror="this.src='/images/default-bannerads.jpg'">
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <button id="btn-img-advertise-right" type="button" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <div class="form-group">
+                                    <label>Đường dẫn</label>
+                                    <input id="ipt-friendly-url-right" name="Title" type="text" class="form-control" placeholder="Đường dẫn chương trình">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button onclick="UpdateBannerAds()" type="button" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-check font-16 mr-1"></i>Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/iotsoftvn/js_file_manager.js"></script>
+    <script src="~/iotsoftvn/PromotionAndAds/banner.js"></script>
+}

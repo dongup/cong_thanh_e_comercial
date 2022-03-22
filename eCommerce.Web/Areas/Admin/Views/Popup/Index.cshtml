@@ -1,0 +1,217 @@
+﻿
+@{
+    ViewData["Title"] = "TÙY CHỈNH POPUP QUẢNG CÁO";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <button id="openModalPopup" type="button" class="btn btn-primary"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm mới banner</button>
+                </div>
+                <h4 class="page-title">Tùy chỉnh banner quảng cáo</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-aside-left p-0">
+                        <button onclick="reloadPagination()" type="button" class="btn btn-block btn-primary"><i class="mdi mdi-refresh font-16 mr-1"></i>Làm mới dữ liệu</button>
+
+                    </div>
+                    <div class="page-aside-right">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-centered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center px-w-50">#</th>
+                                        <th>Ảnh</th>
+                                        <th>Link liên kết</th>
+                                        <th class="text-center px-w-50">Hiển Thị</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody" class="cursor-pointer"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("AddPartial")
+@await Html.PartialAsync("EditPartial")
+
+
+
+@section Scripts {
+    <script src="~/iotsoftvn/js_file_manager.js"></script>
+    <script>
+        $(function () {
+            reloadPagination();
+            $("#close_btn").attr('onclick', 'closeModalPopup()');
+            $("#close_").attr('onclick', 'closeModalPopup()');
+            $("#openModalPopup").attr('onclick', 'opeModalPopup()');
+            INIT_FILE_MANAGE('#btn-upload-add', function (result) {
+                let fileImg = ROOT_URL + result.FilePath
+                Image_add = result
+                $("#img-popup-add").attr('src', fileImg);
+            });
+            INIT_FILE_MANAGE('#btn-upload-edit', function (result) {
+                let fileImg = ROOT_URL + result.FilePath
+                Image_edit = result.Id
+                $("#img-popup-edit").attr('src', fileImg);
+            });
+
+            INIT_FILE_MANAGE('#btn-upload-add-thumbnail', function (result) {
+                let fileImg = ROOT_URL + result.FilePath
+                $("#img-popup-add-thumbnail").attr('src', fileImg);
+            });
+
+            INIT_FILE_MANAGE('#btn-upload-edit-thumbnail', function (result) {
+                let fileImg = ROOT_URL + result.FilePath
+                $("#img-popup-edit-thumbnail").attr('src', fileImg);
+            });
+        })
+        $('#form_id, #form-edit').on('submit', function (e) { e.preventDefault();})
+        var Image_add = "";
+        var Image_edit = "";
+        //search
+        $("#ipt-text-search").keyup(function () {
+            delay(function () {
+                reloadPagination();
+            }, 250);
+        });
+        //openModal
+        function opeModalPopup() {
+            showModal("#modal-add-popup")
+        }
+        //closeModalPopup
+        function closeModalPopup() {
+            $("#img-popup-add").attr('src', '/images/default-image.png');
+        }
+        /*Load data*/
+        function reloadPagination() {
+            let key = $("#ipt-text-search").val();
+            ajaxGet("Popup?keyword=''", {}, function (res) {
+
+                if (res.IsSuccess) {
+                    let data = res.Result
+                    let html = '';
+                    $.each(data, function (index, item) {
+                        html += `
+                                <tr onclick="openModalEdit(${item.Id})">
+                                    <td class="text-center">${index + 1}</td>
+                                    <td><img width="120" height="60" src="${ROOT_URL + item.Image.FilePath}" /></td>
+                                    <td>${(item.Link).slice(0, 40) + '...'}</td>
+                                    <td class="text-center">${item.IsShow ? '<i class="mdi mdi-18px mdi-check-circle text-primary"></i>' : ''}</td>
+                                <tr>
+                            `;
+                    })
+
+                    let $table = $("#tableBody");
+                    if (html == '') {
+                        $table.html(htmlEmptyTable(5));
+                    } else {
+                        $table.html(html)
+                    }
+                } else {
+                    alertify.alert(res.Message);
+                }
+            })
+        }
+        /*Add*/
+        function addPopup() {
+            let box = $("#check-tool-add");
+            let isBox = box.is(':checked');
+            let title = $("#title").val();
+            let subtitle = $("#subtitle").val();
+            let link = $("#link").val();
+            var datas = {
+                ImageId: Image_add.Id,
+                Link: link,
+                BannerNgang: $('#img-popup-add-thumbnail').attr('src').slice(1, $('#img-popup-add-thumbnail').attr('src').length),
+                Title: title,
+                SubTitle: subtitle,
+                IsShow: isBox
+            }
+            ajaxPost("Popup", datas, function (res) {
+                if (res.IsSuccess) {
+                    reloadPagination();
+                    $("#img-popup-add").attr('src', '/images/default-image.png');
+                    $('#form_id').trigger("reset");
+                    hideModal('#modal-add-popup')
+                } else {
+                    alertify.alert(res.Message)
+                }
+            })
+
+        }
+        /*Modal Edit*/
+        function openModalEdit(id) {
+            $('#modal-edit-popup').find('input').val('');
+            ajaxGet(`Popup/${id}`, {}, function (res) {
+                if (res.IsSuccess) {
+                    var data = res.Result
+                    Image_edit = data.Image.Id
+                    $("#img-popup-edit").attr('src', ROOT_URL + data.Image.FilePath)
+                    $("#title-edit").val(data.Title)
+                    $("#subtitle-edit").val(data.SubTitle)
+                    $("#link-edit").val(data.Link)
+                    $("#img-popup-edit-thumbnail").attr('src',"/"+data.BannerNgang)
+                    $("#check-tool-edit").attr('checked', data.IsShow)
+                    $("#btn-delete-branch").attr('onclick', `detelePopup(${id})`);
+                    $("#btn-edit-branch").attr('onclick', `updatePopup(${id})`);
+                    showModal('#modal-edit-popup');
+                } else {
+                    alertify.alert(res.Message)
+                }
+            })
+        }
+        /*Update*/
+        function updatePopup(id) {
+            let box = $("#check-tool-edit");
+            let isBox = box.is(':checked');
+            let title = $("#title-edit").val();
+            let subtitle = $("#subtitle-edit").val();
+            let link = $("#link-edit").val();
+            var data = {
+                ImageId: Image_edit,
+                Link: link,
+                Title: title,
+                BannerNgang: $('#img-popup-edit-thumbnail').attr('src').slice(1, $('#img-popup-edit-thumbnail').attr('src').length),
+                SubTitle: subtitle,
+                IsShow: isBox
+            }
+            ajaxPut(`Popup/${id}`, data, function (res) {
+                if (res.IsSuccess) {
+                    alertify.success("Cập Nhật Thành Công")
+                    reloadPagination()
+                    hideModal("#modal-edit-popup")
+                }
+                else {
+                    alertify.alert(res.Message)
+                }
+            })
+
+        }
+        /*detele*/
+        function detelePopup(id) {
+            alertify.confirm("Bạn có chắc xóa Popup này?", function () {
+                ajaxDelete(`Popup/${id}`, function (res) {
+                    if (res.IsSuccess) {
+                        reloadPagination()
+                        hideModal('#modal-edit-popup');
+                    } else {
+                        alertify.alert(res.Message);
+                    }
+                })
+            });
+        }
+    </script>
+}

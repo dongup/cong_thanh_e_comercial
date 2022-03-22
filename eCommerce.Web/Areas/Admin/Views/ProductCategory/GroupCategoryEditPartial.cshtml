@@ -1,0 +1,53 @@
+﻿<!--  Modal content for the Large example -->
+<div class="modal fade" id="modal-group-edit">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="form-group-edit">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tạo danh mục</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group mb-3 px-2">
+                            <label>Tên nhóm danh mục<span class="text-danger"> &nbsp;* </span></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="ipt-name-group-edit">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group mb-3 px-2">
+                            <label>Chọn danh mục<small class="text-danger">&nbsp;&nbsp; Lưu ý: 1 danh mục sản phẩm chỉ đk sử dụng cho 1 nhóm</small></label>
+                            <div class="input-group">
+                                <select id="sl-group-edit" class="select2 form-control select2-multiple" data-toggle="select" multiple="multiple" data-placeholder="Choose ...">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group mb-3 col-md-12">
+                            <label>Biểu tượng</label>
+                            <div class="input-group ">
+                                <img src="/images/ic_arrow_right.png" id="img-icon-group-edit" style="max-width:50px;" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12 px-2">
+                            <label>Mô tả</label>
+                            <textarea type="text" rows="2" id="ipt-note-group-edit" class="form-control" placeholder="Nhập mô tả"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-group-delete" type="button" class="btn btn-danger m-w-100 mr-auto ml-1"><i class="mdi mdi-trash-can mr-1"></i>Xoá</button>
+                    <button type="button" class="btn btn-light m-w-100" data-dismiss="modal"><i class="mdi mdi-block-helper mr-1"></i>Đóng</button>
+                    <button id="btn-edit-branch" type="submit" class="btn btn-primary ml-1"><i class="mdi mdi-check mr-1"></i>Cập nhật</button>
+
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

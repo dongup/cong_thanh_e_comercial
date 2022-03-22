@@ -1,0 +1,37 @@
+﻿<div id="modal-edit" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="standard-modalLabel">Chỉnh sửa thuộc tính</h4>
+                <button onclick="resetInput()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Chọn danh mục <span class="text-danger">*</span></label>
+                            <select id="select-categories-properties-edit" class="form-control" data-toggle="select-no-search">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tên thuộc tính <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Nhập tên thuộc tính" id="proper-edit" autocomplete="off" />
+                        </div>
+                        <div class="form-group">
+                            <label>Tên giá trị thuộc tính</label>
+                            <input id="ipt-value-edit" type="text" class="form-control" placeholder="Nhập tên giá trị thuộc tính" autocomplete="off" />
+                        </div>
+                        <div class="col-md-12">
+                            <div id="div-span-value-edit" class="form-group"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-branch" type="button" class="btn btn-danger m-w-100 mr-auto ml-1"><i class="mdi mdi-trash-can mr-1"></i>Xoá</button>
+                <button onclick="resetInput()" id="btn-close-edit" type="button" class="btn btn-light m-w-100" data-dismiss="modal"><i class="mdi mdi-block-helper mr-1"></i>Đóng</button>
+                <button id="btn-edit-branch" type="button" class="btn btn-primary ml-1"><i class="mdi mdi-check mr-1"></i>Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>

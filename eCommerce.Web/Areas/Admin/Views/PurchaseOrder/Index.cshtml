@@ -1,0 +1,329 @@
+﻿@{
+    ViewData["Title"] = "ĐƠN ĐẶT HÀNG";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <style>
+        .text-TailTruncation {
+            white-space: nowrap;
+            width: 350px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #html_histories > ul, li {
+            list-style: none;
+            padding: 0;
+        }
+
+        #html_histories > .wrapper {
+            /*background: #eaf6ff;*/
+            padding: 2rem;
+            border-radius: 15px;
+        }
+        #html_histories > h1 {
+            font-size: 1.1rem;
+            font-family: sans-serif;
+        }
+        #html_histories > .sessions {
+            margin-top: 2rem;
+            border-radius: 12px;
+            position: relative;
+        }
+        .item-timeline {
+            padding-bottom: 1.5rem;
+            border-left: 1px solid #abaaed;
+            position: relative;
+            padding-left: 20px;
+            margin-left: 10px;
+        }
+
+            .item-timeline:last-child {
+                border: 0px;
+                padding-bottom: 0;
+            }
+
+            .item-timeline:before {
+                content: '';
+                width: 15px;
+                height: 15px;
+                background: white;
+                border: 1px solid #4e5ed3;
+                box-shadow: 3px 3px 0px #bab5f8;
+                box-shadow: 3px 3px 0px #bab5f8;
+                border-radius: 50%;
+                position: absolute;
+                left: -10px;
+                top: 0px;
+            }
+
+        #html_histories > .time {
+            color: #2a2839;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        @@media screen and (min-width: 601px) {
+            #html_histories > .time {
+                font-size: 0.9rem;
+            }
+        }
+
+        @@media screen and (max-width: 600px) {
+            #html_histories > .time {
+                margin-bottom: 0.3rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        #html_histories > p {
+            color: #4f4f4f;
+            font-family: sans-serif;
+            line-height: 1.5;
+            margin-top: 0.4rem;
+        }
+
+        @@media screen and (max-width: 600px) {
+            #html_histories > p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Đơn đặt hàng</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-aside-left p-0">
+                        <button onclick="reloadPagination()" id="resetNew()" type="button" class="btn btn-block btn-primary"><i class="mdi mdi-refresh font-16 mr-1"></i>Làm mới dữ liệu</button>
+                        <div class="mt-4">
+                            <h5 class="text-primary">Tìm kiếm</h5>
+                            <div class="form-group">
+                                <input id="ipt-text-search" type="text" class="form-control" placeholder="Tìm số điện thoại,mã đơn hàng, tên khách hàng..." autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h5 class="text-primary">Thời gian đặt hàng</h5>
+                            <div class="form-group">
+                                <input id="ipt-date-search" type="text" class="form-control" placeholder="Chọn ngày..." autocomplete="off" data-toggle="date-range-picker">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h5 class="text-primary">Trạng thái</h5>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" name="status" value="all" class="custom-control-input order-status" id="status-all" checked data-value="0">
+                                    <label class="custom-control-label" for="status-all">Tất cả</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" name="status" value="pen" class="custom-control-input order-status" id="status-pending" data-value="1">
+                                    <label class="custom-control-label" for="status-pending">Chờ xác nhận</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" name="status" value="app" class="custom-control-input order-status" id="status-approved" data-value="2">
+                                    <label class="custom-control-label" for="status-approved">Đã xác nhận đơn hàng</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" name="status" value="app" class="custom-control-input order-status" id="status-completed" data-value="3">
+                                    <label class="custom-control-label" for="status-completed">Hoàn thành</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" name="status" value="cancel" class="custom-control-input order-status" id="status-cancel" data-value="4">
+                                    <label class="custom-control-label" for="status-cancel">Đã hủy</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="mt-2">
+                            <h5 class="text-primary">Số đơn hàng hiển thị</h5>
+                            <div class="form-group">
+                                <select id="sel-record-search" class="form-control" data-toggle="select-no-search">
+                                    <option value="20">20 đơn hàng</option>
+                                    <option value="30">30 đơn hàng</option>
+                                    <option value="50">50 đơn hàng</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-aside-right">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-centered mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="text-center">Mã đơn hàng</th>
+                                        <th>Thời gian đặt</th>
+                                        <th>Khách hàng</th>
+                                        <th>SĐT khách hàng</th>
+                                        <th>Trạng thái đơn hàng</th>
+                                        <th class="text-center">Nội dung thực hiện/ hủy</th>
+                                        <th class="text-center">Hình thức thanh toán</th>
+                                        <th class="text-right">Tổng tiền</th>
+                                        <th class="text-center px-w-50"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-po">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div id="div-pagination-info" class="col-6 mt-2"></div>
+                            <div class="col-6"><div id="div-pagination-selection" class="float-right mb-3 mt-1"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Div print -->
+<div class="d-none">
+    <div id="div-print" class="print_content container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="~/images/logo.png" height="150" />
+                    </div>
+                    <div class="col-6 pt-3">
+                        <h4 class="font-weight-bold">PHIẾU XUẤT HÀNG </h4>
+                        <p class="mb-1">Số CT: <b id="SO_CT"></b></p>
+                        <p class="mb-1">Ngày giờ in: <b id="time_print"></b></p>
+                    </div>
+                    <div class="col-6">
+                        <p class="mb-1">Đ/C: 12 CMT8, P. Thanh Bình, Tp Biên Hòa, Đồng Nai</p>
+                        <p class="mb-1">ĐT: 0251 384 6071 - 0914 196 139 CSKH : 0847.800.800</p>
+                        <p class="mb-1">Khách Hàng: <b id="customer"></b></p>
+                        <p class="mb-1">Địa Chỉ: <span id="address"></span></p>
+                    </div>
+                    <div class="col-6 text-center">
+                        <p class="mb-1">Đại diện : <b>0948628717</b></p>
+                        <p class="mb-1">Kho xuất : <b>Kho bán lẻ</b></p>
+                        <p class="mb-1">Thời gian mua : <span id="time_mua_"></span></p>
+
+                    </div>
+                    <div class="col-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="px-w-50 text-center">STT</th>
+                                    <th class="text-center">TÊN HÀNG HÓA VÀ DỊCH VỤ</th>
+                                    <th class="text-center">HẠN BH</th>
+                                    <th class="text-center">ĐƠN VỊ TÍNH</th>
+                                    <th class="text-center">SỐ LƯỢNG</th>
+                                    <th class="text-center">ĐƠN GIÁ</th>
+                                    <th class="text-center">THÀNH TIỀN</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl_body">
+                            </tbody>
+                            <tfoot id="tbl_foot">
+
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="col-12">
+                        <i id="tienbangchu"></i>
+                    </div>
+                    <div class="col-6">
+                        <p>
+                            TIỀN HÀNG (VNĐ): <span id="tienhang"></span>
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p>
+                            Số tài khoản: 042.100.395.6417
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p>
+                            NỢ TRƯỚC (VNĐ): 0
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p>
+                            Ngân hàng: Vietcombank
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p>
+                            THANH TOÁN (VNĐ): <span id="thanhtoan"></span>
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p>
+                            Chi nhánh: HÙNG VƯƠNG, Q.10, TP HCM
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p class="font-weight-bold">
+                            TIỀN CÒN NỢ (VNĐ): 0
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <p>
+                            Tên TK: PHẠM NGUYỄN HUỲNH ĐIỆP
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        Ghi Chú : <b>QUÝ KHÁCH VUI LÒNG GIỮ PHIẾU ĐỂ ĐƯỢC BẢO HÀNH SẢN PHẨM</b>
+                    </div>
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-3 text-center">
+                                <b>
+                                    Người mua hàng
+                                </b>
+                                <p>
+                                    <i>(Ký, họ tên)</i>
+                                </p>
+                            </div>
+                            <div class="col-3 text-center">
+                                <b>
+                                    Người giao hàng
+                                </b>
+                                <p>
+                                    <i>(Ký, họ tên)</i>
+                                </p>
+                            </div>
+                            <div class="col-3 text-center">
+                                <b>
+                                    Người bán hàng
+                                </b>
+                                <p>
+                                    <i>(Ký, họ tên)</i>
+                                </p>
+                            </div>
+                            <div class="col-3 text-center">
+                                <b>
+                                    Người lập phiếu
+                                </b>
+                                <p>
+                                    <i>(Ký, họ tên)</i>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@await Html.PartialAsync("OrderDetailPartial.cshtml")
+@await Html.PartialAsync("ContentHandllPartial.cshtml")
+
+@section Scripts {
+  <script src="~/iotsoftvn/Order/js_order.js"></script>
+}

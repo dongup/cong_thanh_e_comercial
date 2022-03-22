@@ -1,0 +1,122 @@
+﻿@using eCommerce.Web.Areas.Api.Models.Posts;
+@using eCommerce.Web.Areas.Api.Controllers;
+@using eCommerce.Utils;
+@using System.Collections.Generic;
+@{
+    ViewData["Title"] = "Chi tiết tin tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    PostResponse post = (PostResponse)ViewData["post"];
+    List<string> tags = (List<string>)ViewData["tags"];
+    List<PostResponse> relatedPosts = (List<PostResponse>)ViewData["relatedPosts"];
+    List<PostCategoryResponse> postCategories = (List<PostCategoryResponse>)ViewData["postCategories"];
+}
+@section Styles{
+    <style>
+        .panel-body ul, ol {
+            margin: unset;
+        }
+
+        .panel-body ul {
+            list-style: disc !important;
+        }
+
+        .panel-body ol {
+            list-style: decimal !important;
+        }
+
+        .img-post-detail {
+            max-height: 500px;
+        }
+       
+    </style>
+}
+@section meta{
+    <meta name="description" content="@Html.Raw(post.SubTitle)" title="@Html.Raw(post.Title)" />
+    <meta property="og:url" content="@Html.Raw(post.FriendlyUrl)" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="@Html.Raw(post.Title)" />
+    <meta property="og:description" content="@Html.Raw(post.SubTitle)" />
+    <meta property="og:image" content="@Html.Encode(String.Format("{0}://{1}/{2}", Html.ViewContext.HttpContext.Request.Scheme, Html.ViewContext.HttpContext.Request.Host,post.Banner.FilePath))" />
+}
+
+<div class="osahan-breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/@post.PostCategory.FriendlyUrl">@post.PostCategory.FriendlyUrl</a></li>
+                    <li class="breadcrumb-item active"><a href="@post.FriendlyUrl">@post.FriendlyUrl</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="blog_page pt-0">
+    <div class="container bg-white p-t-10">
+        <div class="row">
+            <div class="col-lg-9 col-md-9">
+                <div class="panel blog-box">
+                    <div class="panel-image border-0 shadow-none rounded-0">
+                        <img loading="lazy" class="img-responsive" onerror="this.src='/images/default-image.png'" src="@post.Banner.FilePath" style="object-fit: cover;width: 100%; max-height:500px;">
+                    </div>
+                    <div class="panel-body">
+                        <h2>@post.Title</h2>
+                        <p>@post.CreatedDate</p>
+                        <div class="m-t-4">@Html.Raw(post.SubTitle)</div>
+                        <div style="overflow-x:scroll" class="m-t-4">@Html.Raw(post.Content)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div class="widget blog-sidebar mb18">
+                    <div class="sidebar-widget">
+                        <h5>Danh mục</h5>
+                        <ul class="widget-tag">
+                            @foreach (var item in postCategories)
+                            {
+                                <li><a href="@item.FriendlyUrl"><i class="icofont icofont-square-right"></i> @item.Name</a></li>
+                            }
+                        </ul>
+                    </div>
+                    @*<div class="sidebar-widget">
+                            <h5>Từ khóa</h5>
+                            <ul class="widget-tag-btn">
+                                @foreach (var item in tags)
+                                {
+                                    <li><a href="@item"><i class="icofont icofont-square-right"></i> @item</a></li>
+                                }
+                            </ul>
+                        </div>*@
+                </div>
+            </div>
+            <div class="col-md-12">
+                <section>
+                    <div class="section-header">
+                        <h5 class="heading-design-h5">Tin cùng chuyên mục</h5>
+                    </div>
+                    <div class="row ml-0 mr-0">
+                        @foreach (var item in relatedPosts)
+                        {
+                            <div class="col-md-4 cursor-pointer p-1">
+                                <a href="@item.FriendlyUrl">
+                                    <div class="news-item product-item-list news-item-list">
+                                        <div class="product-item-image news-item-image">
+                                            <img loading="lazy" onerror="this.src='/images/default-image.png'" class="card-img-top img-fluid"
+                                                 src="@item.Banner.FilePath" style="object-fit: cover;">
+                                        </div>
+                                        <div class="product-item-body">
+                                            <h4 class="card-title">@item.Title</h4>
+                                            <p class="card-desc text-muted">@item.PostCategory.Name</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>

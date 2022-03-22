@@ -1,0 +1,674 @@
+﻿
+@{
+    ViewData["Title"] = "CẬP NHẬT CHƯƠNG TRÌNH KHUYẾN MÃI";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .table td, .table th {
+            padding: 0.2rem 0.5rem;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+
+        td.fitwidth {
+            width: 1px;
+            white-space: nowrap;
+        }
+    </style>
+}<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="/admin/promotion" class="btn btn-primary"><i class="mdi mdi-arrow-left font-16 mr-1"></i>Trở về trang chương trình</a>
+                </div>
+                <h4 class="page-title">Thêm mới chương trình khuyến mãi</h4>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4">Hình đại diện <span class="text-danger">*</span></h4>
+                    <div class="row">
+                        <div class="col-md-12 container-image">
+                            <img id="img-banner" class="img-auto-size" />
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <button id="btn-banner" type="button" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4">Thông tin</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Tên chương trình khuyến mãi <span class="text-danger">*</span></label>
+                                <input id="ipt-name" type="text" name="Title" class="form-control" placeholder="" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>URL chương trình khuyến mãi <span class="text-danger">*</span></label>
+                                <input id="ipt-url" type="text" name="FiendlyUrl" class="form-control" placeholder="" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Số dòng hiển thị <span class="text-danger">*</span></label>
+                                <input id="ipt-row" type="number" name="FiendlyUrl" class="form-control" placeholder="" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Thứ tự sắp xếp <span class="text-danger">*</span></label>
+                                <input id="ipt-priority" type="number" name="Priority" class="form-control" placeholder="" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Mô tả</label>
+                                <textarea id="ipt-desc" type="text" name="Description" class="form-control" placeholder="" rows="8"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <label>Ngày bắt đầu <span class="text-danger">*</span></label>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <input id="dtpk-start" name="FromDate" type="text" class="form-control" data-toggle="datepicker" placeholder="" />
+                                </div>
+                                <div class="col-md-5">
+                                    <input id="time-start" type="text" class="form-control" data-toggle="timepicker" value="12:00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <label>Ngày kết thúc <span class="text-danger">*</span></label>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <input id="dtpk-end" name="EndDate" type="text" class="form-control" data-toggle="datepicker" placeholder="" />
+                                </div>
+                                <div class="col-md-5">
+                                    <input id="time-end" type="text" class="form-control" data-toggle="timepicker" value="12:00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <div class="form-group">
+                                <label style="width: 100%">Màu nền <i id="ic-back-ground" class="mdi mdi-square float-right" style="color: white"></i></label>
+                                <input id="ipt-back-ground" type="color" class="form-control" style="padding: 0px">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <div class="form-group">
+                                <label style="width: 100%">Màu viền <i id="ic-back-ground" class="mdi mdi-square float-right" style="color: white"></i></label>
+                                <input id="ipt-border-ground" type="color" class="form-control" style="padding: 0px">
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="form-group">
+                                <label>
+                                    Hiển thị  Sticker
+                                    <input id="cb-sticker" type="checkbox" value="" class="form-check-inline" />
+                                </label><br />
+                                <button id="btn-sticker" type="button" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Chọn Sticker</button>
+                            </div>
+                            <div>
+                                <img id="img-sticker" class="img-fluid" src="#" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="form-group">
+                                <label>Ghi chú</label>
+                                <textarea id="ipt-note" type="text" name="Note" class="form-control" placeholder=""></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-4">
+                        <span>Giảm giá</span>
+                        <button type="button" onclick="applyConfig()" class="btn-sm float-right btn btn-primary btn-sm"><i class="mdi mdi-check-bold font-16 mr-1"></i>Áp dụng cho tất cả sản phẩm</button>
+                    </h4>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Giảm giá theo</label>
+                                <select id="slt-sale-by" name="SaleBy" class="form-control px-w-100" data-toggle="select-no-search">
+                                    <option value="1">Tiền mặt</option>
+                                    <option value="2">Phần trăm</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2" id="div-sale-money">
+                            <div class="form-group">
+                                <label>Số tiền giảm </label>
+                                <div class="input-group mb-3">
+                                    <input id="ipt-sale-quantity" value="0"
+                                           type="text" class="form-control text-right d-inline px-w-150" data-toggle="autonumeric-money" placeholder="" aria-describedby="basic-addon2" />đ
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 d-none" id="div-sale-percent">
+                            <div class="form-group">
+                                <label>Phần trăm giảm (%)</label>
+                                <div class="input-group mb-3">
+                                    <input id="ipt-sale-percent" value="0"
+                                           type="number" max="100" min="0" class="form-control d-inline px-w-150 text-right" placeholder="" aria-describedby="basic-addon2" />
+                                    <div class="input-group-append">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>
+                                    Giảm tối đa
+                                    <i class="mdi mdi-information-outline text-primary"
+                                       data-toggle="tooltip" title="Số tiền giảm giá tối đa đối với hình thức giảm giá theo phần trăm, để bằng 0 nếu bạn không muốn áp dụng giá giảm tối đa."></i>
+                                </label>
+                                <div>
+                                    <input id="ipt-max-sale"
+                                           data-toggle="autonumeric-money" class="form-control px-w-150 d-inline"
+                                           type="text" value="0" />
+                                    <span>đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label>Chọn sản phẩm từ nhóm</label>
+                        <select id="sl-group" multiple class="form-group" data-toggle="select"></select>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="header-title mt-3 mb-2">Tất cả sản phẩm </h4>
+                                    <input id="ipt-text-search-root" type="text" class="form-control" placeholder="Tìm theo tên, mã sản phẩm..." autocomplete="off">
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 max-500">
+                                            <table class="table-hover table-centered table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center px-w-50">#</th>
+                                                        <th>Mã sản phẩm</th>
+                                                        <th>Tên </th>
+                                                        <th>Tồn kho </th>
+                                                        <th class="text-right">Giá bán lẻ</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                        <div class="col-12 max-500" style="height:600px;overflow:auto;">
+                                            <table class="table-hover table-centered table">
+                                                    <thead class="d-none">
+                                                        <tr>
+                                                            <th class="text-center px-w-50">#</th>
+                                                            <th>Mã sản phẩm</th>
+                                                            <th>Tên </th>
+                                                            <th>Tồn kho </th>
+                                                            <th class="text-right">Giá bán lẻ</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                <tbody id="tbl-root">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="header-title mt-3 mb-2">Sản phẩm đã chọn</h4>
+                                    <input id="ipt-text-search-selected" type="text" class="form-control" placeholder="Tìm theo tên, mã sản phẩm..." autocomplete="off">
+                                </div>
+                                <div class="card-body">
+                                    <div class="col-12  max-500">
+                                        <table class="table-hover table-centered table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center px-w-50">#</th>
+                                                    <th>Mã sản phẩm</th>
+                                                    <th>Tên </th>
+                                                    <th>Tồn kho </th>
+                                                    <th>Giá bán lẻ</th>
+                                                    <th>Giảm giá</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="col-12 max-500" style="height:600px;overflow:auto;">
+                                        <table class="table-hover table-centered table">
+                                            <tbody id="tbl-selected">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row d-none">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-centered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center px-w-50">#</th>
+                                                <th>Hình ảnh</th>
+                                                <th class="text-left">Tên sản phẩm</th>
+                                                <th class="text-right">Giá niêm yết</th>
+                                                <th class="text-right">Số tiền giảm</th>
+                                                <th class="text-right">Giá khuyến mãi</th>
+                                                <th class="text-center px-w-50"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbl-products">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" onclick="postPromotion()" class="btn btn-primary float-right mt-2">
+                <i class="mdi mdi-plus-circle font-16 mr-1 gly"></i>Lưu chương trình khuyến mãi
+            </button>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/iotsoftvn/js_file_manager.js"></script>
+    <script src="~/iotsoftvn/PromotionAndAds/js_promo_edit.js"></script>
+
+    @*<script>
+            var isBusy = false;
+            var promotionId = 0;
+
+            var newPromoProduct = {
+                ProductId: 0,
+                PercentDiscount: 0,
+                DiscountQuantity: 0,
+                MaximumDiscount: 0
+            }
+
+            var newPromotion = {
+                PromotionProductRequests: []
+            };
+
+            var selectProduct = {};
+            var oldQuantity = 0;
+
+            var $tblProduct = $("#tbl-products");
+            var $sltAddProduct = $("#slt-add-product");
+            var $spAddSalePrice = $("#sp-add-sale-price");
+            var $iptAddSaleQuantity = $("#ipt-add-sale-quantity");
+            var $spAddPrice = $("#sp-add-price");
+            var $sltSaleBy = $("#slt-sale-by");
+            var $spUnit = $(".sp-unit");
+            var $iptSaleQuantity = $("#ipt-sale-quantity");
+            var $iptMaxSale = $("#ipt-max-sale");
+            var $imgAddProduct = $("#img-add-product");
+            var $iptName = $("#ipt-name");
+            var $iptUrl = $("#ipt-url");
+            var $iptDesc = $("#ipt-desc");
+            var $iptRow = $("#ipt-row");
+
+            var $dtpkStart = $("#dtpk-start");
+            var $dtpkEnd = $("#dtpk-end");
+            var $timeStart = $("#time-start");
+            var $timeEnd = $("#time-end");
+
+            var $iptBackGround = $("#ipt-back-ground");
+            var $iptNote = $("#ipt-note");
+            var $imgBanner = $('#img-banner');
+
+            //Giá tối đa thay đổi
+            $iptMaxSale.on('change', function () {
+                //Cập nhập lại giá sp mới
+                onAddQuantityChange(0, $iptAddSaleQuantity);
+                //Cập nhập lại giá sp đã thêm
+                renderProductTable();
+            })
+
+            $sltSaleBy.on('change', function () {
+                var type = $sltSaleBy.val();
+                $spUnit = $(".sp-unit");
+
+                $iptMaxSale.prop("disabled", type == 1);
+
+                $spUnit.each(function (index, item) {
+                    $(item).html(type == 1 ? 'đ' : '%');
+                })
+                //$(".ipt-quantity").each().attr('data-toggle', type == 1 ? 'autonumeric-money' : 'autonumeric');
+
+                onQuantityChange($iptSaleQuantity);
+
+                renderProductTable();
+            })
+
+            $sltAddProduct.on('change', function () {
+                selectProduct = getSelectedItem($sltAddProduct.val());
+                $spAddPrice.html(formatMoney(selectProduct.OriginPrice));
+                $spAddPrice.attr('data-value', selectProduct.OriginPrice);
+
+                var quantity = $iptAddSaleQuantity.autoNumeric('get');
+                var newPrice = getNewPrice(selectProduct.OriginPrice, quantity);
+
+                $spAddSalePrice.html(formatMoney(newPrice));
+                $spAddSalePrice.attr('data-value', newPrice);
+
+                $imgAddProduct.attr('src', selectProduct.Thumbnail);
+
+                addPromoProduct();
+            })
+
+            $(document).ready(function () {
+                INIT_FILE_MANAGE('#btn-banner', function (file) {
+                    newPromotion.Banner = file.FilePath;
+                    $imgBanner.attr('src', getImagePath(file.FilePath));
+                })
+                initSelectSearch({
+                    Element: '#slt-add-product',
+                    Url: 'product/byname',
+                    Value: 'ProductName',
+                    Id: 'Id',
+                    Placeholder: ''
+                });
+
+                var splits = window.location.href.split('/')
+                promotionId = splits[splits.length - 1];
+                loadPage();
+            });
+
+            function loadPage() {
+                ajaxGet('promotion/ById/' + promotionId, {}, function (res) {
+                    if (res.IsSuccess) {
+                        newPromotion = res.Result;
+                        newPromotion.PromotionProductRequests = res.Result.PromotionProducts;
+                        renderPage();
+                    }
+                    else {
+                        alertify.error(res.Message);
+                    }
+                });
+            }
+
+            function renderPage() {
+                $imgBanner.attr('src', ROOT_URL + newPromotion.Banner);
+                $iptName.val(newPromotion.Name);
+                $iptUrl.val(newPromotion.FriendlyUrl);
+                $iptDesc.val(newPromotion.Description);
+                $("#ipt-row").val(newPromotion.RowDisplay);
+
+                var timeStart = newPromotion.StartDate.split(' ')[0];
+                var timeEnd = newPromotion.EndDate.split(' ')[0];
+
+                var dateStart = newPromotion.StartDate.split(' ')[1];
+                var dateEnd = newPromotion.EndDate.split(' ')[1];
+
+                $timeStart.val(timeStart);
+                $timeEnd.val(timeEnd);
+
+                $dtpkStart.val(dateStart);
+                $dtpkEnd.val(dateEnd);
+
+                $iptBackGround.val(newPromotion.BackgroundColor);
+                $iptNote.val(newPromotion.Note);
+
+                $iptSaleQuantity.autoNumeric('set', newPromotion.DiscountQuantity);
+                $iptAddSaleQuantity.autoNumeric('set', newPromotion.DiscountQuantity);
+                $sltSaleBy.val(newPromotion.DiscountType).trigger('change');
+
+                $iptMaxSale.autoNumeric('set', newPromotion.MaximumDiscount);
+
+                renderProductTable();
+            }
+
+            function renderProductTable() {
+                let html = '';
+                var type = $sltSaleBy.val();
+                $("#td-new-index").html(newPromotion.PromotionProductRequests.length + 1);
+
+                $.each(newPromotion.PromotionProductRequests, function (index, item) {
+                    var newPrice = getNewPrice(item.OriginPrice, item.DiscountQuantity);
+                    item.SaleOffPrice = newPrice;
+
+                    html += `<tr id="td-${item.Id}">
+                                                            <td class="text-center">${index + 1}</td>
+                                                            <td>
+                                                                <img id="img-add-product-${item.Id}" src="${item.Thumbnail}" onerror="this.src = '/images/default-image.png'" class="mr - 2" style="width: 50px">
+                                                            </td>
+                                                            <td>${item.ProductName}</td>
+                                                            <td class="text-right" id="sp-origin-${item.Id}" data-value='${item.OriginPrice}'>${formatMoney(item.OriginPrice)}</td>
+                                                            <td class="text-right">
+                                                                <input class="px-w-150 form-control d-inline ipt-quantity text-right" name="quantity" id="ipt-sale-${item.Id}"
+                                                                        onkeyup="onAddQuantityChange(${item.Id}, this)" type="text" value="${item.DiscountQuantity}"
+                                                                        data-toggle="autonumeric-money" />
+                                                                <span class="sp-unit">${type == 1 ? 'đ' : '%'}</span>
+                                                            </td>
+                                                            <td class="px-w-200 text-right">
+                                                                <span id="sp-saleoff-${item.Id}" data-value='${item.SaleOffPrice}'>
+                                                                    ${formatMoney(item.SaleOffPrice)}
+                                                                </span>
+                                                            </td>
+                                                            <td class="text-center px-w-50">
+                                                                <i data-toggle="tooltip" title="Xóa sản phẩm"
+                                                                    onclick="removePromoProduct(${item.Id})"
+                                                                    class="mdi mdi-trash-can mdi-18px cursor-pointer text-danger"></i>
+                                                            </td>
+                                                        </tr>`;
+                    $tblProduct.html(html);
+                });
+                var $iptSaleId = $(".ipt-quantity");
+                $iptSaleId.autoNumeric('init', { aSep: ',', lZero: 'deny', wEmpty: 'zero', vMin: 0, vMax: 999999999999, aPad: false, mRound: 'A' });
+            }
+
+            function applyConfig() {
+                alertify.confirm('Áp dụng số lượng giảm cho tất cả các sản phẩm đã chọn? Những thay đổi giá giảm trước đó của bạn sẽ bị mất!', function () {
+                    var quantity = $iptSaleQuantity.autoNumeric('get');
+                    newPromotion.PromotionProductRequests.forEach(function (item, index) {
+                        item.DiscountQuantity = parseInt(quantity);
+                    });
+                    renderProductTable();
+                });
+            }
+
+            function validateQuantity(quantity) {
+                type = $sltSaleBy.val();
+                if (type == 1) {
+                    return true;
+                } else {
+                    if (quantity > 100) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+
+            //Khi thay đổi số lượng giảm chung thì thay đổi giá khuyến mãi
+            function onQuantityChange(ipt) {
+                var $this = $(ipt);
+                var quantity = $this.autoNumeric('get');
+
+                $iptAddSaleQuantity.autoNumeric('set', quantity);
+                onAddQuantityChange(0, $iptAddSaleQuantity);
+            }
+
+            //Khi thay đổi số lượng giảm thì thay đổi giá khuyến mãi
+            function onAddQuantityChange(id, ipt) {
+                var $this = $(ipt);
+                var quantity = $this.autoNumeric('get');
+
+                //if (!validateQuantity(quantity)) return;
+
+                var originPrice = 0;
+                var newPrice = 0;
+
+                if (id == 0) {
+                    originPrice = $spAddPrice.attr('data-value');
+                    newPrice = getNewPrice(originPrice, quantity);
+
+                    $spAddSalePrice.html(formatMoney(newPrice));
+                    $spAddSalePrice.attr('data-value', newPrice);
+                } else {
+                    changeSaleQuantity(id, quantity);
+                    originPrice = $('#sp-origin-' + id).attr('data-value');
+                    newPrice = getNewPrice(originPrice, quantity);
+
+                    $('#sp-saleoff-' + id).attr('data-value', newPrice);
+                    $('#sp-saleoff-' + id).html(formatMoney(newPrice));
+                }
+            }
+
+            function addPromoProduct() {
+                var id = newPromotion.PromotionProductRequests.length + 1;
+                var originPrice = $spAddPrice.attr('data-value');
+                var quantity = $iptAddSaleQuantity.autoNumeric('get');
+                var productId = $sltAddProduct.val();
+                var oldProd = newPromotion.PromotionProductRequests.find(x => x.ProductId == productId);
+
+                if (productId == 0) {
+                    alertify.error('Vui lòng chọn một sản phẩm!');
+                    return;
+                }
+                if (oldProd != undefined) {
+                    alertify.error('Sản phẩm này đã có trong danh sách, bạn vui lòng chọn sản phẩm khác!');
+                    return;
+                }
+
+                newPromoProduct = {
+                    Id: id,
+                    ProductName: $sltAddProduct.find(':selected').html(),
+                    OriginPrice: parseInt(originPrice),
+                    SaleOffPrice: parseInt($spAddSalePrice.attr('data-value')),
+                    ProductId: parseInt($sltAddProduct.val()),
+                    DiscountQuantity: parseInt(quantity),
+                    DiscountType: parseInt($sltSaleBy.val()),
+                    MaximumDiscount: parseInt($iptMaxSale.autoNumeric('get')),
+                    Thumbnail: $imgAddProduct.attr('src')
+                };
+
+                newPromotion.PromotionProductRequests.push(newPromoProduct);
+                renderProductTable();
+            }
+
+            function removePromoProduct(id) {
+                $.each(newPromotion.PromotionProductRequests, (index, item) => {
+                    if (id == item.Id) {
+                        newPromotion.PromotionProductRequests.splice(index, 1);
+                        $("#td-" + id).remove();
+                        return false;
+                    }
+                })
+            }
+
+            function getNewPrice(price, quantity) {
+                var newPrice = 0;
+                var type = $sltSaleBy.val();
+                var maxPrice = $iptMaxSale.autoNumeric('get');
+                //Giảm trực tiếp
+                if (type == 1) {
+                    newPrice = price - quantity;
+                }
+                //Giảm phần trăm
+                else {
+                    var saleOff = ((price * quantity) / 100);
+                    newPrice = price - saleOff;
+                    if (maxPrice != 0) {
+                        newPrice = saleOff > maxPrice ? price - maxPrice : newPrice;
+                    }
+                }
+                newPrice = newPrice < 0 ? 0 : newPrice;
+                return newPrice;
+            }
+
+            function bindData() {
+                newPromotion.Name = $("#ipt-name").val();
+                newPromotion.BackgroundColor = $("#ipt-back-ground").val();
+                newPromotion.Description = $("#ipt-desc").val();
+                newPromotion.DiscountQuantity = parseInt($iptSaleQuantity.autoNumeric('get'));
+                newPromotion.MaximumDiscount = parseInt($("#ipt-max-sale").autoNumeric('get'));
+                newPromotion.DiscountType = parseInt($sltSaleBy.val());
+                newPromotion.FriendlyUrl = $("#ipt-url").val();
+                newPromotion.RowDisplay = parseInt($("#ipt-row").val());
+
+                var startTime = $("#time-start").val().replace("PM", "").replace("AM", "");
+                var endTime = $("#time-end").val().replace("PM", "").replace("AM", "");
+
+                newPromotion.StartDate = startTime + " " + $("#dtpk-start").val();
+                newPromotion.EndDate = endTime + " " + $("#dtpk-end").val();
+
+                newPromotion.Note = $("#ipt-note").val();
+
+                if (newPromotion.Name == "") {
+                    alertify.alert("Vui lòng nhập tên chương trình khuyến mãi")
+                } else if (isNaN(newPromotion.RowDisplay)) {
+                    alertify.alert("Vui lòng nhập số dòng hiển thị")
+                } else if (newPromotion.RowDisplay == 0) {
+                    alertify.alert("Vui lòng nhập số dòng hiển thị lớn hơn 0")
+                } else if (!!!newPromotion.Banner) {
+                    alertify.alert("Bạn cần chọn một hình dại diện");
+                } else if (newPromotion.PromotionProductRequests.length == 0) {
+                    alertify.alert("Vui lòng chọn sản phẩm cho chương trình khuyến mãi.");
+                } else if (Date.parse(newPromotion.StartDate) > Date.parse(newPromotion.EndDate)) {
+                    alertify.alert("Thời gian chương trình khuyến mãi kết thúc không thể ngắn hơn thời gian chương trình bắt đầu");
+                } else {
+                    return true;
+                }
+            }
+
+            function postPromotion() {
+                bindData();
+                ajaxPut('promotion/' + promotionId, newPromotion, function (res) {
+                    if (res.IsSuccess) {
+                        alertify.success('Cập nhập chương trình thành công')
+                    }
+                    else {
+                        alertify.error(res.Message);
+                    }
+                });
+            }
+
+            function changeSaleQuantity(id, quantity) {
+                for (var i in newPromotion.PromotionProductRequests) {
+                    if (newPromotion.PromotionProductRequests[i].Id == id) {
+                        newPromotion.PromotionProductRequests[i].DiscountQuantity = parseInt(quantity);
+                        break;
+                    }
+                }
+            }
+
+            /*Binding event khi nhập title, tạo url friendly*/
+            $('input[name="Title"]').on('input', function (e) {
+                $('input[name="FiendlyUrl"]').val(MakeUrl($('input[name="Title"]').val()));
+            });
+        </script>*@
+}

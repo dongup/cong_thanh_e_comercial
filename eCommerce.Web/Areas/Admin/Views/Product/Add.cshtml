@@ -1,0 +1,333 @@
+﻿
+@{
+    ViewData["Title"] = "THÊM MỚI SẢN PHẨM";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .table td, .table th {
+            padding: 0.2rem 0.5rem;
+        }
+    </style>
+    <link href="~/iotsoftvn/SummernoteElfinder.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="/lib/jqueryui/themes/base/jquery-ui.css" />
+        <link rel="stylesheet" href="/lib/elfinder/css/elfinder.full.css" />
+        <link rel="stylesheet" href="/lib/elfinder/css/theme.min.css" />
+        <link rel="stylesheet" href="/lib/summernote/summernote-bs4.css" />*@
+}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="/admin/product" class="btn btn-primary"><i class="mdi mdi-arrow-left font-16 mr-1"></i>Trở về trang sản phẩm</a>
+                </div>
+                <h4 class="page-title">Thêm mới sản phẩm</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form id="form-add">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-inline-flex justify-content-between w-100  mb-4">
+                            <h4 class="header-title">Thông tin</h4>
+                            <div class="custom-control d-flex flex-row align-self-center float-right">
+                            <input id="IshowPrice" checked type="checkbox">
+                            <label for="#IshowPrice">Hiển thị giá ưu đãi</label></div>
+                        </div>
+                    
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group text-center">
+                                    <label>Hình đại diện<span class="text-danger">* (200x200)</span></label>
+                                    <br />
+                                    <img class="img-fluid" onerror="this.src='/images/default-image.png'" id="img-thumbnail-add" src="">
+                                    <button class=" btn btn-primary form-control m-w-100 mt-1" id="btn-thumbnail-product" type="button">Chọn hình đại điện</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Mã sản phẩm <span class="text-danger">*</span></label>
+                                            <input type="text" name="productCode" class="form-control" placeholder="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label>Tên sản phẩm <span class="text-danger">*</span></label>
+                                            <input type="text" name="productName" id="ipt-product-name" class="form-control" placeholder="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Danh mục <span class="text-danger">*</span></label>
+                                            <select name="CategoryId" id="sl-category" class="select2 form-control select2-multiple" data-toggle="select" multiple="multiple">
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label>Đường dẫn sản phẩm <span class="text-danger">*</span></label>
+                                            <input type="text" name="FriendUrl" id="ipt-product-url-Friendly" class="form-control" placeholder="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Thương hiệu</label>
+                                            <select class="form-control" name="BrandId" id="sl-brand" data-toggle="select"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label>Xuất xứ</label>
+                                            <input class="form-control" name="origin" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>
+                                        Hiển thị  Sticker
+                                        <input id="cb-sticker" type="checkbox" value="" class="form-check-inline" />
+                                    </label><br />
+                                    <button id="btn-sticker" type="button" class="btn btn-primary btn-sm ">Chọn Sticker</button>
+                                </div>
+                                <div>
+                                    <img id="img-sticker" style="max-height:100px;" onerror="this.src='/images/default-image.png'" class="img-fluid" src="#" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Đơn vị <span class="text-danger">*</span></label>
+                                    <input class="form-control" value="Cái" name="unit" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Số lượng tồn</label>
+                                    <input type="text" class="form-control" min="0" value="0" name="stocNumber" data-toggle="autonumeric-money" placeholder="" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Giá niêm yết</label>
+                                    <input type="text" class="form-control text-right" min="0" value="0" name="giaNiemYet" data-toggle="autonumeric-money" placeholder="" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Giá bán lẻ</label>
+                                    <input type="text" class="form-control text-right" min="0" value="0" name="giaBan" data-toggle="autonumeric-money" placeholder="" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Giá bán trả góp</label>
+                                    <input type="text" class="form-control text-right" min="0" value="0" name="InstallmentPrice" data-toggle="autonumeric-money" placeholder="" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Bảo hành</label>
+                                    <select class="form-control" name="baoHanh" data-toggle="select">
+                                        <option value="Không bảo hành">Không</option>
+                                        <option value="1 tháng">1 tháng</option>
+                                        <option value="3 tháng">3 tháng</option>
+                                        <option value="6 tháng">6 tháng</option>
+                                        <option value="12 tháng">12 tháng</option>
+                                        <option value="18 tháng">18 tháng</option>
+                                        <option value="24 tháng">24 tháng</option>
+                                        <option value="36 tháng">36 tháng</option>
+                                        <option value="48 tháng">48 tháng</option>
+                                        <option value="60 tháng">60 tháng</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Quà tặng</label>
+                                    <select class="form-control" name="IsGift" data-toggle="select">
+                                        <option value="0">Không</option>
+                                        <option value="1">Có</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Mô tả ngắn (Description SEO)</label>
+                                    <input type="text" name="Note" class="form-control" placeholder="" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Cam kết vàng</label>
+                                    <textarea type="text" rows="4" id="GoldrenCommitment" class="form-control" placeholder=""></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Đặc điểm nổi bật</label>
+                                    <textarea type="text" rows="4" id="hightlightProduct" class="form-control" placeholder=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Nội dung khuyến mãi</label>
+                                    <textarea type="text" rows="4" name="promoContent" id="promoContent" class="form-control" placeholder=""></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Hết hạn khuyến mãi</label>
+                                    <br />
+                                    <input id="dtpk-promo-deadline" value="@Model?.PromotionBranchDeadline?.GetValueOrDefault()?.Date?.ToBinary()" type="text" class="form-control" data-toggle="datepicker" placeholder="" />
+
+                                    <label>Nội dung khuyến mãi thương hiệu</label>
+                                    <textarea type="text" rows="4" name="promoBranch" id="promoBranch" class="form-control" placeholder=""></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card"> 
+            <div class="card-body">
+                <h4 class="header-title mb-4">Hình ảnh <span class="text-danger">*</span><button type="button" id="btn-img-add" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button></h4>
+                <div class="row" id="divImage">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-4">
+                    Thuộc tính
+                </h4>
+                <div class="row">
+                    <div class="col-md-4 ">
+                        <div class="form-group">
+                            <label>Danh mục thuộc tính <span class="text-danger">*</span></label>
+                            <select class="form-control float-right col-md-4" data-toggle="select-no-search" id="sl-category-property">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 ">
+                        <div class="form-group">
+                            <label>Chọn mẫu thuộc tính</label>
+                            <select class="form-control float-right col-md-4" data-toggle="select-no-search" id="sl-template">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <br />
+                        <button id="btn-property-add" type="button" class="btn-sm float-right btn btn-primary btn-sm ml-1 ">
+                            <i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm thuộc tính
+                        </button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="table-responsive mt-4">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <td class="w-25 font-18 font-weight-bold">Thuộc tính</td>
+                                        <td class=" font-18font-weight-bold" style="width:65%!important">Giá trị</td>
+                                        <td class="font-weight-bold" style="width:10%!important">
+                                            <i onclick="addPropertyRow()" style="font-size:40px!important;" class=" mdi mdi-plus cursor-pointer text-success"></i>
+                                            @* <button class="btn btn-primary btn-sm"><i onclick="addPropertyRow()" class="mdi mdi-plus mdi-18px cursor-pointer text-success font-22"></i></button>*@
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-Properties">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-4">Nội dung</h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <textarea id="editor"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <button type="button" id="btn-save" class="btn btn-primary float-right"><i class="mdi mdi-check-bold font-16 mr-1"></i>Lưu sản phẩm</button>
+    </div>
+</div>
+
+<!--  Modal thêm giá trị thuộc tính -->
+<div class="modal fade" id="modal-add-value">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-title">Tạo thuộc tính</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group mb-3" id="div-modal-property-add">
+                            <label for="ipt-value"><span class="text-danger"> &nbsp;* </span>Chọn danh mục <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <select id="sl-modal-category" class="form-control" data-toggle="select"></select>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="ipt-value"><span class="text-danger"> &nbsp;* </span><span id="modal-label"></span></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="ipt-value">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-add" type="button" class="btn btn-primary">Thêm mới</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Đóng</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div id="div-hiden-btn" style="visibility:hidden" class="col-md-12">
+    <button id="btn-hiden-upload" type="button" class="btn btn-primary btn-sm float-right"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm hình ảnh</button>
+</div>
+
+
+
+@section Scripts {
+
+    @*/el upload/*@
+    @*<script src="/lib/jqueryui/jquery-ui.min.js"></script>
+        <script src="/lib/elfinder/js/elfinder.min.js"></script>*@
+    @*<script src="/lib/summernote/summernote-bs4.js"></script>*@
+    <script src="/lib/summernote/summernote.js"></script>
+    <script src="/lib/summernote/summernote-image-attributes.js"></script>
+    <script src="/iotsoftvn/js_file_manager.js"></script>
+    <script src="/iotsoftvn/Product/product_add.js"></script>
+
+}

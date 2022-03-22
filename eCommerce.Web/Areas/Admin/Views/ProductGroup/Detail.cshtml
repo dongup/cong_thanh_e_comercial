@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewData["Title"] = "CHI TIẾT NHÓM SẢN PHẨM";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .table td, .table th {
+            padding: 0.2rem 0.5rem;
+        }
+    </style>
+}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="/admin/product-group" class="btn btn-primary"><i class="mdi mdi-arrow-left font-16 mr-1"></i>Trở về trang nhóm sản phẩm</a>
+                </div>
+                <h4 class="page-title">Chi tiết nhóm sản phẩm</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form id="form-add">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mb-4">Thông tin</h4>
+                        <div class="row">
+                            <div class="col-md-10 offset-md-1">
+
+                                <div class="form-group">
+                                    <label>Tên nhóm <span class="text-danger">*</span></label>
+                                    <input type="text" name="productName" id="ipt-name" class="form-control" placeholder="" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Đường dẫn</label>
+                                    <input type="text" name="productName" id="ipt-friendly-url" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Ghi chú</label>
+                                    <textarea type="text" name="productName" id="ipt-note" class="form-control" placeholder="">
+                                    </textarea>
+                                </div>
+                                <div class="form-group float-right">
+                                    <button class="btn btn-primary" id="btnCopyFrame"><i class="fa fa-copp"></i> Copy Iframe</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 offset-md-1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Areas/Admin/Views/Shared/SelectProduct.cshtml")
+
+    <div class="col-12">
+        <button type="button" id="btn-save" class="btn btn-primary float-right"><i class="mdi mdi-check-bold font-16 mr-1"></i>Cập nhật </button>
+    </div>
+
+    <!--  Modal tạo frame -->
+    <div class="modal fade" id="modal-iframe">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tạo IFrame</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Hiển thị slide </label>
+                                <input type="checkbox"  id="ckIsShowSlide" placeholder="" />
+                            </div>
+                            <div class="form-group ">
+                                <label>Sản phẩm mỗi dòng</label>
+                                <input id="txtItemPerRow" class="form-control" type="number" readonly value="4">
+                            </div>
+                            <div class="form-group ">
+                                <label>Số dòng hiển thị</label>
+                                <input id="txtCountRow" class="form-control" type="number" value="3" min="1" max="10">
+                            </div>
+                            <div class="form-group ">
+                                <label>Chiều rộng (px)</label>
+                                <input id="txtWidth" class="form-control" type="number" value="1440" min="1" max="1440 ">
+                            </div>
+                            <div class="form-group">
+                                <label>Chiều dài (px)</label>
+                                <input id="txtHeight" class="form-control" type="number" value="2560" min="1" max="2560 ">
+                            </div>
+                            <div class="form-group ">
+                                <label>IFrame</label>
+                                <textarea rows="5" class="form-control w-100" disabled id="txtFrameResult"> </textarea>
+                                <button onclick="CopyClipBoard()" class="btn btn-outline-primary mt-2 float-right">Copy</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+
+    </div><!-- /.modal -->
+</div>
+
+@section Scripts {
+    <script>
+    var ID = @ViewData["Id"];
+    </script>
+    <script src="~/iotsoftvn/js_select_product_base.js"></script>
+    <script src="~/iotsoftvn/Product/product_group_detail.js"></script>
+
+
+}

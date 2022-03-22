@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\IOT_PUBLISH\DMCT</_PublishTargetUrl>
+    <History>True|2022-03-18T04:17:21.7899673Z;False|2022-03-18T11:14:07.2072013+07:00;True|2022-03-07T11:43:27.8988466+07:00;False|2022-03-07T11:40:53.3532450+07:00;False|2022-03-07T11:39:52.0951507+07:00;True|2022-03-07T10:49:08.3961447+07:00;True|2022-02-26T17:04:04.0082153+07:00;False|2022-02-26T17:02:46.9136375+07:00;False|2022-02-26T17:00:51.8336307+07:00;True|2022-02-26T16:34:44.6154562+07:00;True|2022-02-22T17:33:24.7732956+07:00;True|2022-02-16T12:30:56.3017127+07:00;True|2022-02-12T15:41:09.8411404+07:00;True|2022-01-24T10:17:43.5797062+07:00;False|2022-01-24T10:16:59.6443280+07:00;False|2022-01-24T10:16:24.2459242+07:00;False|2022-01-24T10:15:46.2885790+07:00;False|2022-01-24T10:14:35.8253646+07:00;True|2022-01-24T09:32:17.3915144+07:00;True|2022-01-24T09:26:45.5208056+07:00;False|2022-01-03T11:12:26.0471670+07:00;True|2021-11-03T11:52:53.9022007+07:00;False|2021-11-03T11:49:20.7271328+07:00;False|2021-11-03T11:44:49.1695141+07:00;True|2021-10-21T10:04:31.1549848+07:00;False|2021-10-21T10:03:19.7191905+07:00;True|2021-10-21T09:35:34.3794859+07:00;</History>
+  </PropertyGroup>
+</Project>

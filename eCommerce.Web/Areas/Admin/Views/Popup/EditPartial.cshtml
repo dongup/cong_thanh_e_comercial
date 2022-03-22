@@ -1,0 +1,65 @@
+﻿
+<div id="modal-edit-popup"  class="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modal-edit" class="modal-title">Chỉnh Sửa banner quảng cáo</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+
+                    </div>
+                    <div class="col-md-12">
+                        <form id="form-edit" class="form-horizontal mt-3">
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label class="col-form-label">Hình ảnh  <span class="text-danger">*</span></label>
+                                    <p class="text-muted">Vui lòng chọn ảnh có kích thước <b>750 x 350</b> và dung lượng <b>dưới 5 Mb</b></p>
+                                    <button id="btn-upload-edit" type="button" class="btn btn-primary"><i class="mdi mdi-image mr-1"></i>Chọn ảnh</button>
+                                </div>
+                                <div class="col-9">
+                                    <img id="img-popup-edit" class="w-100 cursor-pointer" src="/images/default-image.png" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-3">
+                                    <label class="col-form-label">Hình ảnh banner các trang con <span class="text-danger">*</span></label>
+                                    <p class="text-muted">Vui lòng chọn ảnh có kích thước <b>1800 x 350</b> và dung lượng <b> dưới 5 Mb </b></p>
+                                    <button id="btn-upload-edit-thumbnail" class="btn btn-primary"><i class="mdi mdi-image mr-1"></i>Chọn ảnh</button>
+                                </div>
+                                <div class="col-9">
+                                    <img id="img-popup-edit-thumbnail" class="w-100 cursor-pointer" src="/images/default-image.png" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="note" class="col-3 col-form-label">Link liên kết <span class="text-danger">*</span></label>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" id="link-edit" placeholder="Link" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-3">Hiển Thị</label>
+                                <div class="custom-control custom-checkbox col-9 pl-4"><input type="checkbox" class="custom-control-input todo-done" id="check-tool-edit"><label class="custom-control-label" for="check-tool-edit"></label></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-branch" type="button" class="btn btn-danger m-w-100 mr-auto ml-1"><i class="mdi mdi-trash-can mr-1"></i>Xoá</button>
+                <button id="btn-close-edit" type="button" class="btn btn-light m-w-100" data-dismiss="modal"><i class="mdi mdi-block-helper mr-1"></i>Đóng</button>
+                <button id="btn-edit-branch" type="button" class="btn btn-primary ml-1"><i class="mdi mdi-check mr-1"></i>Cập nhật</button>
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>

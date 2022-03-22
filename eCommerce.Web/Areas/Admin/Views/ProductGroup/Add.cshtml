@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "THÊM MỚI NHÓM SẢN PHẨM";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .table td, .table th {
+            padding: 0.2rem 0.5rem;
+        }
+    </style>
+}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="/admin/product-group" class="btn btn-primary"><i class="mdi mdi-arrow-left font-16 mr-1"></i>Trở về trang nhóm sản phẩm</a>
+                </div>
+                <h4 class="page-title">Thêm mới nhóm sản phẩm</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form id="form-add">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mb-4">Thông tin</h4>
+                        <div class="row">
+
+                            <div class="col-md-10 offset-md-1">
+                                <div class="form-group">
+                                    <label>Tên nhóm <span class="text-danger">*</span></label>
+                                    <input type="text" name="productName" id="ipt-name" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Đường dẫn</label>
+                                    <input type="text" name="productName" id="ipt-friendly-url" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Ghi chú </label>
+                                    <textarea type="text" name="productName" id="ipt-note" class="form-control">
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @await Html.PartialAsync("~/Areas/Admin/Views/Shared/SelectProduct.cshtml")
+
+    <div class="col-12">
+        <button type="button" id="btn-save" class="btn btn-primary float-right"><i class="mdi mdi-check-bold font-16 mr-1"></i>Thêm nhóm</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/iotsoftvn/js_select_product_base.js"></script>
+    <script src="~/iotsoftvn/Product/product_group_add.js"></script>
+
+
+}

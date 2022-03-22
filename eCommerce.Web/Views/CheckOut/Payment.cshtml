@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewData["Title"] = "Thanh toán (Bước 3)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="osahan-breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Thanh toán</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="shopping_cart_page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="checkout-step mb-40">
+                    <ul>
+                        <li><a href="/checkout"><div class="step"><div class="line"></div><div class="circle">1</div></div><span>Thông tin</span></a></li>
+                        <li><a href="/checkout/cart"><div class="step"><div class="line"></div><div class="circle">2</div></div><span>Giỏ hàng</span></a></li>
+                        <li class="active"><a href="/checkout/payment"><div class="step"><div class="line"></div><div class="circle">3</div></div><span>Thanh toán</span></a></li>
+                    </ul>
+                </div>
+            </div>
+          
+    </div>
+</section>
+
+@section scripts{
+    <script>
+
+        function checkCustomer() {
+            var customer = localStorage.getItem('customer');
+            if (customer == null || customer == 'null' || customer == '') {
+                location.href = '/checkout';
+                return;
+            }
+        }
+        $(document).ready(function () {
+            checkCustomer();
+            checkCart();
+
+            ajaxGet('Bank', null, function (res) {
+                if (res.IsSuccess) {
+                    let data = res.Result;
+                    let html = data.map(item => (`
+                                            <div class="item col-md-12 cursor-pointer">
+                                                    <div class="h-100">
+                                                        <div class="product-item bank-item" data-bank="${item.Id}" onclick="selectBank(this)">
+                                                            <div class="news-item-image" style="padding: 10px!important;">
+                                                                <a href="javascript:void(0)"><img class="card-img-top img-fluid m-atuo" style="max-width: 200px;" src="${item.Logo}" alt=""></a>
+<div class="alert alert-light bg-light text-dark border-0">
+                                                                    <p class="text-primary font-weight-bold">Chủ tài khoản: Nguyễn Văn A</p>
+                                                                    <p class="text-primary font-weight-bold">STK: 109.100.348.7066</p>
+                                                                    <p class="text-primary font-weight-bold">AN BÌNH CN ĐỒNG NAI PGD CHỢ BIÊN HÒA</p>
+</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        `));
+                    $("#divBank").html(html);
+                }
+            });
+        });
+
+        var CURRENT_BANK = 0;
+
+        // event ẩn hiện form chủ thẻ vs số thẻ khi chọn phương thứ thanh toán
+        $('input[name="PaymentType"]').on('change', function (e) {
+            if (e.target.value == '1') {
+                $('#divInfo').removeClass('d-none');
+            } else {
+                $('#divInfo').addClass('d-none');
+            }
+        });
+
+        // event togle border cho thẻ ngân hàng
+        function selectBank(e) {
+            $('.bank-item').removeClass('border border-primary ');
+            $(e).addClass('border border-primary');
+            CURRENT_BANK = $(e).attr('data-bank');
+        }
+
+        // event người dùng nhẫn xác nhận
+        function confirmClick() {
+       
+            // Khi người dùng chọn thanh toán qua thẻ ngân hàng thì phải phâp họ tên vs số Tk
+            var payment = formToObject('#form-payment');
+            let valid = false;
+            if (payment.PaymentType == 1) {
+                if (IsNullOrEmpty(payment.CardName)) {
+                    $('#lb-error-card-name').removeClass('d-none');
+                    valid = false;
+                } else {
+                    $('#lb-error-card-name').addClass('d-none');
+                    valid = true;
+                }
+
+                if (IsNullOrEmpty(payment.CardNumber)) {
+                    $('#lb-error-card-number').removeClass('d-none');
+                    valid = false;
+                } else {
+                    $('#lb-error-card-number').addClass('d-none');
+                    valid = true;
+                }
+                if (CURRENT_BANK == 0 && payment.PaymentType == 1) {
+                    $("#lb-error-bank").removeClass('d-none')
+                    return;
+                } else {
+                    if (CURRENT_BANK == 0 && payment.PaymentType == 1) {
+                        $("#lb-error-bank").addClass('d-none')
+                    }
+                }
+
+                if (!valid) {
+                    return;
+                }
+            }
+
+           
+
+        }
+
+    </script>
+
+
+}

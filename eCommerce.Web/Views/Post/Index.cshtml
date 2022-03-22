@@ -1,0 +1,121 @@
+﻿@using eCommerce.Web.Areas.Api.Models.Posts;
+@using eCommerce.Web.Areas.Api.Models.General;
+@using System.Collections.Generic;
+@{
+    ViewData["Title"] = "Tin tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    PaginationResponse<PostResponse> posts = (PaginationResponse<PostResponse>)ViewData["posts"];
+    List<string> tags = (List<string>)ViewData["tags"];
+    List<PostCategoryResponse> postCategories = (List<PostCategoryResponse>)ViewData["postCategories"];
+    PostCategoryResponse category = (PostCategoryResponse)ViewData["Category"];
+
+    int pageIndex = int.Parse(ViewData["CurrentPage"].ToString());
+    int nextIndex = int.Parse(ViewData["NextPage"].ToString());
+    int prevIndex = int.Parse(ViewData["PrevPage"].ToString());
+
+    string url = ViewData["url"].ToString();
+}
+@section Styles{
+    <style>
+     
+    </style>
+}
+<section class="blog_page pt-0">
+    <div class="container bg-white p-t-10">
+        <div class="row">
+            <div class="col-md-3 p-md-0">
+                <div class="widget blog-sidebar mb18">
+                    <div class="sidebar-widget">
+                        <h5>Danh mục</h5>
+                        <ul class="widget-tag">
+                            @foreach (var item in postCategories)
+                            {
+                                <li><a href="@item.FriendlyUrl"><i class="icofont icofont-square-right"></i> @item.Name</a></li>
+                            }
+                        </ul>
+                    </div>
+                    @*<div class="sidebar-widget">
+                            <h5>Từ khóa</h5>
+                            <ul class="widget-tag-btn">
+                                @foreach (var item in tags)
+                                {
+                                    <li><a href="@(url + "?tag="+ item)"><i class="icofont icofont-square-right"></i> @item</a></li>
+                                }
+                            </ul>
+                        </div>*@
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-header">
+                            <h5 class="heading-design-h5">@category.Name</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        @if (posts.Data.Count == 0)
+                        {
+                            <p class="justify-content-center">Hiện chưa có tin tức nào trong danh mục này</p>
+                        }
+                        <div class="row">
+                            @foreach (var item in posts.Data)
+                            {
+                                <div class="col-md-4 p-2">
+                                    <div class="panel blog-box product-item">
+                                        <div class="panel-image">
+                                            <a href="@item.FriendlyUrl">
+                                                <img onerror="this.src='/images/default-image.png'" class="img-responsive"
+                                                     style=" height: 140px; width: 100%; object-fit: fill;" src="@item.ThumbNail" alt="">
+                                            </a>
+                                            <div class="title">
+                                                <small>@item.PostCategory.Name</small>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="widget-post-info">
+                                                <h6><a class="max-line-2" style="height: 30px !important" href="@item.FriendlyUrl">@item.Title</a></h6>
+                                            </div>
+                                            @*<p class="max-line-2">
+                                                    @item.SubTitle
+                                                </p>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    @if (posts.TotalPage > 1)
+                    {
+                        <nav aria-label="Page navigation example" style="width: 100%;">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item @(pageIndex == 0 ? "disabled" : "")">
+                                    <a class="page-link" href="@(url + "?pageIndex=" + prevIndex)">
+                                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                @for (int i = 0; i < posts.TotalPage; i++)
+                                {
+                                    if (pageIndex - 1 == i)
+                                    {
+                                        <li class="page-item active"><a class="page-link" href="@(url + "?pageIndex=" + (i+1).ToString())">@(i + 1)</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link" href="@(url + "?pageIndex=" + (i+1).ToString())">@(i + 1)</a></li>
+                                    }
+                                }
+                                <li class="page-item @(pageIndex == posts.TotalPage - 1 ? "disabled" : "")">
+                                    <a class="page-link" href="@(url + "?pageIndex=" + nextIndex)">
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

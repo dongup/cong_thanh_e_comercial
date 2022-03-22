@@ -1,0 +1,198 @@
+﻿@using eCommerce.Utils;
+@using eCommerce.Web.Areas.Api.Models.Products.ProductGroup;
+@{
+    Layout = "~/Views/Shared/_LayoutIFrame.cshtml";
+    ProductGroupDetailResponse group = ViewBag.Products as ProductGroupDetailResponse;
+    int isShowSlide = (int)ViewBag.IsShowSlide;
+}
+
+@section Styles {
+    <style>
+        .promo-sticker {
+            height: 40px !important;
+            margin-top: -52px !important;
+            object-fit: fill !important;
+        }
+
+
+        .products_page_list {
+            padding: 10px;
+        }
+
+        .product-item-body p {
+            padding: 0;
+        }
+
+        .font-13 {
+            font-size: 13px;
+        }
+
+        .promo-title {
+            color: #fff;
+            padding: 10px 0 0 10px;
+        }
+    </style>
+
+
+    <style>
+        .product-item-image img {
+            height: 184px;
+        }
+
+        #collapse-brand > div > ul > li > label > input:focus {
+            border: none;
+        }
+
+        #right-bar {
+            position: relative;
+            padding-right: 15px;
+            z-index: 0;
+            width: 280px;
+            display: block;
+            overflow-y: hidden;
+            overflow-x: hidden;
+            height: auto;
+        }
+
+        .font-10 {
+            font-size: 10px;
+        }
+
+        .style-list {
+            position: static;
+        }
+
+        .product-item .card-title {
+            min-height: 44px !important;
+        }
+
+        @@media (min-width: 768px) {
+            .font-10 {
+                font-size: 13px !important;
+            }
+
+            .mobile-filter {
+                max-height: 100vh;
+                overflow-y: hidden;
+            }
+
+            .collapsing {
+                -webkit-transition: none;
+                transition: none;
+                display: none;
+            }
+        }
+
+        div.list-unset > ul, ol {
+            list-style: unset;
+        }
+
+        #carousel-banner-slider .item {
+            text-align: center !important;
+            background-color: #Ffff !important;
+        }
+
+        @@media (max-width: 768px) {
+
+            #right-bar {
+                position: fixed !important;
+                top: 0;
+                display: none;
+                padding-right: 0px !important;
+                right: 0;
+                max-width: 280px;
+                z-index: 101 !important;
+                overflow-y: scroll;
+                height: auto;
+                max-height: 100vh;
+            }
+        }
+    </style>
+}
+
+<section class="products_page">
+    <div class="container">
+        <div class="row flex-column-reverse flex-md-row">
+            <div class="col-lg-12 col-md-12">
+                <div class="row" id="carousel-product-promo">
+                    @{
+                        string cl = "col-lg-3 col-md-3 col-sm-6 col-6 p-0";
+                        if (isShowSlide == 1)
+                            cl = "";
+                    }
+                    @foreach (var item in group.Products)
+                    {
+                        <div class="@cl">
+                            <div class="product-item">
+                                @if (item.IsInstallment0Percent)
+                                {<div class='productdetail-tragop-0-small d-none d-md-block'><p>Trả góp 0%</p></div>}
+                                @if ((Global.CaculatorSaleOff(item.OriginPrice, item.SaleOffPrice) * (-1)) > 0)
+                                {
+                                    <div class="product-detail-discount-small"><p class="px-w-57">Giảm giá @(Global.CaculatorSaleOff(item.OriginPrice, item.SaleOffPrice)*(-1))%</p></div>
+                                }
+                                <div class="product-item-image">
+                                    <a href="/@(item.FriendlyUrl)" target="_blank">
+                                        <img onerror="this.src='/images/default-image.png'" class="card-img-top img-fluid" src="/@(item.ThumbNail)">
+                                    </a>
+                                    @*Hiển thị sticker*@
+                                    @if (!string.IsNullOrEmpty(item.StickerImage) && item.IsShowSticker)
+                                    {
+                                        <div>
+                                            <img onerror="this.src='/images/default-image.png'" loading="lazy" src="@item.StickerImage" class="img-fluid promo-sticker" />
+                                        </div>
+                                    }
+                                </div>
+                                <div class="product-item-body px-4 text-left">
+                                    <a href="/@(item.FriendlyUrl)" target="_blank">
+                                        @if (item.IsInstallment0Percent)
+                                        {<div class='productdetail-tragop-0-small d-block d-md-none'><p>Trả góp 0%</p></div>}
+                                        <p class="card-title text-black">@(item.ProductName)</p>
+                                        @{
+                                            var rootPrice = item.OriginPrice > item.SaleOffPrice ? @Global.FormatMoney(item.OriginPrice) : "";
+                                        }
+
+                                        @if (item.OriginPrice > item.SaleOffPrice)
+                                        {
+                                            <p> <b class="text-black">Giá chính hãng </b></p>
+                                            <p>
+                                                <span class="badge badge-orange badge-percent">@Global.CaculatorSaleOff(item.OriginPrice, item.SaleOffPrice) %</span>
+                                                <span class="product-desc-price text-left">
+                                                    @Global.FormatMoney(item.OriginPrice)
+                                                </span>
+
+                                            </p>
+                                            <p> <b class="text-black">Giá ưu đãi </b></p>
+                                            <span class="product-price text-left text-orange">@Global.FormatMoney(item.SaleOffPrice)</span>
+
+                                        }
+                                        else
+                                        {
+                                            <p> <b class="text-black">Giá ưu đãi </b></p>
+                                            <span class="product-price text-left text-orange">@Global.FormatMoney(item.SaleOffPrice)</span>
+                                        }
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+@section Scripts {
+
+    <script>
+        var isShowSlide = @isShowSlide;
+        $(document).ready(function () {
+            if (isShowSlide == 1)
+            {
+                initCarouselProduct('#carousel-product-today, #carousel-product-promo', 5, 500000);
+            }
+        });
+
+    </script>
+}

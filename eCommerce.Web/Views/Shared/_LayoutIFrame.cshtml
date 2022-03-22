@@ -1,0 +1,46 @@
+﻿@using eCommerce.Utils
+@using eCommerce.Web.Areas.Api.Models.General
+@using eCommerce.Web.Areas.Api.Models.Promotion;
+@{
+    InformationModel info = (InformationModel)Context.Items["info"];
+    BannerAdsResponse itemBannerAds = (BannerAdsResponse)Context.Items["bannerads"];
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Điện máy công thành">
+    <meta name="keywords" content="Osahan, fashion, Bootstrap4, shop, e-commerce, modern, flat style, responsive, online store, business, mobile, blog, bootstrap 4, html5, css3, jquery, js, gallery, slider, touch, creative, clean">
+    <meta name="author" content="iotsoftvn">
+    @RenderSection("meta", false)
+    <title>@ViewBag.Title - Điện máy Công Thành | Chuyên kinh doanh các mặt hàng Điện tử, Điện lạnh, Điện gia dụng</title>
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/logo-icon-trans.png">
+    <link rel="icon" type="image/png" href="/images/logo-icon-trans.png">
+    <link href="~/plugins/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/plugins/icofont/icofont.css" rel="stylesheet" />
+    <link href="~/store/css/intro.css" rel="stylesheet" />
+    <link href="~/plugins/owl-carousel/owl.carousel.css" rel="stylesheet" />
+    <link href="~/plugins/owl-carousel/owl.theme.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/iotsoftvn/utils.css" />
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" />
+    <link href="~/store/css/style.css" rel="stylesheet" />
+    <link href="~/store/css/mobile.css" rel="stylesheet" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156879419-3"></script>
+
+    @RenderSection("styles", false)
+    <!-- End Facebook Pixel Code -->
+</head>
+<body>
+
+
+    @RenderBody()
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/plugins/owl-carousel/owl.carousel.js"></script>
+    <script src="~/iotsoftvn/utils.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

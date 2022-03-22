@@ -1,0 +1,206 @@
+﻿@using eCommerce.Utils
+@using eCommerce.Web.Areas.Api.Models.Posts
+@using System.Security.Claims;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title | ĐIỆN MÁY CÔNG THÀNH - HỆ THỐNG QUẢN TRỊ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" type="image/jpg" href="~/images/logo-icon-trans.png" />
+    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/app-creative.min.css" rel="stylesheet" type="text/css" id="light-style" />
+    <link href="/plugins/alertify/css/alertify.min.css" rel="stylesheet" />
+    <link href="/plugins/nprogress/nprogress.css" rel="stylesheet" />
+    <link href="/iotsoftvn/style.css" rel="stylesheet" />
+    <link href="/iotsoftvn/utils.css" rel="stylesheet" />
+    <link href="~/iotsoftvn/SummernoteElfinder.css" rel="stylesheet" />
+    @RenderSection("styles", false)
+</head>
+<body class="loading" data-layout="topnav">
+    <div class="wrapper">
+        <div class="content-page">
+            <div class="content">
+                <div class="topnav">
+                    <div class="container-fluid fa">
+                        <nav class="navbar navbar-dark navbar-expand-lg topnav-menu">
+                            <div class="collapse navbar-collapse active" id="topnav-menu-content">
+                                <ul class="navbar-nav mr-auto">
+                                    @{ if (!User.HasClaim(ClaimTypes.Role, "Intem"))
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link cursor-pointer arrow-none" href="/admin/dashboard"><i class="mdi mdi-monitor-dashboard mr-1 font-16"></i>Tổng quan</a>
+                                            </li>
+                                        }
+                                    }
+
+                                    @{ if (User.HasClaim(ClaimTypes.Role, "Admin"))
+                                        {
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle cursor-pointer arrow-none" data-toggle="dropdown"><i class="mdi mdi-archive-outline mr-1"></i>Sản phẩm<div class="arrow-down"></div></a>
+                                                <div class="dropdown-menu">
+                                                    <a href="/admin/product" class="dropdown-item"><i class="mdi mdi-file-cabinet mr-1 font-16"></i>Quản lý sản phẩm</a>
+                                                    <a href="/admin/product-group" class="dropdown-item"><i class="mdi mdi-group mr-1 font-16"></i>Nhóm sản phẩm</a>
+                                                    <a href="/admin/product/printlabel" class="dropdown-item"><i class="mdi mdi-printer mr-1 font-16"></i>In Tem</a>
+                                                    <a href="/admin/product/syncprice" class="dropdown-item"><i class="mdi mdi-sync mr-1 font-16"></i>Đồng bộ giá - Tồn kho</a>
+                                                    <a href="/admin/product/category" class="dropdown-item"><i class="mdi mdi-image-filter-none mr-1 font-16"></i>Danh mục sản phẩm</a>
+                                                    <a href="/admin/product/properties" class="dropdown-item"><i class="mdi mdi-tag mr-1 font-16"></i>Danh mục thuộc tính</a>
+                                                    <a href="/admin/product/brand" class="dropdown-item"><i class="mdi mdi-ticket mr-1 font-16"></i>Danh mục thương hiệu</a>
+                                                    <a href="/admin/product/filter" class="dropdown-item"><i class="mdi mdi-select-search mr-1 font-16"></i>Tùy chỉnh bộ lọc</a>
+                                                    <a href="/admin/ProductPrice" class="dropdown-item"><i class="mdi mdi-chart-tree mr-1 font-16"></i>Lịch sử cập nhật giá</a>
+                                                </div>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle cursor-pointer arrow-none" data-toggle="dropdown"><i class="mdi mdi-archive-outline mr-1"></i>Sản phẩm<div class="arrow-down"></div></a>
+                                                <div class="dropdown-menu">
+                                                    <a href="/admin/product/printlabel" class="dropdown-item"><i class="mdi mdi-printer mr-1 font-16"></i>In Tem</a>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    @{ if (!User.HasClaim(ClaimTypes.Role, "Intem"))
+                                        {
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link cursor-pointer arrow-none" href="/admin/purchaseorder"><i class="mdi mdi-file-star-outline mr-1 font-16"></i>Đơn hàng<span id="sp-count-po" class="badge badge-primary mt-0">0</span></a>
+                                            </li>
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle cursor-pointer arrow-none" data-toggle="dropdown"><i class="mdi mdi-archive-outline mr-1"></i>Chương trình <div class="arrow-down"></div></a>
+                                                <div class="dropdown-menu">
+                                                    <a href="/admin/promotion" class="dropdown-item"><i class="mdi mdi-file-cabinet mr-1 font-16"></i>Chương trình khuyến mãi</a>
+                                                    <a href="/admin/promotion/installment" class="dropdown-item"><i class="mdi mdi-credit-card-multiple-outline mr-1 font-16"></i>Chương trình trả góp 0%</a>
+                                                </div>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link cursor-pointer arrow-none" href="/admin/customer"><i class="mdi mdi-account-tie mr-1 font-16"></i>Thông tin khách hàng</a>
+                                            </li>
+                                        }
+                                    }
+
+
+
+                                    @{ if (User.HasClaim(ClaimTypes.Role, "Admin"))
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link cursor-pointer arrow-none" href="/admin/post"><i class="mdi mdi-file-document-edit-outline mr-1 font-16"></i>Tin tức</a>
+                                            </li>
+                                        }
+                                    }
+                                    @{ if (!User.HasClaim(ClaimTypes.Role, "Intem"))
+                                        {
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle cursor-pointer arrow-none" data-toggle="dropdown"><i class="mdi mdi-database mr-1"></i>Hệ thống<div class="arrow-down"></div></a>
+                                                <div class="dropdown-menu">
+                                                    @*<a href="/admin/intromanager" class="dropdown-item"><i class="mdi mdi-card-text mr-1 font-16"></i>Quản lý trang giới thiệu</a>*@
+
+                                                    @{ if (User.HasClaim(ClaimTypes.Role, "Admin"))
+                                                        {
+                                                            <a href="/admin/filemanager" class="dropdown-item"><i class="mdi mdi-folder-edit-outline mr-1 font-16"></i>Quản lý tập tin</a>
+                                                            <a href="/admin/config/installmentbank" class="dropdown-item"><i class="mdi mdi-credit-card-multiple-outline mr-1 font-16"></i>Ngân hàng trả góp</a>
+                                                            @*<a href="/admin/IntroManager" class="dropdown-item"><i class="mdi mdi-picture-in-picture-top-right-outline mr-1 font-16"></i>Quản lý trang giới thiệu</a>*@
+                                                            <a href="/admin/config" class="dropdown-item"><i class="mdi mdi-tools mr-1 font-16"></i>Thiết lập hệ thống</a>
+                                                            <a href="/admin/popup" class="dropdown-item"><i class="mdi mdi-window-restore mr-1 font-16"></i>Banner quảng cáo</a>
+                                                            <a href="/admin/advertise" class="dropdown-item"><i class="mdi mdi-arrow-left-right-bold mr-1 font-16"></i>Hình ảnh quảng cáo</a>
+                                                            <a href="/admin/account" class="dropdown-item"><i class="mdi mdi-account-plus mr-1 font-16"></i>Tài khoản</a>
+                                                        }
+                                                    }
+                                                </div>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link cursor-pointer arrow-none" href="/admin/contact"><i class="mdi mdi-email-outline mr-1 font-16"></i>Liên hệ<span id="sp-count-contact" class="badge badge-primary mt-0">0</span></a>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                                <ul class="navbar-nav">
+                                    <li class="dropdown notification-list pr-2">
+                                        <a class="nav-link dropdown-toggle nav-user arrow-none mr-0 nav-user-custom cursor-pointer" data-toggle="dropdown">
+                                            <span class="account-user-avatar">
+                                                <img id="img-avatar" src="/images/default-avatar.jpg" onerror="this.onerror = null; this.src = '/images/default-avatar.jpg'" class="rounded-circle">
+                                            </span>
+                                            <span>
+                                                <span class="account-user-name" id="sp-user-name">guess</span>
+                                                <span class="account-position" id="sp-user-role">guess</span>
+                                            </span>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
+                                            <a href="javascript:showModal('#modal-profile')" class="cursor-pointer dropdown-item notify-item"><i class="mdi mdi-account mr-1 font-16"></i><span>Cá nhân</span></a>
+                                            <a href="javascript:logOut()" class="dropdown-item notify-item cursor-pointer"><i class="mdi mdi-logout mr-1 font-16"></i><span>Đăng xuất</span></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                @RenderBody()
+            </div>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6"><a href="https://www.iotsoftvn.com/">2020 &copy; Công ty TNHH Giải pháp Công nghệ Phần mềm kết nối số Việt Nam IOT Software</a></div>
+                        <div class="col-md-6"><div class="text-md-right footer-links d-none d-md-block"><a href="/version">Phiên bản 1.1</a></div></div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <div id="div-profile"></div>
+    </div>
+    <script src="/assets/js/vendor.min.js"></script>
+    <script src="/plugins/auto-numeric/autoNumeric.js"></script>
+    <script src="/plugins/i18n/vi.js"></script>
+    <script src="/assets/js/app.min.js"></script>
+    <script src="/assets/js/vendor/Chart.bundle.min.js"></script>
+    <script src="/plugins/alertify/alertify.min.js"></script>
+    <script src="/plugins/twbs-pagination/jquery.twbsPagination.min.js"></script>
+    <script src="/plugins/nprogress/nprogress.js"></script>
+    <script src="/plugins/select2/select2.min.js"></script>
+    <script src="/assets/js/vendor/apexcharts.min.js"></script>
+    <script src="/plugins/printthis/PrintThis.js"></script>
+
+    <script src="/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="/lib/elfinder/js/elfinder.full.js"></script>
+
+    <script src="/iotsoftvn/num-to-vnd.js"></script>
+    <script src="/iotsoftvn/utils.js"></script>
+    <script src="/iotsoftvn/layouts.js"></script>
+    <script src="/iotsoftvn/renderer.js"></script>
+    <script>
+
+        var ROOT_URL = '@Html.Raw(Global.ROOT_URL)';
+        var ROOT_API = '@Html.Raw(Global.ROOT_API)';
+
+        /** Get count PO on Layout */
+        ajaxGet('Order/TotalPending', {}, function (data) {
+            if (data.IsSuccess) {
+                $('#sp-count-po').html(data.Result);
+            }
+        })
+        ajaxGet('Contact/CountUnHandled', {}, function (data) {
+            if (data.IsSuccess) {
+                $('#sp-count-contact').html(data.Result)
+            }
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".account-user-name").html(localStorage.getItem("us_name"));
+            $(".account-position").html(localStorage.getItem("us_role"));
+            $('#div-profile').load('/admin/account/profilepartial');
+
+        })
+        function logOut() {
+            alertify.confirm("Xác nhận đăng xuất", function () {
+                ajaxPost('Logout', null, function (res) {
+                    localStorage.setItem('userAd', "");
+                    window.location.href = "/admin";
+                })
+            });
+        }
+    </script>
+    @RenderSection("scripts", false)
+</body>
+</html>

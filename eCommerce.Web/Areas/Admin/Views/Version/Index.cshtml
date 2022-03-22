@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "THÔNG TIN PHIÊN BẢN";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <button onclick="openModalAdd()" type="button" class="btn btn-primary"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm mới sản phẩm</button>
+                </div>
+                <h4 class="page-title">Thông tin phiên bản</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-aside-left p-0">
+                        <button onclick="getDataTable()" type="button" class="btn btn-block btn-primary"><i class="mdi mdi-refresh font-16 mr-1"></i>Làm mới dữ liệu</button>
+                        <!-- Search -->
+                        <div class="mt-4">
+                            <h5 class="text-primary">Tìm kiếm</h5>
+                            <div class="form-group">
+                                <input id="ipt-text-search" type="text" class="form-control" placeholder="Tìm tên lý do đặt thuốc..." autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-aside-right">
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table class="table table-hover table-centered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center px-w-50">#</th>
+                                        <th>Tên</th>
+                                        <th>Ghi chú</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="cursor-pointer"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

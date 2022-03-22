@@ -1,0 +1,49 @@
+﻿@{
+    var Folder = Model as List<eCommerce.Web.Areas.Api.Models.General.FolderResponse>;
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <style>
+        .img-item {
+            width: 200px !important;
+            height: 200px !important;
+            object-fit: cover;
+            margin: 20px 20px 20px 20px;
+        }
+    </style>
+
+    <link href="~/iotsoftvn/SummernoteElfinder.css" rel="stylesheet" />
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Quản lý tập tin</h4>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="">
+                <div class="card-body">
+                    <div id="elfinder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*/el upload/*@
+@section scripts {
+    <script src="/iotsoftvn/js_file_manager.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            initFileManager('#elfinder');
+        });
+    </script>
+
+}

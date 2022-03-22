@@ -1,0 +1,101 @@
+﻿@{
+    ViewData["Title"] = "QUẢN LÝ CHƯƠNG TRÌNH";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="/admin/promotion/add" class="btn btn-primary"><i class="mdi mdi-plus-circle font-16 mr-1"></i>Thêm mới chương trình</a>
+                </div>
+                <h4 class="page-title">Quản lý chương trình</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-aside-left p-0">
+                        <button onclick="reloadPagination()" type="button" class="btn btn-block btn-primary"><i class="mdi mdi-refresh font-16 mr-1"></i>Làm mới dữ liệu</button>
+                        <div class="mt-4">
+                            <h5 class="text-primary">Tìm kiếm</h5>
+                            <div class="form-group">
+                                <input id="ipt-text-search" type="text" class="form-control" placeholder="Tìm tên chương trình..." autocomplete="off" />
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="mt-2 d-none">
+                            <h5 class="text-primary">Thời gian</h5>
+                            <div class="form-group">
+                                <input id="dtpk-range" type="text" class="form-control" data-toggle="date-range-picker" placeholder="Chọn thời gian..." autocomplete="off" />
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="mt-2">
+                            <h5 class="text-primary">Trạng thái</h5>
+                            <div class="form-group">
+                                <div class="custom-control custom-radio mt-1">
+                                    <input type="radio" value="0" checked class="custom-control-input cb-status" name="radio-status" id="customCheck1">
+                                    <label class="custom-control-label" for="customCheck1">Tất cả</label>
+                                </div>
+                                <div class="custom-control custom-radio mt-1">
+                                    <input type="radio" value="1" class="custom-control-input cb-status" name="radio-status" id="customCheck2">
+                                    <label class="custom-control-label" for="customCheck2">Đang hoạt động</label>
+                                </div>
+                                <div class="custom-control custom-radio mt-1">
+                                    <input type="radio" value="2" class="custom-control-input cb-status" name="radio-status" id="customCheck3">
+                                    <label class="custom-control-label" for="customCheck3">Đã đóng</label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="mt-2">
+                            <h5 class="text-primary">Số chương trình</h5>
+                            <div class="form-group">
+                                <select id="sel-record-search" class="form-control" data-toggle="select-no-search">
+                                    <option value="20">20 chương trình</option>
+                                    <option value="30">30 chương trình</option>
+                                    <option value="50">50 chương trình</option>
+                                    <option value="100">100 chương trình</option>
+                                    <option value="200">200 chương trình</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="page-aside-right">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-centered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center px-w-50">#</th>
+                                        <th class="text-center px-w-50">Nền</th>
+                                        <th class="text-center">Hình ảnh</th>
+                                        <th>Tên chương trình</th>
+                                        <th>Bắt đầu</th>
+                                        <th>Kết thúc</th>
+                                        <th>Trạng thái</th>
+                                        <th class="text-center px-w-50"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-body">
+                                  
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div id="div-pagination-info" class="col-6 mt-2"></div>
+                            <div class="col-6"><div id="div-pagination-selection" class="float-right mb-3 mt-1"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+ <script src="/iotsoftvn/PromotionAndAds/js_promo_index.js"></script>
+}

@@ -1,0 +1,116 @@
+﻿@using eCommerce.Utils
+@model List<eCommerce.Web.Areas.Api.Models.Products.Product.SyncPriceModelResponse>
+
+@{
+    ViewData["Title"] = "ĐỒNG BỘ GIÁ -  SỐ LƯỢNG TỒN";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <link href="/plugins/table-export/css/tableexport.min.css" rel="stylesheet" />
+}
+
+<div class="container-fluid">
+    <div id="preloader" style="display: none; opacity:0.5">
+        <div id="status">
+            <div class="bouncing-loader"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="javascript:openTableExport('#div-export', 'xlsx', 'DANH_SACH_DONG_BO')" class="btn btn-primary mr-3"><i class="mdi mdi-file-excel font-16 mr-1"></i>Export Excel</a>
+                    <a href="javascript:getSyncPrice()" class="btn btn-primary mr-3"><i class="mdi mdi-download font-16 mr-1"></i>Kiểm tra dữ liệu giá - số tồn </a>
+                    <a href="javascript:syncPrice()" class="btn btn-primary"><i class="mdi mdi-sync font-16 mr-1"></i>Đồng bộ tất cả </a>
+                </div>
+                <h4 class="page-title">Đồng bộ giá - số lượng tồn</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div id="div-export" class="col-lg-12">
+                            <table class="table table-hover table-centered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center px-w-50">#</th>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th class="money">Giá niêm yết cũ</th>
+                                        <th class="money">Giá niêm yết mới</th>
+                                        <th class="money">Giá bán lẻ cũ</th>
+                                        <th class="money">Giá bán lẻ mới</th>
+                                        <th class="money">Số tồn cũ</th>
+                                        <th class="money">Số tồn mới</th>
+                                        <th class="money">Đặc điểm nổi bật</th>
+                                        <th class="">Thông tin khuyến mãi</th>
+
+                                        <th class="">Xuất xứ</th>
+                                        <th class="">Bảo hành</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    <tr>
+                                        <td class="text-center" colspan="9"><i class="mdi mdi-48px mdi-spin mdi-loading"></i> Đang tải dữ liệu đồng bộ</td>
+                                    </tr>
+                                    @*@if (Model == null || Model.Count == 0)
+                                        {
+                                        <tr class="text-muted"><td colspan="9" class="text-center"><div class="text-center text-muted pt-4 pb-4"><p class="mb-0"><i class="mdi mdi-48px mdi-folder-open-outline"></i></p><p>Không có sản phẩm nào chưa đồng bộ</p></div></td></tr>
+                                        }
+                                        @{ int i = 0;}
+                                        @foreach (var item in Model)
+                                        {
+                                            var SttGiaNiemYet = "";
+                                            if (item.GiaNiemYet > item.GiaNiemYetCu)
+                                                SttGiaNiemYet = @"<span class="" text-success  mdi mdi-arrow-up-bold""></span>";
+                                            else if (item.GiaNiemYet < item.GiaNiemYetCu)
+                                                SttGiaNiemYet = @"<span class="" text-danger  mdi mdi-arrow-down-bold""></span>";
+                                            var SttGiaBanLe = "";
+                                            if (item.GiaBanLe > item.GiaBanLeCu)
+                                                SttGiaBanLe = @"<span class="" text-success  mdi mdi-arrow-up-bold""></span>";
+                                            else if (item.GiaBanLe < item.GiaBanLeCu)
+                                                SttGiaBanLe = @"<span class="" text-danger  mdi mdi-arrow-down-bold""></span>";
+
+                                            var SttSoTon = "";
+                                            if (item.SoLuongTon > item.SoLuongTonCu)
+                                                SttSoTon = @"<span class="" text-success  mdi mdi-arrow-up-bold""></span>";
+                                            else if (item.SoLuongTon < item.SoLuongTonCu)
+                                                SttSoTon = @"<span class="" text-danger  mdi mdi-arrow-down-bold""></span>";
+
+                                            <tr>
+                                                <td class="">@(i += 1)</td>
+                                                <td>@item.ProductID</td>
+                                                <td>@item.ProductName</td>
+                                                <td class="text-right">@Global.FormatMoney(item.GiaNiemYetCu)</td>
+                                                <td class="text-right">@Global.FormatMoney(item.GiaNiemYet.GetValueOrDefault()) @Html.Raw(SttGiaNiemYet)</td>
+                                                <td class="text-right">@Global.FormatMoney(item.GiaBanLeCu)</td>
+                                                <td class="text-right">@Global.FormatMoney(item.GiaBanLe.GetValueOrDefault()) @Html.Raw(SttGiaBanLe)</td>
+                                                <td class="text-right">@item.SoLuongTonCu</td>
+                                                <td class="text-right">@item.SoLuongTonCu @Html.Raw(SttSoTon)</td>
+
+                                            </tr>
+                                        }*@
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+      //  var PRODUCTS  =  @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
+    </script>
+    <script src="~/iotsoftvn/Product/product_sync_price.js"></script>
+
+    <script src="/plugins/table-export/xlsx.core.min.js"></script>
+    <script src="/plugins/table-export/libs/FileSaver/FileSaver.min.js"></script>
+    <script src="/plugins/table-export/tableExport.js"></script>
+}

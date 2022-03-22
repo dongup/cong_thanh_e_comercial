@@ -1,0 +1,421 @@
+﻿@using eCommerce.Utils
+@model eCommerce.Web.Areas.Api.Models.Products.Product.ProductResponse;
+@{
+    ViewData["Title"] = "CHI TIẾT SẢN PHẨM";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+
+@section Styles {
+    <style>
+        .table td, .table th {
+            padding: 0.2rem 0.5rem;
+        }
+
+        .pre-line {
+            white-space: pre-line;
+        }
+
+
+        .print-promo > ul > li {
+            padding: 0px !important;
+            margin: 0px !important;
+            border: none !important;
+        }
+
+        #div-print span, p {
+            font-size: 12px !important;
+        }
+    </style>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <a href="/admin/product" class="btn btn-primary"><i class="mdi mdi-arrow-left font-16 mr-1"></i>Trở về trang sản phẩm</a>
+                </div>
+                <h4 class="page-title">Chi tiếtsản phẩm</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <!--Thong tin top-->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <!-- Product image -->
+
+                                            <a href="javascript: void(0);" class="text-center d-block mb-4">
+                                                @if (@Model.ProductImages.Count > 0)
+                                                {
+                                                    <img id="img-main" src="/@Model.ProductImages.First().FilePath" onerror="this.src='/images/default-image.png'" class="img-fluid" style="max-width: 280px;" alt="Product-img">
+                                                }
+                                            </a>
+
+                                            <div class="d-lg-flex d-none justify-content-center" id="div-sub-img">
+                                                @foreach (var item in Model.ProductImages)
+                                                {
+                                                    <a href="javascript: void(0);">
+                                                        <img src="/@item.FilePath" onclick="showMainImage(this,'@item.FilePath')" onerror="this.src='/images/default-image.png'" class="img-fluid img-thumbnail p-2 img-review" style="max-width: 75px;" alt="Product-img">
+                                                    </a>
+                                                }
+
+                                            </div>
+                                        </div> <!-- end col -->
+                                        <div class="col-lg-7">
+                                            <form class="pl-lg-4">
+                                                <!-- Product title -->
+                                                <h3 class="mt-0"> @Model.ProductName</h3>
+                                                <h5 class="mt-0">Mã sản phẩm: @Model.ProductCode</h5>
+                                                <h5 class="mt-0 text">
+                                                    Đường dẫn sản phẩm:
+                                                    @{
+                                                        string urlProduct = String.Format("{0}://{1}/{2}", Html.ViewContext.HttpContext.Request.Scheme, Html.ViewContext.HttpContext.Request.Host, Model.FriendlyUrl);
+                                                        <a target="_blank" class="text-primary" href="@urlProduct"> @urlProduct</a>
+                                                    }
+                                                </h5>
+                                                <!-- Product stock -->
+                                                <div class="mt-3">
+                                                    @if (Model.Status)
+                                                    {
+                                                        <h4><span class="badge badge-primary-lighten">Đang bán</span></h4>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h4><span class="badge badge-danger-lighten">Đã dừng bán</span></h4>
+                                                    }
+                                                </div>
+                                                @*<button onclick="showModal('#print-large')" class="btn btn-sm btn-outline-primary"><i class="mdi mdi-cloud-print mr-2"></i>In tem lớn</button>
+                                                <button onclick="showModal('#print-small')" class="btn btn-sm btn-outline-primary"><i class="mdi mdi-cloud-print mr-2"></i>In tem nhỏ</button>*@
+                                                <!-- Product description -->
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <h6 class="font-14">Giá bán trả góp:</h6>
+                                                        <h3 class="text-danger"> @Global.FormatMoney(Model.InstallmentPrice)</h3>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <h6 class="font-14">Giá niêm yết:</h6>
+                                                        <h3 class="text-danger"> @Global.FormatMoney(Model.OriginPrice)</h3>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <h6 class="font-14">Giá bán lẻ:</h6>
+                                                        <h3 class="text-danger"> @Global.FormatMoney(Model.GiaBanLe)</h3>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <h6 class="font-14">Giá giảm khuyến mãi:</h6>
+                                                        @{
+                                                            var giaGiam = 0;
+                                                            foreach (var item in Model.Promotions)
+                                                            {
+                                                                giaGiam += item.PromotionProducts.FirstOrDefault(n => n.ProductId == Model.Id).DiscountQuantity;
+                                                            }
+                                                        }
+                                                        <h3 class="text-danger"> @Global.FormatMoney(giaGiam)</h3>
+                                                    </div>
+
+                                                </div>
+
+
+                                                <!-- Product information -->
+                                                <div class="mt-4">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <h6 class="font-14">Số lượng tồn kho:</h6>
+                                                            <p class="text-sm lh-150">@Model.StockNumber</p>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <h6 class="font-14">Số lượng đơn hàng:</h6>
+                                                            <p class="text-sm lh-150">@Model.CountOrder</p>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <h6 class="font-14">Thương hiệu:</h6>
+                                                            <p class="text-sm lh-150">@Model.ProductBrand.BrandName</p>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <h6 class="font-14">Danh mục</h6>
+                                                            @*<p class="text-sm lh-150">$8,57,014</p>*@
+                                                            @foreach (var item in Model.ProductCategories)
+                                                            {
+                                                                <span class="badge badge-primary-lighten text-sm">
+                                                                    @item.CategoryName
+                                                                </span>
+                                                            }
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <h6 class="font-14">Xuất xứ:</h6>
+                                                            <p class="text-sm lh-150">@Model.Origin</p>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <h6 class="font-14">Bảo hành:</h6>
+                                                            <p class="text-sm lh-150">@Model.GurantyTime tháng</p>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <h6 class="font-14">Đơn vị:</h6>
+                                                            <p class="text-sm lh-150">@Model.Unit</p>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <h6 class="font-14">Tổng doanh thu:</h6>
+                                                            <p class="text-sm lh-150">@Global.FormatMoney(Model.TotalSale)</p>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <h6 class="font-14">Lượt truy cập:</h6>
+                                                            <p class="text-sm lh-150">@Model.AccessCount</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div> <!-- end col -->
+                                    </div> <!-- end row-->
+                                    <div class="row" style="white-space: pre-line; font-size:13px;">
+                                        <div class="col-6" >
+                                            <h5 class=" mt-5">Nội dung khuyến mãi</h5>
+                                            @Html.Raw(@Model.PromotionContent)
+
+                                        </div>
+                                        <div class="col-6">
+                                            <h5 class=" mt-5">Nội dung khuyến mãi thương hiệu</h5>
+                                            <h6>Hết hạn: @Model.PromotionBranchDeadline.GetValueOrDefault().ToString("dd/MM/yyyy")</h6>
+                                            @Html.Raw(@Model.PromotionBranch)
+
+                                        </div>
+                                        <div class="col-6">
+                                            <h5 class=" mt-5">Đặc điểm nổi bật</h5>
+                                            @Html.Raw(Model.HighlightProduct)
+                                        </div>
+
+                                        <div class="col-6">
+                                            <h5 class=" mt-5">Chương trình khuyến mãi đang chạy</h5>
+                                            @foreach (var item in Model.Promotions)
+                                            {
+                                                <p>@item.Name  <span> @item.StartDate - @item.EndDate </span></p>
+                                                <p>Giá giảm:  @Global.FormatMoney(item.PromotionProducts.Where(n => n.ProductId == Model.Id).FirstOrDefault().DiscountQuantity)</p>
+                                            }
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 pre-line">
+
+                                            <h5 class=" mt-5">Cam kết vàng</h5>
+                                            @Html.Raw(@Model.GoldenCommitment)
+                                        </div>
+                                        <div class="col-md-6 pre-line">
+                                            <h5 class=" mt-5">Thông số kĩ thuật</h5>
+                                            <div class="widget reviews-section-comment mb18 font-16 pl-2 pr-2">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover table-striped">
+                                                        <tbody>
+                                                            @foreach (var item in @Model.ProductProperties)
+                                                            {
+                                                                <tr>
+                                                                    <td class="font-weight-bold">@(item.Property.PropertyName):</td>
+                                                                    <td>
+                                                                        @foreach (var value in item.Property.Values)
+                                                                        {
+                                                                            @value.Value
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <br />
+
+                                        </div>
+                                    </div>
+                                    <h5 class=" mt-5">Mô tả sản phẩm</h5>
+                                    <div class="row p-3 pre-line">
+                                        @Html.Raw(Model.Description)
+                                    </div>
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div> <!-- end col-->
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="print-large" class="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modal-edit" class="modal-title">In tem lớn</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="div-print" class="border border-secondary overflow-hidden m-auto position-relative">
+                    <div class="print-card-product-name">
+                        <h4 class="text-center print-product-name m-0 py-1"><b> TỦ LẠNH  SHARP SJ-X346E-DS</b></h4>
+                    </div>
+                    <div class="print-summernote" style=" margin-top: 20px; font-weight: bold; color: black;font-size:12px;">
+                        @Html.Raw(Model.HighlightProduct)
+                    </div>
+                    <div style="margin-top:40px;">
+                        <div class="text-center">
+                            <b class="border py-2 print-price shadow m-auto font-16">Giá ưu đãi:<span class="print-product-name"> @Global.FormatMoney(Model.SaleOffPrice)</span></b>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-60" style="max-width: 60%;">
+                            <img src="/images/Print/print-tra-gop.png" class=" img-fluid" />
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <img style=" max-height: 60px !important;" class="print-bank-img col-4 mx-2" src="https://www.acb.com.vn//wps/wcm/connect/f6798828-b0d3-4061-8581-f7ee2b9c1d68/logo-acb.png?MOD=AJPERES&CACHEID=f6798828-b0d3-4061-8581-f7ee2b9c1d68" alt="Alternate Text" />
+                                <img style=" max-height: 60px !important;" class="print-bank-img col-4" src="https://www.hdbank.com.vn/static/image/Logo.png" />
+                            </div>
+                            <div class="col-4">
+                                <img class="print-img-tra-gop-0" src="/images/Print/print-0.png" alt="Alternate Text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-1">
+                        <div class="w-60" style="max-width: 60%;">
+                            <img src="/images/Print/print-khuyen-mai.png" class=" img-fluid" />
+                        </div>
+                        <div class="print-summernote" style="font-weight: bold; color: black;">
+                            @Html.Raw(Model.PromotionContent)
+                        </div>
+                    </div>
+                    <div class="mt-2 position-absolute" style="bottom:0;">
+                        <div class="w-60" style="max-width: 60%;">
+                            <img src="/images/Print/print-cam-ket.png" class=" img-fluid pring-img-tra-gop" />
+                        </div>
+                        <div class="print-promo print-summernote font-weight-bold" style="color:black; background:#35DCFA;margin-bottom:-22px;">
+                            <div>
+                                @Html.Raw(Model.GoldenCommitment)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="btn-close-edit" type="button" class="btn btn-light m-w-100" data-dismiss="modal"><i class="mdi mdi-block-helper mr-1"></i>Đóng</button>
+                <button onclick="printOrder();" type="button" class="btn btn-primary ml-1"><i class="mdi mdi-check mr-1"></i>Print</button>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<div id="print-small" class="modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modal-edit" class="modal-title">In tem lớn</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div id="div-print-sm" class="border border-secondary overflow-hidden m-auto position-relative">
+                    <div class="print-card-product-name">
+                        <h4 class="text-center print-product-name m-0 py-1"><b> TỦ LẠNH  SHARP SJ-X346E-DS</b></h4>
+                    </div>
+                    <div class="print-summernote" style="font-weight: bold; color: black;">
+                        @Html.Raw(Model.HighlightProduct)
+                    </div>
+                    @*<div class="mt-1">
+                            <div class="text-center">
+                                <b class="border py-2 print-price shadow m-auto font-16">Giá ưu đãi:<span class="print-product-name"> @Global.FormatMoney(Model.SaleOffPrice)</span></b>
+                            </div>
+                        </div>*@
+                    <div class="position-absolute" style="bottom:0;">
+                        <div class="w-60" style="max-width: 60%;">
+                            <img src="/images/Print/print-khuyen-mai.png" class=" img-fluid pring-img-tra-gop" />
+                        </div>
+                        <div class="font-weight-bold print-summernote" style="color:black; background:#35DCFA;margin-bottom:-22px;">
+                            <div class="row  mt-1" style="padding-top:23px; padding-bottom:10px!important;">
+                                <div class="col-5">
+                                    @*@Html.Raw(Model.PromotionContent)*@
+                                    <ul>
+                                        <li>
+                                            Tặng chảo
+                                        </li>
+                                        <li>
+                                            Tặng chảo
+                                        </li>
+                                        <li>
+                                            Tặng chảo
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-7">
+                                    <div class="text-center bg-white">
+                                        <b class="border border-secondary  print-price shadow m-auto font-16">
+                                            Giá ưu đãi:
+                                            <span class="print-product-name">
+                                                @Global.FormatMoney(Model.SaleOffPrice)
+                                            </span>
+                                        </b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="btn-close-edit" type="button" class="btn btn-light m-w-100" data-dismiss="modal"><i class="mdi mdi-block-helper mr-1"></i>Đóng</button>
+                <button onclick="printOrder();" type="button" class="btn btn-primary ml-1"><i class="mdi mdi-check mr-1"></i>Print</button>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+@section Scripts {
+    <script>
+     var prod =  @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model, Newtonsoft.Json.Formatting.Indented));
+        $(document).ready(function () {
+            console.log(prod);
+            $(".print-promo ul").removeAttr("style");
+            $(".print-promo ul li").removeAttr("style");
+            $(".print-promo ul>li>span").remove();
+            $(".print-promo ul>li img").remove();
+        })
+        function printOrder() {
+            printThis('#div-print', function (e) {
+                //hideModal("#modal-order-detail")
+                //alertify.confirm("Bạn có muốn kết thúc đơn hàng?", function () {
+                //    accuracyPO(id)
+                //})
+            })
+
+        }
+        function showMainImage(e, path) {
+            $('#img-main').attr('src', ROOT_URL + path);
+            $('.img-review').removeClass('shadow');
+            $(e).addClass('shadow');
+        }
+        $('input, textarea').attr('readonly', true);
+        $('input, textarea').addClass('bg-white');
+
+    </script>
+}

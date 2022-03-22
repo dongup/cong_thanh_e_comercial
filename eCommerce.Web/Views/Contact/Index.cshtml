@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewData["Title"] = "Liên hệ, Góp ý, Khiếu nại";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+
+<div class="osahan-breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Liên hệ</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="our-team-main mt-4">
+    <div class="container">
+        <div class="section-header section-header-center text-center">
+            <h3 class="heading-design-center-h3">Liên hệ, Góp ý, Khiếu nại</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="widget mb-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p class="text-center">Chúng tôi cam kết những thông tin mà bạn đã cung cấp cho chúng tôi sẽ được bảo mật</p>
+                                <label class="control-label">
+                                    Tên đầy đủ <span class="required">*</span>
+                                    <span id="name-error" class="text-danger d-none ">
+                                         Vui lòng nhập tên
+                                    </span>
+                                </label>
+                                <input id="ipt-name" class="form-control border-form-control" placeholder="Nhập tên đầy đủ" type="text" autocomplete="off" autofocus>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Số điện thoại <span class="required">*</span>
+                                    <span id="phone-error" class="text-danger d-none">
+                                        Số điện thoại không hợp lệ
+                                    </span>
+                                </label>
+                                <input id="ipt-phone" class="form-control border-form-control" placeholder="Nhập số điện thoại" type="text" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Địa chỉ email</label>
+                                <input id="ipt-email" class="form-control border-form-control" placeholder="Nhập địa chỉ email" type="text" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Địa chỉ</label>
+                                <textarea id="ipt-address" class="form-control border-form-control" rows="1" autocomplete="off" placeholder="Nhập địa chỉ"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Nội dung liên hệ, góp ý, khiếu nại <span class="required">*</span>
+                                    <span id="content-error" class="text-danger d-none">
+                                         Nhập nội dung
+                                    </span>
+                                </label>
+                                <textarea id="ipt-content" class="form-control border-form-control" rows="5" autocomplete="off" placeholder="Nhập nội dung"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div id="g-recaptcha" class="d-flex justify-content-center"></div>
+                        </div>
+                        <div class="col-md-12 text-right">
+                            <button onclick="sendContact()" type="button" class="btn btn-warning ml-1"><i class="icofont icofont-send-mail mr-1"></i>Gửi liên hệ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/iotsoftvn/contact.js"></script>
+    <script type="text/javascript" defer>
+        $.getScript('https://www.google.com/recaptcha/api.js', function () {
+            delay(() => {
+                grecaptcha.render(document.getElementById('g-recaptcha'), {
+                    'sitekey': '6Le86ZsaAAAAAPOm092WdYu_3UbSVJxgFt4Abqkk',
+                });
+            }, 2000);
+            
+        });
+    </script>
+}

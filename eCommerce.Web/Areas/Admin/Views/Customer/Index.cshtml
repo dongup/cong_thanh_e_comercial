@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewData["Title"] = "KHÁCH HÀNG";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <style>
+        #html_histories > ul, li {
+            list-style: none;
+            padding: 0;
+        }
+        #html_histories > .wrapper {
+            /*background: #eaf6ff;*/
+            padding: 2rem;
+            border-radius: 15px;
+        }
+        #html_histories > h1 {
+            font-size: 1.1rem;
+            font-family: sans-serif;
+        }
+        #html_histories > .sessions {
+            margin-top: 2rem;
+            border-radius: 12px;
+            position: relative;
+        }
+        .item-timeline {
+            padding-bottom: 1.5rem;
+            border-left: 1px solid #abaaed;
+            position: relative;
+            padding-left: 20px;
+            margin-left: 10px;
+        }
+            .item-timeline:last-child {
+                border: 0px;
+                padding-bottom: 0;
+            }
+
+            .item-timeline:before {
+                content: '';
+                width: 15px;
+                height: 15px;
+                background: white;
+                border: 1px solid #4e5ed3;
+                box-shadow: 3px 3px 0px #bab5f8;
+                box-shadow: 3px 3px 0px #bab5f8;
+                border-radius: 50%;
+                position: absolute;
+                left: -10px;
+                top: 0px;
+            }
+
+        #html_histories > .time {
+            color: #2a2839;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        @@media screen and (min-width: 601px) {
+            #html_histories > .time {
+                font-size: 0.9rem;
+            }
+        }
+
+        @@media screen and (max-width: 600px) {
+            #html_histories > .time {
+                margin-bottom: 0.3rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        #html_histories > p {
+            color: #4f4f4f;
+            font-family: sans-serif;
+            line-height: 1.5;
+            margin-top: 0.4rem;
+        }
+
+        @@media screen and (max-width: 600px) {
+            #html_histories > p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <h4 class="page-title">Khách hàng</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="page-aside-left p-0">
+                        <button onclick="reloadPagination()" type="button" class="btn btn-block btn-primary"><i class="mdi mdi-refresh font-16 mr-1"></i>Làm mới dữ liệu</button>
+                        <!-- Search -->
+                        <div class="mt-4">
+                            <h5 class="text-primary">Tìm kiếm</h5>
+                            <div class="form-group">
+                                <input id="ipt-text-search" type="text" class="form-control" placeholder="Tìm theo họ tên, email,số điện thoại..." autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h5 class="text-primary">Số khách hàng</h5>
+                            <div class="form-group">
+                                <select id="sel-record-search" class="form-control" data-toggle="select-no-search">
+                                    <option value="20">20 khách hàng</option>
+                                    <option value="30">30 khách hàng</option>
+                                    <option value="50">50 khách hàng</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-aside-right">
+
+                        <!-- Table -->
+                        <div class="table-responsive">
+                            <table class="table table-centered table-striped dt-responsive nowrap w-100" id="products-datatable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center px-w-50">
+                                            #
+                                        </th>
+                                        <th>Họ và tên</th>
+                                        <th>Điện thoại</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-body">
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div id="div-pagination-info" class="col-6 mt-2"></div>
+                            <div class="col-6"><div id="div-pagination-selection" class="float-right mb-3 mt-1"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("OrderDetailPartial.cshtml")
+@await Html.PartialAsync("OrdersByCustomerPartial.cshtml")
+@section scripts {
+    <script src="~/iotsoftvn/Customer/js_customer.js"></script>
+        
+}

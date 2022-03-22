@@ -1,0 +1,175 @@
+﻿@using eCommerce.Utils
+@using eCommerce.Web.Areas.Api.Models.General
+@using eCommerce.Web.Areas.Api.Models.Promotion;
+@{
+    InformationModel info = (InformationModel)Context.Items["info"];
+    BannerAdsResponse itemBannerAds = (BannerAdsResponse)Context.Items["bannerads"];
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Điện máy công thành">
+    <meta name="keywords" content="Osahan, fashion, Bootstrap4, shop, e-commerce, modern, flat style, responsive, online store, business, mobile, blog, bootstrap 4, html5, css3, jquery, js, gallery, slider, touch, creative, clean">
+    <meta name="author" content="iotsoftvn">
+    @RenderSection("meta", false)
+    <title>@ViewBag.Title - Điện máy Công Thành | Chuyên kinh doanh các mặt hàng Điện tử, Điện lạnh, Điện gia dụng</title>
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/logo-icon-trans.png">
+    <link rel="icon" type="image/png" href="/images/logo-icon-trans.png">
+    <link href="~/plugins/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/plugins/icofont/icofont.css" rel="stylesheet" />
+    <link href="~/store/css/intro.css" rel="stylesheet" />
+    <link href="~/plugins/owl-carousel/owl.carousel.css" rel="stylesheet" />
+    <link href="~/plugins/owl-carousel/owl.theme.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/iotsoftvn/utils.css" />
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" />
+    <link href="~/store/css/style.css" rel="stylesheet" />
+    <link href="~/store/css/mobile.css" rel="stylesheet" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156879419-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-156879419-3');
+    </script>
+    <script src="https://w.ladicdn.com/popupx/sdk.js" id="5fa03c50dfcdfd080799b0fa" async></script>
+
+    @RenderSection("styles", false)
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '762356301313054');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+             src="https://www.facebook.com/tr?id=762356301313054&ev=PageView&noscript=1" />
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+</head>
+<body>
+
+    <div id="fb-root"></div>
+    <!-- Your Chat Plugin code -->
+    <div class="fb-customerchat"
+         attribution="setup_tool"
+         page_id="@info.FbAppId">
+        @*2190614707664907*@
+    </div>
+
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v10.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+    </script>
+
+    @RenderBody()
+    <footer>
+        <section class="footer-Content btn-gradient-blue">
+            <div class="container footer-intro">
+                <div class="row" >
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="footer-widget">
+                            <h3 class="block-title">Liên hệ</h3>
+                            <div id="div-footer" class="textwidget">
+                                <div class="textwidget">
+                                    <p>@info.CompanyName</p>
+                                    <p>Địa chỉ: &nbsp;@info.Address </p>
+                                    <p>MST: &nbsp;@info.MaSoThue</p>
+                                    <p>Hotline: &nbsp;@Global.FormatPhoneNumber(@info.Hotline)</p>
+                                    <p>Số CSKH: &nbsp;@info.CSKH</p>
+                                    <p>Email: &nbsp;@info.Email</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <div class="footer-widget">
+                            <h3 class="block-title">Quy định & Chính sách</h3>
+                            <div class="textwidget line-height-24x;">
+                                <p class="height-24-px"><a href="chinh-sach-bao-hanh">Chính sách bảo hành</a></p>
+                                <p class="height-24-px"><a href="chinh-sach-doi-tra">Chính sách đổi trả</a></p>
+                                <p class="height-24-px"><a href="chinh-sach-tra-gop">Chính sách trả góp</a></p>
+                                <p class="height-24-px"><a href="chinh-sach-van-chuyen-va-giao-hang">Chính sách vận chuyển và giao hàng</a></p>
+                                <p class="height-24-px"><a href="thong-tin-ve-cac-phuong-thuc-thanh-toan">Thông tin về các phương thức thanh toán</a></p>
+                                <p class="height-24-px"><a href="chinh-sach-bao-ve-thong-tin-khach-hang">Chính sách bảo vệ thông tin khách hàng</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="@info.BoCongThuong_Url">
+                                    <img class="img-bo-cong-thuong mb-2 mt-2" src="/images/dathongbao_bocongthuong.png" />
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="footer-widget">
+                                    <h3 class="block-title"> Bản đồ</h3>
+                                    <div class="textwidget">
+                                        <div class="mapouter">
+                                            <div class="gmap_canvas">
+                                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.2175248098133!2d106.81497171526101!3d10.946934559015506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174deacc5555555%3A0x16d3513b12f8f7d5!2zVHJ1bmcgVMOibSDEkGnhu4duIE3DoXkgQ8O0bmcgVGjDoG5o!5e0!3m2!1sen!2s!4v1615459760401!5m2!1sen!2s"
+                                                        width="600" height="200" style="border:0; width: 100%" allowfullscreen="" loading="lazy"></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </footer>
+    <a id="mobile-float" href="tel:@info.Hotline" class="float btn-gradient-blue p-1 d-none">
+        <span class="p-1 text-white" style="display:flex;">
+            <i class="icofont icofont-phone font-20 float-hotline mr-0 font-weight-bold"></i>
+            <span class="text-white m-auto" id="#hotline-number-float"></span>
+        </span>
+    </a>
+    <a id="web-float" href="tel:0914196139" class="float-phone bg-blue font-weight-bold p-1" style="z-index:10000">
+        <span class="p-1 text-white" style="display:flex;">
+            <i class="icofont icofont-phone font-44 float-hotline  font-weight-bold"></i>
+        </span>
+    </a>
+
+    <a id="fb-float" href="https://zalo.me/0914196139" target="_blank" class="float-message-fabook" style="z-index:10000">
+        <img src="/Images/ic-zalo.svg" />
+    </a>
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/popper/popper.min.js"></script>
+    <script src="~/plugins/bootstrap/bootstrap.min.js"></script>
+    <script src="~/plugins/owl-carousel/owl.carousel.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,115 @@
+﻿<!--  Modal content for the Large example -->
+<div class="modal fade" id="modal-order-detail">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Thông tin đơn hàng : <span id="madonhang"></span> </h4>
+                <button onclick="resetFormin()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="card-body px-3">
+                <div class="row">
+                    <div class="col-md-8 ">
+                        <div class="row">
+                            <div class="col-md-6 ">
+                                <h5>Khách hàng: <span id="customer__" class="text-primary"></span></h5>
+                                <h5>Số điện thoại : <span id="phone" class="text-primary"></span></h5>
+                                <h5>Địa chỉ : <span id="address__" class="text-primary"></span></h5>
+                                <h5>Email : <span id="email" class="text-primary"></span></h5>
+                                <h5>Thời gian đặt : <span id="time_" class="text-primary"></span></h5>
+                            </div>
+
+                            <div class="col-md-6 ">
+                                <h5 class="pr-2">Trạng thái đơn hàng: <span id="trangthai"></span></h5>
+                                <div id="people_">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border p-3 mt-4 mt-lg-0 rounded" id="div-tomtatdonhang">
+                            <h4 class="header-title mb-3">Tóm tắt đơn hàng</h4>
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td>Giá tạm tính:</td>
+                                            <td id="giatamtinh" class="money"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Giảm giá : </td>
+                                            <td class="money"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Thành tiền :</th>
+                                            <th id="thanhtien" class="money text-danger"></th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                           
+                            <!-- end table-responsive -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 mt-3">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-centered mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Sản phẩm</th>
+                                        <th id="price-tragop-text" class="money">Giá</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="money">Tổng</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-sanpham">
+                                </tbody>
+
+                            </table>
+                        </div> <!-- end table-responsive-->
+
+                        <!--Start Detai Trả góp-->
+                        <div id="detail-price-tragop">
+                           
+                        </div>
+                        <!--End Detail Trả góp-->
+                    </div>
+                    <!-- end col -->
+                    <div class="col-lg-4">
+
+                        <div id="html_histories">
+                            <div class="mt-4">
+                                <h5 data-toggle="collapse" data-target="#ul-histories" aria-expanded="false" aria-controls="ul-histories"> Lịch sử đơn hàng </h5>
+                                <ul id="ul-histories" class="collapse show sessions" aria-labelledby="headingOne">
+                                    @*<li>
+                                            <div class="time">09:00 AM</div>
+                                            <p>How is it already 9:00? Just how??? 🤯🤯</p>
+                                        </li>*@
+                                </ul>
+                            </div>
+                        </div>
+                    </div> <!-- end col -->
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <span id="print_T">
+                    @*<button id="btn-print" type="button" class="btn btn-success"><i class="mdi mdi-chart-scatter-plot-hexbin mr-1"></i>In đơn hàng</button>*@
+                </span>
+                @*<button name="btn-cancel" type="button" class="btn btn-danger m-w-100 mr-auto ml-1"><i class="mdi mdi-trash-can mr-1"></i>Hủy đơn</button>*@
+                <button name="btn-update" type="button" class="btn btn-primary ml-1"><i class="mdi mdi-check mr-1"></i> </button>
+                <button onclick="resetFormin()" id="btn-close-edit" type="button" class="btn btn-light m-w-100" data-dismiss="modal"><i class="mdi mdi-block-helper mr-1"></i>Đóng</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<!--modal in-->
+<!--modal in-->

@@ -1,0 +1,58 @@
+﻿@*/*Model chỉnh sửa tài khoản*/*@
+<div class="modal " id="modal-edit">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Chỉnh sửa tài khoản</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <form id="form-edit">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group text-center">
+                                        <img class="img-fluid cursor-pointer rounded-circle col-md-8" id="img-avatar-edit" src="/images/default-avatar.jpg" />
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3 ">
+                                        <label>Họ tên <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" name="FullName" placeholder="Nguyễn Văn A">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label>Số điện thoại</label>
+                                        <input type="text" class="form-control" name="Phone" placeholder="xxxx-xxx-xxx ">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group  col-md-6">
+                                    <label>Email</label>
+                                    <input type="text" class="form-control" name="Email" placeholder="abc@gmail.com">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Chức vụ <span class="text-danger">*</span></label>
+                                    <select class="select2 form-control " id="sl-role-edit" name="RoleId" data-placeholder="Chọn chức vụ ...">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group mb-3 col-md-6">
+                                    <label>Tên tài khoản <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="UserName" placeholder="nguyenvana">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete" type="button" class="btn btn-danger m-w-100 mr-auto ml-1"><i class="mdi mdi-trash-can mr-1"></i>Xoá</button>
+                <button type="button" class="btn btn-light m-w-100" data-dismiss="modal"><i class="mdi mdi-block-helper mr-1"></i>Đóng</button>
+                <button id="btn-edit-branch" onclick="javascript:$('#form-edit').submit()" type="submit" class="btn btn-primary ml-1"><i class="mdi mdi-check mr-1"></i>Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>
